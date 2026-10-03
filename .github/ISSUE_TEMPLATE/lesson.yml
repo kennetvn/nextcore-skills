@@ -9,6 +9,14 @@ body:
       options: [design (→ nextcore-design), development contract (→ nextcore-dev), running agents (→ nextcore-workflow)]
     validations:
       required: true
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Layer (cases/taxonomy.json)
+      multiple: true
+      options: [code, data, infra, devops, performance, testing, ai-agents, process]
+    validations:
+      required: true
   - type: textarea
     id: happened
     attributes:

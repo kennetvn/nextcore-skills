@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or loose idea
+    url: https://github.com/kennetvn/nextcore-skills/discussions
+    about: Not sure it is a bug, a rule or a case yet? Start a discussion.
+  - name: Security problem in a tool
+    url: https://github.com/kennetvn/nextcore-skills/blob/main/SECURITY.md
+    about: Report privately, not in a public issue.
+  - name: How to contribute — what goes where
+    url: https://github.com/kennetvn/nextcore-skills/blob/main/CONTRIBUTING.md
+    about: Cases, rules, checks, stack notes, showcases — and what gets closed.

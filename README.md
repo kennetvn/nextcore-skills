@@ -198,6 +198,9 @@ Other agents: copy a skill's `SKILL.md` into your rules file — `.cursor/rules/
 
 ## Contribute
 
+**Start with [CONTRIBUTING.md](CONTRIBUTING.md)** — what we take, where each kind of contribution goes (case, rule,
+check, stack note, showcase), how to make it pass `npm test`, and what gets closed.
+
 Found a false positive, a stack the tools don't read yet, or a lesson from your own project? Open an issue — the
 [bug](https://github.com/kennetvn/nextcore-skills/issues/new?template=bug.yml),
 [rule](https://github.com/kennetvn/nextcore-skills/issues/new?template=rule.yml) and

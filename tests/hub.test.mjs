@@ -135,6 +135,16 @@ test('tools: every bin answers --help with its usage and exit 0', () => {
   }
 });
 
+test('issue forms list every tool and every case layer (they drift silently otherwise)', () => {
+  const bins = Object.keys(JSON.parse(read('package.json')).bin);
+  const bug = read('.github/ISSUE_TEMPLATE/bug.yml');
+  for (const b of [...bins, 'cases-index']) assert.ok(bug.includes(b), `bug.yml dropdown is missing ${b}`);
+  const layers = Object.keys(JSON.parse(read('cases/taxonomy.json')).layer);
+  const lesson = read('.github/ISSUE_TEMPLATE/lesson.yml');
+  const opts = (lesson.match(/id: layer[\s\S]*?options: \[([^\]]+)\]/) || [])[1]?.split(',').map((s) => s.trim());
+  assert.deepEqual(opts, layers, 'lesson.yml layer options must equal cases/taxonomy.json layers');
+});
+
 test('cases: every case is valid and cases/README.md index is current', () => {
   const r = spawnSync(process.execPath, [join(root, 'tools/cases-index.mjs'), '--check'], { encoding: 'utf8' });
   assert.equal(r.status, 0, r.stderr);

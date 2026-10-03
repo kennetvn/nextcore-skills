@@ -2,6 +2,15 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- CONTRIBUTING: what goes where (repo map), how to make each kind of contribution, what gets merged and what gets
+  closed, commits / squash merges / who cuts releases. PR template by kind; issue chooser links to Discussions,
+  SECURITY and CONTRIBUTING; blank issues off.
+- Lesson issues ask for the case layer; the bug form lists every tool. A test keeps both in sync with
+  `package.json` and `cases/taxonomy.json`.
+
 ## [1.5.0] — 2026-10-03
 
 ### Added

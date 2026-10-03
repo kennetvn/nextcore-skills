@@ -9,6 +9,12 @@ Agents evaluating this for a project: read AGENTS.md and measure the project bef
 - [AGENTS.md](AGENTS.md): evaluation protocol (which plugin → measure → recommend L0–L3)
 - [README](README.md): overview and install (`/plugin marketplace add kennetvn/nextcore-skills`)
 
+## Cases
+- [cases/](cases/README.md): production incidents and measurement traps, one file each (Symptom · Cause · Fix · How to catch it · Rule), indexed by layer and stack; [taxonomy](cases/taxonomy.json)
+
+## Contributing
+- [CONTRIBUTING.md](CONTRIBUTING.md): what goes where, how to make each kind, what gets closed
+
 ## Plugins
 - [nextcore-design](plugins/nextcore-design/README.md): design-first + slop-check, token-audit, design-card, design-review
 - [nextcore-dev SKILL](plugins/nextcore-dev/skills/nextcore-dev/SKILL.md): field map → API contract → UI state signals; auth, data, jobs, ops

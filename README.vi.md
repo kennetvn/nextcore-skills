@@ -200,6 +200,9 @@ thư mục `references/` của nó nằm cạnh.
 
 ## Đóng góp
 
+**Đọc [CONTRIBUTING.md](CONTRIBUTING.md) trước** — nhận gì, mỗi loại đóng góp đặt ở đâu (case, quy tắc, cổng kiểm,
+ghi chú stack, showcase), làm sao để qua `npm test`, và loại nào bị đóng. Issue viết tiếng Việt vẫn được nhận.
+
 Gặp báo sai, một stack mà công cụ chưa đọc được, hay một bài học từ dự án của bạn? Mở issue. Các mẫu
 [bug](https://github.com/kennetvn/nextcore-skills/issues/new?template=bug.yml),
 [rule](https://github.com/kennetvn/nextcore-skills/issues/new?template=rule.yml) và
