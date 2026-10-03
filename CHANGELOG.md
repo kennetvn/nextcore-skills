@@ -2,6 +2,18 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: [SemVer](https://semver.org/).
 
+## [1.2.0] — 2026-10-03
+
+### Added
+- `third-patch.mjs` (nextcore-workflow): pre-commit hook that refuses a third `fix:` commit to the same file within
+  72 h (history followed across renames) until a diagnosis note with Symptom · Hypothesis · Observation names it.
+- README rewritten for first-time readers: plain-language intro, a small Laravel example, before/after for each skill
+  (a real critic review, the 403-vs-empty-list contract, a blocked third patch), terms explained where they appear,
+  concrete first contributions.
+
+### Changed
+- `token-audit` reports SCSS/LESS tokens with their own sigil (`$warning-fg`, not `--warning-fg`).
+
 ## [1.1.0] — 2026-10-03
 
 ### Changed

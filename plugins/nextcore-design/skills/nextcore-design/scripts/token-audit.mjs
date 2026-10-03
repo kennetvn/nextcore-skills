@@ -91,6 +91,8 @@ const ratio = (a, b) => {
 };
 
 // ---------- build themes ----------
+const SIGIL = new Map(); // SCSS `$` / LESS `@` tokens keep their own sigil in reports
+const tok = (n) => `${SIGIL.get(n) || '--'}${n}`;
 const light = new Map();
 const dark = new Map();
 let hasDark = false;
@@ -99,7 +101,10 @@ for (const f of tokenFiles) {
   // SCSS `$name: value;` / LESS `@name: value;` at the top level are tokens too (light theme)
   if (/\.(scss|sass|less)$/i.test(f)) {
     const top = css.replace(/\{[^{}]*\}/g, '');
-    for (const m of top.matchAll(/^\s*[$@]([a-zA-Z][\w-]*)\s*:\s*([^;\n]+?)\s*(?:!default)?\s*;/gm)) light.set(m[1], m[2].trim());
+    for (const m of top.matchAll(/^\s*([$@])([a-zA-Z][\w-]*)\s*:\s*([^;\n]+?)\s*(?:!default)?\s*;/gm)) {
+      light.set(m[2], m[3].trim());
+      SIGIL.set(m[2], m[1]);
+    }
   }
   for (const blk of themedBlocks(css)) {
     if (blk.theme === 'light') for (const [k, v] of blk.props) light.set(k, v);
@@ -160,7 +165,7 @@ for (const [key, why] of pairs) {
     const bb = b.a < 1 ? over(b, base) : b;
     const r = ratio(f.a < 1 ? over(f, bb) : f, bb);
     if (r < 4.5) {
-      push('contrast', r < 3 ? 'error' : 'warn', `${tname}: --${fg} on --${bg}`,
+      push('contrast', r < 3 ? 'error' : 'warn', `${tname}: ${tok(fg)} on ${tok(bg)}`,
         `${r.toFixed(2)}:1 (${why}) — needs 4.5:1 for body text${r >= 3 ? ', 3:1 only for large text' : ''}`);
     }
   }
@@ -173,7 +178,7 @@ if (hasDark) {
     // -fg / -on tokens sit on a coloured fill, not on the page, so they do not vanish in dark mode.
     if (!c || c.a < 1 || /^var\(/.test(light.get(n)) || /-(fg|on|foreground)$|^(.*-)?(white|black)$/.test(n)) continue;
     const L = lum(c);
-    if (L > 0.8 || L < 0.02) push('dark-missing', 'warn', `--${n}`, `${light.get(n)} has no dark-theme value — near-${L > 0.8 ? 'white' : 'black'} colours vanish or glare in dark mode`);
+    if (L > 0.8 || L < 0.02) push('dark-missing', 'warn', tok(n), `${light.get(n)} has no dark-theme value — near-${L > 0.8 ? 'white' : 'black'} colours vanish or glare in dark mode`);
   }
 }
 

@@ -83,7 +83,7 @@ test('multi-stack: Blade/Twig/SCSS scanned; SCSS tokens audited; Laravel and pla
   assert.ok(bad.some((f) => f.file.endsWith('view.blade.php') && f.rule === 'placeholder-data'), 'Blade fake data');
   // good/ holds a Blade view, a Twig template and SCSS token declarations — all must stay silent (asserted above too)
   const scss = tool('token-audit.mjs', fx('tokens', 'bad.scss'), '--json').json.findings.map((f) => f.where);
-  assert.ok(scss.some((w) => w.includes('--warning-fg on --warning')), 'SCSS $warning-fg: $bg resolved and checked');
+  assert.ok(scss.some((w) => w.includes('$warning-fg on $warning')), 'SCSS $warning-fg: $bg resolved, reported with its $ sigil');
   for (const routes of [fx('laravel', 'routes', 'web.php'), fx('routes.txt')]) {
     const cards = tool('design-card.mjs', fx('drawings'), '--tokens', fx('tokens', 'good.css'), '--fonts', 'Inter,Fraunces', '--routes', routes, '--json').json;
     const all = Object.fromEntries(cards.flatMap((c) => c.routes.map((r) => [r.route, r.exists])));

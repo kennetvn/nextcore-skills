@@ -1,7 +1,7 @@
 // Repo hygiene + tool tests for the nextcore-skills marketplace. Zero dependencies: `node --test tests/`.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, statSync, existsSync, mkdtempSync, cpSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, existsSync, mkdtempSync, cpSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join, dirname, extname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
@@ -86,4 +86,35 @@ test('doc-drift: --update rewrites only measurable markers, then --quiet stays s
   assert.match(doc, /measure: orphan=1 @2026-10-01/, 'a marker with no command is left alone');
   const q = drift(d, '--max-age', '36500', '--quiet');
   assert.doesNotMatch(q.stdout, /DRIFT/);
+});
+
+// third-patch: real git history in a temp repo
+const sh = (cwd, ...a) => spawnSync('git', a, { cwd, encoding: 'utf8' });
+const patch = (cwd, ...a) => spawnSync(process.execPath, [join(root, 'plugins/nextcore-workflow/skills/nextcore-workflow/scripts/third-patch.mjs'), ...a], { cwd, encoding: 'utf8' });
+function repoWithTwoFixes() {
+  const d = mkdtempSync(join(tmpdir(), 'patch-'));
+  sh(d, 'init', '-q'); sh(d, 'config', 'user.email', 't@t.t'); sh(d, 'config', 'user.name', 't');
+  const w = (s) => writeFileSync(join(d, 'cart.js'), s);
+  w('a'); sh(d, 'add', '.'); sh(d, 'commit', '-qm', 'feat: cart');
+  w('b'); sh(d, 'commit', '-qam', 'fix: cart total rounding');
+  w('c'); sh(d, 'commit', '-qam', 'fix: cart total again');
+  return d;
+}
+
+test('third-patch: blocks a third fix without a diagnosis, even after the file is renamed', () => {
+  const d = repoWithTwoFixes();
+  const r = patch(d, '--files', 'cart.js');
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /BLOCKED — cart\.js already has 2 fix commits/);
+  sh(d, 'mv', 'cart.js', 'basket.js'); sh(d, 'commit', '-qm', 'refactor: rename');
+  assert.equal(patch(d, '--files', 'basket.js').status, 1, 'history must follow the rename');
+});
+
+test('third-patch: passes once a diagnosis note names the file with symptom, hypothesis, observation', () => {
+  const d = repoWithTwoFixes();
+  mkdirSync(join(d, 'docs/diagnosis'), { recursive: true });
+  writeFileSync(join(d, 'docs/diagnosis/cart.md'), '# cart.js total\n## Symptom\n3 of 40 orders off by 1 VND\n## Hypothesis\nfloat sum; refuted if Decimal sum also differs\n## Observation\nDB rows show 0.1+0.2\n');
+  assert.equal(patch(d, '--files', 'cart.js').status, 0);
+  writeFileSync(join(d, 'docs/diagnosis/cart.md'), '# cart.js\n## Symptom\nwrong total\n');
+  assert.equal(patch(d, '--files', 'cart.js').status, 1, 'a note without all three sections does not count');
 });

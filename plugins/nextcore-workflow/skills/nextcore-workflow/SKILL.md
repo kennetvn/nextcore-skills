@@ -46,6 +46,10 @@ Rule: **the third patch to the same spot within 72 hours is blocked** until a di
 2. **Hypothesis + how to refute it** — a hypothesis you cannot disprove is a hunch.
 3. **On-site observation** — did you look at the live thing, or only reason from code?
 
+Enforce it, don't just write it: `scripts/third-patch.mjs` as a pre-commit hook counts `fix:` commits per staged file
+in the last 72 h (following renames) and refuses the third one until `docs/diagnosis/<area>.md` names the file and has
+the three sections. `echo 'node path/to/third-patch.mjs' > .git/hooks/pre-commit`.
+
 Early warning in commit messages: "still", "again", "attempt 2", "revert". Details: `references/diagnose-before-patch.md`.
 
 ## 3. Evidence before assertion
