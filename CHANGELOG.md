@@ -2,6 +2,12 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: [SemVer](https://semver.org/).
 
+## [1.3.0] — 2026-10-03
+
+### Added
+- "Built with these skills": the product the rules come from is named and linked, and a `showcase` issue template
+  lets anyone add theirs; CONTRIBUTING now invites naming your product (private data stays out, CI still checks).
+
 ## [1.2.1] — 2026-10-03
 
 ### Fixed

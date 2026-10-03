@@ -1,7 +1,7 @@
 # nextcore-skills
 
-**Quy tắc và công cụ giúp agent viết code bằng AI giao code UI và backend chạy được lâu.** Rút ra từ một nền tảng đặt
-phòng đang chạy thật, do các agent AI viết và vẫn vận hành, và được kiểm bằng vài script nhỏ bạn chạy được trên dự án
+**Quy tắc và công cụ giúp agent viết code bằng AI giao code UI và backend chạy được lâu.** Rút ra từ [homestaynextcore.org](https://homestaynextcore.org),
+một nền tảng đặt phòng đang chạy thật, do các agent AI viết và vẫn vận hành, và được kiểm bằng vài script nhỏ bạn chạy được trên dự án
 của mình trong một phút: Next.js, Laravel, PHP thuần, Django, Rails, Vue, bất cứ thứ gì render ra HTML.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](LICENSE)
@@ -193,6 +193,16 @@ Mỗi đóng góp được nhận đều được ghi công trong CHANGELOG và 
 
 [![Người đóng góp](https://contrib.rocks/image?repo=kennetvn/nextcore-skills)](https://github.com/kennetvn/nextcore-skills/graphs/contributors)
 
+## Sản phẩm dùng các skill này
+
+| Sản phẩm | Là gì | Stack |
+|---|---|---|
+| [homestaynextcore.org](https://homestaynextcore.org) | đặt phòng homestay ở Việt Nam, kèm 10 extension trình duyệt cho người vận hành; nơi mọi quy tắc ở đây được đo | Next.js, Prisma, MySQL, Chrome extension |
+
+Bạn đang dùng skill hoặc công cụ cho một sản phẩm thật? [Thêm sản phẩm của bạn](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml):
+một dòng nói nó là gì, stack, và (nếu có) một con số đã thay đổi. Bài học đến từ sản phẩm có trong bảng này được ghi
+tên sản phẩm ngay cạnh quy tắc mà nó tạo ra.
+
 ## Câu hỏi thường gặp
 
 **Có cần Claude Code không?** Không. Skill là Markdown, agent nào cũng làm theo được; công cụ là script Node.
@@ -202,8 +212,8 @@ Mỗi đóng góp được nhận đều được ghi công trong CHANGELOG và 
 
 **Code của tôi có bị gửi đi đâu không?** Không. Mọi công cụ đọc tệp trên máy và in ra báo cáo.
 
-**Sao không nêu tên sản phẩm?** Các quy tắc đến từ một nền tảng production riêng tư; số liệu lấy từ chính repository,
-CI và log của nó. Mọi thứ ở đây được viết để dùng được mà không cần biết đó là sản phẩm nào.
+**Số liệu lấy từ đâu?** Từ [homestaynextcore.org](https://homestaynextcore.org): repository, CI và log production của
+nó (mã nguồn không công khai). Các quy tắc được viết để bạn dùng được mà không cần biết sản phẩm đó.
 
 **`kennetvn/nextcore-design` và bộ catalogue 147 skill cũ đi đâu rồi?** Repo design đã được gộp vào
 `plugins/nextcore-design` cùng toàn bộ lịch sử. Bộ catalogue cũ (chưa từng được đo trên một dự án thật) được giữ ở tag

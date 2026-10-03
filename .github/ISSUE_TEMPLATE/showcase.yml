@@ -1,0 +1,47 @@
+name: Showcase — add your product
+description: You use these skills or tools on something real. Add it to "Built with these skills".
+title: "showcase: <product name>"
+labels: [showcase]
+body:
+  - type: input
+    id: product
+    attributes:
+      label: Product and link
+      placeholder: "Acme Rooms — https://acme-rooms.example"
+    validations:
+      required: true
+  - type: input
+    id: what
+    attributes:
+      label: What it is, in one line
+      placeholder: "room booking for small hotels in Lisbon"
+    validations:
+      required: true
+  - type: input
+    id: stack
+    attributes:
+      label: Stack
+      placeholder: "Laravel 11, Blade, MySQL"
+    validations:
+      required: true
+  - type: checkboxes
+    id: used
+    attributes:
+      label: What you use
+      options:
+        - label: nextcore-design (skill)
+        - label: nextcore-dev (skill)
+        - label: nextcore-workflow (skill)
+        - label: slop-check / token-audit / design-card / design-review
+        - label: doc-drift / third-patch
+  - type: textarea
+    id: number
+    attributes:
+      label: A number that changed (optional)
+      description: Before → after, and how you measured it. This is what makes a showcase useful to the next reader.
+      placeholder: "slop-check errors on new code: 140 → 0 in two weeks (CI with --warn-only off for changed files)"
+  - type: textarea
+    id: lesson
+    attributes:
+      label: Something the skills got wrong for you (optional)
+      description: Becomes a rule fix credited to you and your product.

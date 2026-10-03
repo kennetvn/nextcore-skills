@@ -1,7 +1,7 @@
 # nextcore-skills
 
-**Rules and tools that make AI coding agents ship UI and backend code that holds up.** Learned on a live booking
-platform that AI agents built and still run, and checked by small scripts you can run on your own project in a
+**Rules and tools that make AI coding agents ship UI and backend code that holds up.** Learned on [homestaynextcore.org](https://homestaynextcore.org),
+a live booking platform that AI agents built and still run, and checked by small scripts you can run on your own project in a
 minute — Next.js, Laravel, plain PHP, Django, Rails, Vue, anything that renders HTML.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](LICENSE)
@@ -191,6 +191,16 @@ automatically ([lesson loop](plugins/nextcore-workflow/skills/nextcore-workflow/
 
 [![Contributors](https://contrib.rocks/image?repo=kennetvn/nextcore-skills)](https://github.com/kennetvn/nextcore-skills/graphs/contributors)
 
+## Built with these skills
+
+| Product | What it is | Stack |
+|---|---|---|
+| [homestaynextcore.org](https://homestaynextcore.org) | homestay booking in Vietnam, plus 10 browser extensions for its operators; where every rule here was measured | Next.js, Prisma, MySQL, Chrome extensions |
+
+Using the skills or tools on something real? [Add your product](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml)
+— one line on what it is, your stack, and (if you have one) a number that changed. Lessons from products listed here
+carry the product's name next to the rule they created.
+
 ## FAQ
 
 **Do I need Claude Code?** No. The skills are Markdown any agent can follow; the tools are Node scripts.
@@ -200,8 +210,8 @@ read plain `.html` mockups from any source.
 
 **Is my code sent anywhere?** No. Every tool reads local files and prints a report.
 
-**Why isn't the product named?** The rules come from a private production platform; its numbers come from its own
-repository, CI and logs. Everything here is written to work without knowing which product it is.
+**Where do the numbers come from?** From [homestaynextcore.org](https://homestaynextcore.org): its repository, CI and
+production logs (the code is private). The rules are written so you don't need to know that product to use them.
 
 **What happened to `kennetvn/nextcore-design` and the old 147-skill catalogue?** The design repo was merged into
 `plugins/nextcore-design` with its full history. The old catalogue (never measured on a real project) is kept at tag

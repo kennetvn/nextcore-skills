@@ -51,7 +51,7 @@ test('docs: every relative markdown link resolves', () => {
 
 test('docs: nothing private leaked (product names, internal paths, IPs, emails, internal issue numbers)', () => {
   const LEAKS = [
-    /homestay|lamdong|dilinh|huyendilinh/i, // product / account names
+    /homestay(?!nextcore\.org)[\w-]|lamdong|dilinh|huyendilinh/i, // account names, old/private product names (the public site is fine)
     /NEXTCORE-(?!SKILLS\b)[A-Z]|\.agent\//, // private repo paths (case-sensitive; the old public name NEXTCORE-SKILLS is fine)
     /\b(?!127\.|0\.0\.0\.0|10\.0\.0\.)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/, // non-loopback IPs
     /[\w.+-]+@[\w-]+\.(?:com|org|vn|net)\b/, // emails
