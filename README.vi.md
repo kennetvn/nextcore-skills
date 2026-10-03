@@ -105,6 +105,21 @@ Mỗi quy tắc được thêm vào sau khi điều ngược lại đã xảy ra
 | 473 bản phát hành extension trong 90 ngày, 2 commit tìm ra nguyên nhân gốc; một tính năng mất 11 bản vá triệu chứng | lần vá thứ ba vào cùng một chỗ phải có chẩn đoán |
 | tài liệu ghi "76 routes without auth"; số thật là 0 | con số trong tài liệu phải kèm ngày và được đo lại |
 
+### Các con số này chứng minh gì, và không chứng minh gì
+
+Chúng đến từ một sản phẩm, do chính người làm ra sản phẩm đó đo. Chúng cho thấy các vấn đề là có thật và công cụ tìm
+ra được chúng. Chúng **không** phải bằng chứng độc lập rằng skill làm một nhóm làm việc nhanh hơn:
+
+| Đã chứng minh | Chưa chứng minh |
+|---|---|
+| các sự cố ở bảng trên đã xảy ra trên sản phẩm đang chạy và được đếm từ git, CI, log của nó | "năng suất +X%", "bug −Y%", "chi phí AI −Z%" — không có phép so trước/sau có đối chứng, nên chúng tôi không nêu con số nào |
+| `slop-check`, `token-audit`, `third-patch` tìm ra các vấn đề này — bạn tự kiểm được trên code của mình trong một phút | rằng các quy tắc hợp với mọi nhóm; chúng được chỉnh trên một codebase |
+| công cụ có test chạy trong CI (3 hệ điều hành × Node 18/20/22) | kiểm chứng từ bên ngoài — repo còn mới, chưa ai bên ngoài lặp lại được các con số này |
+
+Cách nhanh nhất để đánh giá: chạy công cụ trên repository của bạn và đếm những gì nó báo mà bạn đồng ý. Nếu bạn đo được
+trước/sau trên một dự án thật, [thêm vào đây](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml)
+— đó là bằng chứng mà README này tự nó không đưa ra được.
+
 ## Ba skill
 
 **[nextcore-design](plugins/nextcore-design/README.vi.md)**: cho ai giao UI. Đặc tả trước (mục tiêu, điều gì quan
@@ -202,6 +217,38 @@ Mỗi đóng góp được nhận đều được ghi công trong CHANGELOG và 
 Bạn đang dùng skill hoặc công cụ cho một sản phẩm thật? [Thêm sản phẩm của bạn](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml):
 một dòng nói nó là gì, stack, và (nếu có) một con số đã thay đổi. Bài học đến từ sản phẩm có trong bảng này được ghi
 tên sản phẩm ngay cạnh quy tắc mà nó tạo ra.
+
+### Quy mô homestaynextcore.org
+
+Đếm ngày 03/10/2026, chỉ tệp git theo dõi; dòng không trống; bỏ các bản extension đã lưu trữ, bundle sinh tự động,
+ghi chú kế hoạch và hình ảnh.
+
+| | Tệp | Dòng |
+|---|--:|--:|
+| Ứng dụng web (Next.js + Prisma) | 6.052 | 738.809 |
+| 10 extension trình duyệt | 610 | 141.414 |
+| **Tổng** | **6.662** | **880.223** |
+| — TypeScript / JavaScript | | 586.697 |
+| — CSS | | 158.554 |
+| — SQL migration, sửa dữ liệu, schema Prisma | | 36.819 |
+| — test (961 tệp) | | 92.749 |
+| — HTML, shell | | 5.404 |
+
+230 trang · 872 route API · 292 model cơ sở dữ liệu · 517 tệp migration · 11.946 commit trên hai repository (lịch sử
+bắt đầu từ tháng 1/2026). Một người chủ điều khiển các agent AI viết code, các skill này được viết dần trong lúc làm.
+
+**Ước tính chi phí làm lại** — theo mô hình COCOMO chuẩn (basic, organic; mô hình mà `scc` in ra), không phải giá thị
+trường, doanh thu hay định giá công ty:
+
+| Phạm vi đếm | Công sức | Thời gian | Chi phí theo lương Việt Nam¹ | Chi phí theo lương Mỹ² |
+|---|--:|--:|--:|--:|
+| code trừ CSS và test (623.516 dòng) | 2.064 người-tháng | 45 tháng, ~45 người | ≈ 4,6 triệu USD | ≈ 23 triệu USD |
+| toàn bộ ở trên (880.223 dòng) | 2.965 người-tháng | 52 tháng, ~57 người | ≈ 6,7 triệu USD | ≈ 33 triệu USD |
+
+¹ Lương 1.500 USD/tháng × 1,5 chi phí kèm theo. ² Mặc định của `scc`: 56.286 USD/năm × 2,4.
+Hãy đọc như một bậc độ lớn. COCOMO đếm dòng, mà code do AI viết thường nhiều dòng hơn cho cùng một tính năng so với
+code viết tay, nên con số bị đội lên. Và khoảng cách giữa "57 người trong 52 tháng" với những gì đã thực sự diễn ra
+không phải phép đo tác dụng của skill — xem [các con số này chứng minh gì](#các-con-số-này-chứng-minh-gì-và-không-chứng-minh-gì).
 
 ## Câu hỏi thường gặp
 

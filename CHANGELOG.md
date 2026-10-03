@@ -2,6 +2,14 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: [SemVer](https://semver.org/).
 
+## [1.3.1] — 2026-10-03
+
+### Added
+- README: "What these numbers show, and what they don't" — the production numbers are self-reported from one
+  product; no productivity, bug-rate or AI-cost claim is made; how to check the tools on your own code instead.
+- README: size of the source product (6,662 files, 880,223 lines, counted 3 Oct 2026) and a COCOMO rebuild-cost
+  estimate, labelled as an order of magnitude and not a valuation. Same in README.vi.
+
 ## [1.3.0] — 2026-10-03
 
 ### Added

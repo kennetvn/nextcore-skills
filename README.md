@@ -104,6 +104,21 @@ Each one was added after the opposite happened on the live product and was measu
 | 473 extension releases in 90 days, 2 commits that found a root cause; one feature took 11 releases of symptom patches | third patch to the same spot needs a diagnosis |
 | docs said "76 routes without auth"; the real count was 0 | numbers in docs carry a date and get re-measured |
 
+### What these numbers show, and what they don't
+
+They come from one product, measured by the people who built it. They show that the problems are real and that the
+tools find them. They are **not** independent evidence that the skills make a team faster:
+
+| Shown | Not shown |
+|---|---|
+| the incidents above happened on a live product and were counted from its git, CI and logs | "productivity +X%", "bugs −Y%", "AI cost −Z%" — there is no controlled before/after, so we don't claim any |
+| `slop-check`, `token-audit`, `third-patch` find these problems — you can check that on your own code in a minute | that the rules fit every team; they were tuned on one codebase |
+| the tools have tests in CI (3 OS × Node 18/20/22) | outside review — the repo is new and nobody outside has reproduced these numbers yet |
+
+The fastest way to judge it: run the tools on your repository and count what they flag that you agree with. If you
+measure a before/after on a real project, [add it](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml)
+— that is the evidence this README can't supply on its own.
+
 ## The three skills
 
 **[nextcore-design](plugins/nextcore-design/README.md)** — for anyone shipping UI. Spec first (goal, what matters
@@ -200,6 +215,38 @@ automatically ([lesson loop](plugins/nextcore-workflow/skills/nextcore-workflow/
 Using the skills or tools on something real? [Add your product](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml)
 — one line on what it is, your stack, and (if you have one) a number that changed. Lessons from products listed here
 carry the product's name next to the rule they created.
+
+### homestaynextcore.org by size
+
+Counted on 3 Oct 2026 from git-tracked files only; non-blank lines; archived extension versions, generated bundles,
+planning notes and images left out.
+
+| | Files | Lines |
+|---|--:|--:|
+| Web app (Next.js + Prisma) | 6,052 | 738,809 |
+| 10 browser extensions | 610 | 141,414 |
+| **Total** | **6,662** | **880,223** |
+| — TypeScript / JavaScript | | 586,697 |
+| — CSS | | 158,554 |
+| — SQL migrations, data fixes, Prisma schema | | 36,819 |
+| — tests (961 files) | | 92,749 |
+| — HTML, shell | | 5,404 |
+
+230 pages · 872 API routes · 292 database models · 517 migration files · 11,946 commits across the two repositories
+(history starts January 2026). Built by one owner directing AI coding agents, with these skills written along the way.
+
+**Estimated cost to rebuild** — what the standard COCOMO model (basic, organic; the one `scc` prints) says, not a
+market price, revenue or a valuation:
+
+| Counted | Effort | Schedule | Cost at Vietnam rates¹ | Cost at US rates² |
+|---|--:|--:|--:|--:|
+| code without CSS and tests (623,516 lines) | 2,064 person-months | 45 months, ~45 people | ≈ $4.6 M | ≈ $23 M |
+| everything above (880,223 lines) | 2,965 person-months | 52 months, ~57 people | ≈ $6.7 M | ≈ $33 M |
+
+¹ $1,500/month salary × 1.5 overhead. ² `scc` defaults: $56,286/year × 2.4 overhead.
+Read it as an order of magnitude. COCOMO counts lines, and AI-written code tends to have more lines per feature than
+hand-written code, so it overstates. And the gap between "57 people for 52 months" and what actually happened is not
+a measurement of what the skills did — see [what these numbers show](#what-these-numbers-show-and-what-they-dont).
 
 ## FAQ
 
