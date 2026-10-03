@@ -17,11 +17,24 @@ const ignores = args.flatMap((a, i) => (args[i - 1] === '--ignore' ? [a] : []));
 const roots = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--ignore');
 if (!roots.length) roots.push('.');
 
-const STYLE_EXT = new Set(['.css', '.scss', '.sass', '.less']);
-const MARKUP_EXT = new Set(['.tsx', '.jsx', '.html', '.vue', '.svelte', '.astro']);
+const STYLE_EXT = new Set(['.css', '.scss', '.sass', '.less', '.styl', '.pcss']);
+// Any stack that renders HTML: React/Vue/Svelte/Astro, PHP/Laravel Blade/WordPress, Twig/Symfony, Rails ERB,
+// Django/Jinja, Nunjucks, Handlebars/Mustache, Liquid/Shopify, EJS, ASP.NET Razor.
+const MARKUP_EXT = new Set(['.tsx', '.jsx', '.html', '.htm', '.vue', '.svelte', '.astro', '.php', '.twig', '.erb', '.jinja', '.jinja2', '.j2', '.njk', '.hbs', '.handlebars', '.mustache', '.liquid', '.ejs', '.cshtml', '.razor']);
 const SKIP_DIRS = new Set(['node_modules', '.git', '.next', 'dist', 'build', 'out', 'coverage', '.turbo', 'vendor']);
 const TOKEN_FILE = /token|theme|variables/i;
 const TOKEN_SELECTOR = /(^|[\s,])(:root|html|\.dark|\.light|\[data-theme[^\]]*\])\s*$|@theme\b/;
+
+// Violet/indigo hue (≈235–300°) with real saturation — the "AI default" gradient family.
+function isViolet(hex) {
+  const h6 = hex.length === 3 ? [...hex].map((c) => c + c).join('') : hex;
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(h6.slice(i, i + 2), 16) / 255);
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+  if (d < 0.15 || max < 0.25) return false;
+  const hue = max === r ? 60 * (((g - b) / d) % 6) : max === g ? 60 * ((b - r) / d + 2) : 60 * ((r - g) / d + 4);
+  const h = (hue + 360) % 360;
+  return h >= 235 && h <= 300;
+}
 
 // Each rule: id, level, which files, regex, short advice. `scope: 'all'` = style + markup.
 const RULES = [
@@ -29,6 +42,8 @@ const RULES = [
   { id: 'rgb-literal', level: 'warn', scope: 'style', re: /\b(?:rgba?|hsla?)\(\s*\d/gi, tokenAware: true, advice: 'prefer a token (shadow/overlay tokens too)' },
   { id: 'color-literal', level: 'error', scope: 'markup', re: /(?:color|background|bg|border|fill|stroke|shadow|gradient)(?!\s*=)[^;\n]{0,40}?#(?:[0-9a-f]{6}|[0-9a-f]{3})\b/gi, advice: 'hex outside tokens — use var(--…)' },
   { id: 'purple-gradient', level: 'warn', scope: 'all', re: /gradient\([^)]*\b(purple|violet|indigo|fuchsia)\b|\b(?:from|via)-(?:purple|violet|indigo|fuchsia)-\d{2,3}\b/gi, advice: 'default AI gradient — use brand tokens' },
+  // the same gradient written in hex (the classic #667eea → #764ba2): any stop with a violet hue
+  { id: 'purple-gradient', level: 'warn', scope: 'all', re: /gradient\(((?:[^()]|\([^()]*\))*)\)/gi, test: (m) => [...m[1].matchAll(/#([0-9a-f]{6}|[0-9a-f]{3})\b/gi)].some(([, h]) => isViolet(h)), advice: 'default AI gradient — use brand tokens' },
   { id: 'transition-all', level: 'error', scope: 'all', re: /transition(?:-property)?\s*:\s*all\b|\btransition-all\b/g, advice: 'list the properties you animate' },
   { id: 'break-all', level: 'error', scope: 'all', re: /word-break\s*:\s*break-all|\bbreak-all\b/g, advice: 'cuts identifiers in half — widen the box or shrink text' },
   { id: 'grid-1fr', level: 'warn', scope: 'style', re: /grid-template-columns\s*:[^;{}]*?(?<!minmax\(\s*0\s*,\s*)\b1fr\b/g, advice: '1fr = minmax(auto,1fr) → horizontal scroll; write minmax(0,1fr)' },
@@ -51,7 +66,16 @@ const RULES = [
 function stripComments(text, isStyle) {
   const keepNl = (m) => m.replace(/[^\n]/g, ' ');
   let out = text.replace(/\/\*[\s\S]*?\*\//g, keepNl);
-  if (!isStyle) out = out.replace(/<!--[\s\S]*?-->/g, keepNl).replace(/(^|[^:"'`])\/\/[^\n]*/g, (m, p) => p + keepNl(m.slice(p.length)));
+  if (!isStyle) {
+    out = out.replace(/<!--[\s\S]*?-->/g, keepNl)
+      .replace(/\{\{--[\s\S]*?--\}\}/g, keepNl) // Blade
+      .replace(/\{#[\s\S]*?#\}/g, keepNl) // Twig / Jinja / Nunjucks
+      .replace(/<%#[\s\S]*?%>/g, keepNl) // ERB / EJS
+      .replace(/@\*[\s\S]*?\*@/g, keepNl) // Razor
+      .replace(/(^|[^:"'`])\/\/[^\n]*/g, (m, p) => p + keepNl(m.slice(p.length)));
+  } else {
+    out = out.replace(/(^|[^:"'`])\/\/[^\n]*/g, (m, p) => (/^\s*$/.test(p) || p === '' || /[;{}\s]$/.test(p) ? p + keepNl(m.slice(p.length)) : m)); // SCSS/LESS line comments
+  }
   // var(--token, <fallback>) is a token use: blank the fallback so its literal is not reported.
   out = out.replace(/var\(\s*--[\w-]+\s*,((?:[^()]|\([^()]*\))*)\)/g, (m, fb) => m.replace(fb, keepNl(fb)));
   return out;
@@ -111,6 +135,8 @@ for (const root of roots) {
       if (rule.tokenAware && tokenFile) continue;
       for (const m of text.matchAll(rule.re)) {
         if (rule.tokenAware && inToken(m.index)) continue;
+        // SCSS `$brand: #0d6efd;` / LESS `@brand: #0d6efd;` declarations ARE the token definitions
+        if (rule.tokenAware && /^\s*[$@][\w-]+\s*:/.test(text.slice(text.lastIndexOf('\n', m.index) + 1, m.index))) continue;
         if (rule.test && !rule.test(m)) continue;
         const line = lineOf(text, m.index);
         const snippet = raw.split('\n')[line - 1].trim().slice(0, 120);

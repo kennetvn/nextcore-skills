@@ -95,7 +95,13 @@ const light = new Map();
 const dark = new Map();
 let hasDark = false;
 for (const f of tokenFiles) {
-  for (const blk of themedBlocks(stripComments(readFileSync(f, 'utf8')))) {
+  const css = stripComments(readFileSync(f, 'utf8'));
+  // SCSS `$name: value;` / LESS `@name: value;` at the top level are tokens too (light theme)
+  if (/\.(scss|sass|less)$/i.test(f)) {
+    const top = css.replace(/\{[^{}]*\}/g, '');
+    for (const m of top.matchAll(/^\s*[$@]([a-zA-Z][\w-]*)\s*:\s*([^;\n]+?)\s*(?:!default)?\s*;/gm)) light.set(m[1], m[2].trim());
+  }
+  for (const blk of themedBlocks(css)) {
     if (blk.theme === 'light') for (const [k, v] of blk.props) light.set(k, v);
     if (blk.theme === 'dark') {
       hasDark = true;
@@ -113,6 +119,8 @@ function resolve(theme, name, seen = new Set()) {
   if (!raw) return null;
   const ref = raw.match(/^var\(\s*--([\w-]+)\s*(?:,\s*(.+))?\)$/);
   if (ref) return resolve(theme, ref[1], seen) ?? (ref[2] ? parseColor(ref[2]) : null);
+  const sassRef = raw.match(/^[$@]([a-zA-Z][\w-]*)$/);
+  if (sassRef) return resolve(theme, sassRef[1], seen);
   return parseColor(raw);
 }
 

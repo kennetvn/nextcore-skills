@@ -1,6 +1,6 @@
 {
   "name": "nextcore-design",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Senior product-design discipline for AI coding agents: spec and information hierarchy first, draw before you code, a separate critic agent, then measure. Zero-dependency tools: slop-check, token-audit, design-card, design-review.",
   "type": "module",
   "license": "MIT",
@@ -38,6 +38,9 @@
   },
   "files": [
     "skills/",
+    ".claude-plugin/",
+    "AGENTS.md",
+    "llms.txt",
     "README.md",
     "README.vi.md",
     "LICENSE",

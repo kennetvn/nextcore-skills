@@ -3,6 +3,23 @@
 All notable changes to this project are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 versioning: [SemVer](https://semver.org/).
 
+## [1.2.0] — 2026-10-03
+
+### Added
+- **Any stack that renders HTML.** `slop-check` reads PHP/Laravel Blade/WordPress, Twig, ERB, Jinja/Django, Nunjucks,
+  Handlebars/Mustache, Liquid, EJS and Razor (with Blade/Twig/ERB/Razor comments ignored) plus Stylus/PostCSS;
+  SCSS `$vars` and LESS `@vars` count as token declarations. `token-audit` reads SCSS/LESS token files, including
+  variables that point to other variables. `design-card` checks routes from Next.js `pages/`, Laravel
+  `routes/web.php`, or any plain route list (`rails routes`, Django, WordPress…).
+- `AGENTS.md` + `llms.txt`: a 3-minute protocol for an agent asked "is this useful for my project?" — detect the
+  stack, measure with `--warn-only`, recommend a level (L0–L3) with the numbers.
+- `.claude-plugin/plugin.json`: installable as a Claude Code plugin from the `nextcore` marketplace.
+- Contributor credit policy (CHANGELOG, provenance line next to the rule, contributors wall).
+
+### Fixed
+- `purple-gradient` now also catches the hex form of the default AI gradient (`#667eea → #764ba2`): on a plain-PHP
+  admin it found 23 instead of 3; brand blues (hue < 235°) stay silent.
+
 ## [1.1.0] — 2026-10-03
 
 ### Added

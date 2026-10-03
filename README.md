@@ -31,6 +31,29 @@ What the checkers found on that codebase on day one (56 drawings, 2,226 UI sourc
 | `token-audit` | an alert button pair at **3.95:1** in both themes · 4 near-white/near-black tokens with **no dark value** · 0 false positives after teaching it next/font and chart-library vars |
 | `slop-check` | 1,443 hex literals outside tokens · 372 emoji used as icons · 825 `1fr` grid tracks that can scroll the page sideways — in 2 seconds |
 
+## Works with your stack
+
+| Stack | `slop-check` reads | `token-audit` reads | `design-card` routes |
+|---|---|---|---|
+| Next.js / React / Remix | `.tsx .jsx .css` | CSS custom properties, Tailwind v4 `@theme` | `--app src/app` or `--app pages` |
+| Laravel / PHP / WordPress | `.blade.php .php .css .scss` | SCSS `$vars`, CSS custom properties | `--routes routes/web.php` |
+| Symfony / Craft | `.twig` | CSS / SCSS | `--routes routes.txt` |
+| Django / Flask / Jinja | `.html .jinja .j2` | CSS / SCSS | `--routes routes.txt` |
+| Rails | `.erb` | CSS / SCSS | `bin/rails routes > routes.txt` |
+| Vue / Nuxt / Svelte / Astro | `.vue .svelte .astro` | CSS custom properties | `--routes routes.txt` |
+| Shopify / Jekyll / Eleventy | `.liquid .njk .hbs` | CSS / SCSS | `--routes routes.txt` |
+| ASP.NET | `.cshtml .razor` | CSS / SCSS | `--routes routes.txt` |
+
+`routes.txt` is one path per line; `{id}`, `:id`, `<id>`, `[id]` count as wildcards. Tested on a Next.js app
+(2,226 UI files, 2 s) and a plain-PHP admin (0.5 s), where it surfaced 20 extra violet hex gradients the word-based rule had missed.
+
+## For AI agents
+
+Given this link and asked whether it fits a project? Follow [AGENTS.md](AGENTS.md): detect the stack, run the checkers
+`--warn-only` on the project, then recommend a level (L0 reference · L1 CI checks · L2 design-first · L3 full pipeline)
+with the numbers. Install as a Claude Code plugin: `/plugin marketplace add kennetvn/nextcore-skills` →
+`/plugin install nextcore-design@nextcore`.
+
 ## Quickstart
 
 ```bash
@@ -205,6 +228,12 @@ and `--pair a:b` adds any pair you need.
 
 Issues and PRs welcome — especially new slop rules with a real false-positive story. Every rule ships with a bad
 fixture that must fire and a good fixture that must stay silent. See [CONTRIBUTING.md](CONTRIBUTING.md); run `npm test`.
+
+### Contributors
+
+Every accepted rule, trap or fix is credited in the CHANGELOG and next to the rule itself (see [CONTRIBUTING.md](CONTRIBUTING.md#how-contributions-are-credited)).
+
+[![Contributors](https://contrib.rocks/image?repo=kennetvn/nextcore-design)](https://github.com/kennetvn/nextcore-design/graphs/contributors)
 
 ## Credits
 

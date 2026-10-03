@@ -76,3 +76,23 @@ test('design-review: one sheet, four squint views per artboard, 5-second questio
   assert.equal(count('5-second test'), 2);
   assert.ok(html.includes('html{filter:grayscale(1)!important}'), 'no-decoration view stays grayscale');
 });
+
+test('multi-stack: Blade/Twig/SCSS scanned; SCSS tokens audited; Laravel and plain route lists understood', () => {
+  const bad = tool('slop-check.mjs', fx('bad'), '--json', '--warn-only').json;
+  assert.ok(bad.some((f) => f.file.endsWith('view.blade.php') && f.rule === 'color-literal'), 'Blade inline hex');
+  assert.ok(bad.some((f) => f.file.endsWith('view.blade.php') && f.rule === 'placeholder-data'), 'Blade fake data');
+  // good/ holds a Blade view, a Twig template and SCSS token declarations — all must stay silent (asserted above too)
+  const scss = tool('token-audit.mjs', fx('tokens', 'bad.scss'), '--json').json.findings.map((f) => f.where);
+  assert.ok(scss.some((w) => w.includes('--warning-fg on --warning')), 'SCSS $warning-fg: $bg resolved and checked');
+  for (const routes of [fx('laravel', 'routes', 'web.php'), fx('routes.txt')]) {
+    const cards = tool('design-card.mjs', fx('drawings'), '--tokens', fx('tokens', 'good.css'), '--fonts', 'Inter,Fraunces', '--routes', routes, '--json').json;
+    const all = Object.fromEntries(cards.flatMap((c) => c.routes.map((r) => [r.route, r.exists])));
+    assert.deepEqual(all, { '/settings': true, '/settings/billing': false }, routes);
+  }
+});
+
+test('purple-gradient also catches the hex form (#667eea → #764ba2) but not brand blues', () => {
+  const bad = tool('slop-check.mjs', fx('bad'), '--json', '--warn-only').json;
+  assert.ok(bad.some((f) => f.rule === 'purple-gradient' && f.snippet.includes('#764ba2')));
+  assert.deepEqual(tool('slop-check.mjs', fx('good'), '--json').json, []);
+});

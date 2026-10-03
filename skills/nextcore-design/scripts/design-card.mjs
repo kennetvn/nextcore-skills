@@ -14,7 +14,9 @@
 //   states      empty · loading · error · success, found in artboard names/titles (English + Vietnamese)
 //   colour DNA  share of colour literals in the artboards that are real token values (+ var(--…) uses)
 //   type DNA    font families used vs the allowed list
-//   routes      every declared route has a page in --app (Next.js app router: folder with page.tsx/jsx/js)
+//   routes      every declared route exists: --app (Next.js app/ or pages/ router) or --routes (Laravel
+//               routes/web.php, or a plain list, one path per line — {id} :id <id> [id] are wildcards; works for
+//               Django, Rails, WordPress… e.g. `php artisan route:list` or `rails routes` saved to a file)
 // --strict exits 1 when any drawing fails a check (CI gate for "no approval while the card is orange").
 
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
@@ -22,16 +24,17 @@ import { join, relative, basename } from 'node:path';
 
 const args = process.argv.slice(2);
 const opt = (name, dflt) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : dflt; };
-const VALUE_OPTS = new Set(['--tokens', '--fonts', '--app', '--min-token']);
+const VALUE_OPTS = new Set(['--tokens', '--fonts', '--app', '--routes', '--min-token']);
 const root = args.find((a, i) => !a.startsWith('--') && !VALUE_OPTS.has(args[i - 1]));
 const tokensFile = opt('--tokens');
 const fonts = new Set((opt('--fonts', '') || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean));
 const appDir = opt('--app');
+const routesFile = opt('--routes');
 const minToken = Number(opt('--min-token', 85));
 const asJson = args.includes('--json');
 const strict = args.includes('--strict');
 if (!root) {
-  console.error('usage: design-card.mjs <drawings-dir> --tokens <tokens.css> [--fonts "A,B"] [--app <dir>] [--json] [--strict]');
+  console.error('usage: design-card.mjs <drawings-dir> --tokens <tokens.css> [--fonts "A,B"] [--app <dir>] [--routes <file>] [--json] [--strict]');
   process.exit(2);
 }
 
@@ -53,29 +56,44 @@ const norm = (h) => {
 const tokenHex = new Set();
 if (tokensFile) {
   const css = readFileSync(tokensFile, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
-  for (const m of css.matchAll(/--[\w-]+\s*:\s*(#[0-9a-f]{3,8})\b/gi)) tokenHex.add(norm(m[1]));
+  for (const m of css.matchAll(/(?:--|\$|@)[\w-]+\s*:\s*(#[0-9a-f]{3,8})\b/gi)) tokenHex.add(norm(m[1])); // CSS vars, SCSS, LESS
 }
 
-// ---- app routes ----
+// ---- routes (segments; '*' = one dynamic segment, '**' = catch-all) ----
 const routes = [];
+const seg = (s) => (/^\[\[?\.\.\./.test(s) ? '**' : /^(\[.*\]|\{.*\}|:.+|<.*>)$/.test(s) ? '*' : s);
 if (appDir && existsSync(appDir)) {
+  const pagesRouter = basename(appDir) === 'pages';
   const walk = (d, segs) => {
     for (const n of readdirSync(d)) {
       const p = join(d, n);
       if (statSync(p).isDirectory()) {
-        if (n === 'node_modules' || n.startsWith('_') || n.startsWith('.')) continue;
-        walk(p, n.startsWith('(') || n.startsWith('@') ? segs : [...segs, n]);
-      } else if (/^page\.(t|j)sx?$/.test(n)) routes.push(segs);
+        if (n === 'node_modules' || n.startsWith('_') || n.startsWith('.') || (pagesRouter && n === 'api')) continue;
+        walk(p, n.startsWith('(') || n.startsWith('@') ? segs : [...segs, seg(n)]);
+      } else if (!pagesRouter && /^page\.(t|j)sx?$/.test(n)) {
+        routes.push(segs);
+      } else if (pagesRouter && /\.(t|j)sx?$/.test(n) && !n.startsWith('_')) {
+        const name = n.replace(/\.(t|j)sx?$/, '');
+        routes.push(name === 'index' ? segs : [...segs, seg(name)]);
+      }
     }
   };
   walk(appDir, []);
 }
+if (routesFile && existsSync(routesFile)) {
+  const text = readFileSync(routesFile, 'utf8');
+  // Laravel routes/web.php, or any list with one path per line (`php artisan route:list`, `rails routes`, Django…)
+  const paths = /\.php$/.test(routesFile)
+    ? [...text.matchAll(/Route::(?:get|post|put|patch|delete|any|match|view|resource|inertia)\s*\(\s*(?:\[[^\]]*\]\s*,\s*)?['"]([^'"]+)['"]/g)].map((m) => m[1])
+    : text.split(/\r?\n/).map((l) => (l.match(/(?:^|\s)(\/[^\s]*)/) || [])[1]).filter(Boolean);
+  for (const p of paths) routes.push(p.split(/[?#]/)[0].split('/').filter(Boolean).map(seg));
+}
 const routeExists = (u) => {
   const segs = u.split(/[?#]/)[0].split('/').filter(Boolean);
   return routes.some((r) => {
-    const catchAll = r.some((s) => s.startsWith('[...') || s.startsWith('[[...'));
-    if (r.length !== segs.length && !catchAll) return false;
-    return r.every((s, i) => s.startsWith('[') || s === segs[i]);
+    const star = r.indexOf('**');
+    if (star >= 0) return segs.length >= star && r.slice(0, star).every((s, i) => s === '*' || s === segs[i]);
+    return r.length === segs.length && r.every((s, i) => s === '*' || s === segs[i] || seg(segs[i]) === '*');
   });
 };
 
@@ -131,7 +149,7 @@ function measure(dir) {
   const total = lits + varUses;
   const tokenShare = total ? Math.round((100 * (onToken + varUses)) / total) : 100;
   const badFonts = fonts.size ? [...usedFonts].filter((f) => !fonts.has(f) && !GENERIC_FONTS.has(f)) : [];
-  const routeChecks = (card.routes || []).map((u) => ({ route: u, exists: appDir ? routeExists(u) : null }));
+  const routeChecks = (card.routes || []).map((u) => ({ route: u, exists: appDir || routesFile ? routeExists(u) : null }));
   const problems = [];
   if (!files.length) problems.push('no artboards');
   if (!devices.phone) problems.push('no phone artboard');

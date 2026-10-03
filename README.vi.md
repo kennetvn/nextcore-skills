@@ -31,6 +31,29 @@ Ngày đầu chạy trên codebase đó, các công cụ kiểm tìm ra (56 bả
 | `token-audit` | một cặp nút cảnh báo chỉ đạt **3.95:1** ở cả hai theme · 4 token gần trắng/gần đen **không có giá trị dark** · 0 báo nhầm sau khi dạy nó biết next/font và biến của thư viện biểu đồ |
 | `slop-check` | 1,443 mã hex nằm ngoài token · 372 emoji dùng làm icon · 825 track grid `1fr` có thể làm trang cuộn ngang, trong 2 giây |
 
+## Chạy được với stack của bạn
+
+| Stack | `slop-check` đọc | `token-audit` đọc | Route cho `design-card` |
+|---|---|---|---|
+| Next.js / React / Remix | `.tsx .jsx .css` | biến CSS, Tailwind v4 `@theme` | `--app src/app` hoặc `--app pages` |
+| Laravel / PHP / WordPress | `.blade.php .php .css .scss` | biến SCSS `$vars`, biến CSS | `--routes routes/web.php` |
+| Symfony / Craft | `.twig` | CSS / SCSS | `--routes routes.txt` |
+| Django / Flask / Jinja | `.html .jinja .j2` | CSS / SCSS | `--routes routes.txt` |
+| Rails | `.erb` | CSS / SCSS | `bin/rails routes > routes.txt` |
+| Vue / Nuxt / Svelte / Astro | `.vue .svelte .astro` | biến CSS | `--routes routes.txt` |
+| Shopify / Jekyll / Eleventy | `.liquid .njk .hbs` | CSS / SCSS | `--routes routes.txt` |
+| ASP.NET | `.cshtml .razor` | CSS / SCSS | `--routes routes.txt` |
+
+`routes.txt`: mỗi dòng một đường dẫn; `{id}`, `:id`, `<id>`, `[id]` tính là phần động. Đã chạy thử trên một app Next.js
+(2,226 tệp UI, 2 giây) và một trang quản trị PHP thuần (0,5 giây); ở trang PHP công cụ bắt thêm 20 dải tím viết bằng mã hex mà luật cũ (chỉ dò chữ) bỏ sót.
+
+## Dành cho agent AI
+
+Được đưa link này và hỏi có hợp với một dự án không? Làm theo [AGENTS.md](AGENTS.md): nhận diện stack, chạy các công cụ
+với `--warn-only` trên dự án, rồi đề xuất mức áp dụng (L0 tham khảo · L1 kiểm trong CI · L2 vẽ trước cho màn mới · L3 cả quy trình)
+kèm con số. Cài như plugin Claude Code: `/plugin marketplace add kennetvn/nextcore-skills` →
+`/plugin install nextcore-design@nextcore`.
+
 ## Bắt đầu nhanh
 
 ```bash
@@ -205,6 +228,12 @@ và `--pair a:b` thêm bất kỳ cặp nào bạn cần.
 
 Hoan nghênh issue và PR, nhất là luật slop mới kèm một câu chuyện báo nhầm có thật. Mỗi luật đi kèm một fixture xấu
 buộc phải kích hoạt và một fixture tốt buộc phải im lặng. Xem [CONTRIBUTING.md](CONTRIBUTING.md); chạy `npm test`.
+
+### Người đóng góp
+
+Mỗi luật, bẫy đo hay bản sửa được nhận đều ghi công trong CHANGELOG và ngay cạnh luật đó (xem [CONTRIBUTING.md](CONTRIBUTING.md#how-contributions-are-credited)).
+
+[![Contributors](https://contrib.rocks/image?repo=kennetvn/nextcore-design)](https://github.com/kennetvn/nextcore-design/graphs/contributors)
 
 ## Ghi công
 
