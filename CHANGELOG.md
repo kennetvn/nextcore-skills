@@ -4,6 +4,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.7.1] — 2026-10-03
+
+### Changed
+- README (both languages) re-laid out for the first visit: a hero image, a one-paragraph intro, **Quick start** (install
+  + one check) right below it — the install command moved from 65% down the page (y ≈ 5,100 px) to the first screen
+  of the README (≈ 480 px) — then the skills with a new pipeline diagram (size → discover → draw → critique → build →
+  audit → validate; incidents → cases), tools, before/after, cases, why, stacks, install, showcase, contribute. Long
+  sample output and the FAQ are collapsed. Hero and diagram follow light/dark mode.
+- `CODE_OF_CONDUCT.md` and `SECURITY.md` moved to `.github/` (GitHub still finds them); the old overview diagram removed.
+
 ## [1.7.0] — 2026-10-03
 
 ### Added

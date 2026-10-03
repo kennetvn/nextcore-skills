@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340" role="img" aria-labelledby="t d">
+  <title id="t">nextcore-skills</title>
+  <desc id="d">Rules and zero-dependency tools that make AI coding agents ship UI and backend code that holds up. Three skills: design, dev, workflow. Learned on a live product; every rule backed by a measured incident.</desc>
+  <style>
+    :root { --bg:#FFFFFF; --ink:#16181D; --soft:#4A5260; --line:#DCE3EA; --card:#F5F8FB; --brand:#0277B3; --brandbg:#E6F4FB; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0D1117; --ink:#E6EDF3; --soft:#9AA4B2; --line:#30363D; --card:#161B22; --brand:#4FB8EC; --brandbg:#0F2533; }
+    }
+    text { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; fill: var(--ink); }
+    .soft { fill: var(--soft); }
+    .brand { fill: var(--brand); }
+    .mono { font-family: ui-monospace, 'SFMono-Regular', Consolas, monospace; }
+  </style>
+  <rect width="1200" height="340" rx="16" fill="var(--bg)" stroke="var(--line)"/>
+
+  <!-- left: name + promise -->
+  <text x="56" y="92" class="mono brand" font-size="20" font-weight="600">kennetvn / nextcore-skills</text>
+  <text x="56" y="152" font-size="44" font-weight="700">AI agents that ship UI</text>
+  <text x="56" y="204" font-size="44" font-weight="700">and APIs that hold up.</text>
+  <text x="56" y="252" class="soft" font-size="21">Skills + zero-dependency checks, learned on a live product.</text>
+  <text x="56" y="282" class="soft" font-size="21">Every rule comes from a measured incident.</text>
+
+  <!-- right: three skills -->
+  <g transform="translate(724 52)">
+    <rect width="420" height="70" rx="12" fill="var(--card)" stroke="var(--line)"/>
+    <rect width="6" height="70" rx="3" fill="var(--brand)"/>
+    <text x="26" y="30" font-size="20" font-weight="600">design</text>
+    <text x="26" y="54" class="soft" font-size="16">discover · draw every state · critic · validate</text>
+
+    <rect y="86" width="420" height="70" rx="12" fill="var(--card)" stroke="var(--line)"/>
+    <rect y="86" width="6" height="70" rx="3" fill="var(--brand)"/>
+    <text x="26" y="116" font-size="20" font-weight="600">dev</text>
+    <text x="26" y="140" class="soft" font-size="16">one UI ↔ API contract · auth counted · real 404</text>
+
+    <rect y="172" width="420" height="70" rx="12" fill="var(--card)" stroke="var(--line)"/>
+    <rect y="172" width="6" height="70" rx="3" fill="var(--brand)"/>
+    <text x="26" y="202" font-size="20" font-weight="600">workflow</text>
+    <text x="26" y="226" class="soft" font-size="16">size the task · diagnose before patch · evidence</text>
+  </g>
+</svg>

@@ -1,8 +1,8 @@
-# nextcore-skills
+<p align="center"><img src="docs/hero.svg" width="100%" alt="nextcore-skills — AI agents that ship UI and APIs that hold up. Skills and zero-dependency checks learned on a live product: design, dev, workflow."></p>
 
-**Rules and tools that make AI coding agents ship UI and backend code that holds up.** Learned on [homestaynextcore.org](https://homestaynextcore.org),
-a live booking platform that AI agents built and still run, and checked by small scripts you can run on your own project in a
-minute — Next.js, Laravel, plain PHP, Django, Rails, Vue, anything that renders HTML.
+Three skills an AI coding agent follows — **design**, **dev**, **workflow** — and seven small checks you can run on your
+own project in a minute: Next.js, Laravel, plain PHP, Django, Rails, Vue, anything that renders HTML. Learned on
+[homestaynextcore.org](https://homestaynextcore.org), a live booking platform that AI agents built and still run.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](LICENSE)
 [![test](https://github.com/kennetvn/nextcore-skills/actions/workflows/test.yml/badge.svg)](https://github.com/kennetvn/nextcore-skills/actions/workflows/test.yml)
@@ -10,45 +10,56 @@ minute — Next.js, Laravel, plain PHP, Django, Rails, Vue, anything that render
 [![Zero dependencies](https://img.shields.io/badge/dependencies-0-0293DA.svg)](package.json)
 [Tiếng Việt](README.vi.md)
 
-It has two parts:
-
-- **Three skills** — instruction sets an AI agent (Claude Code, Cursor, Codex, Windsurf, Gemini CLI, Copilot) follows:
-  **design** (draw and review the screen before coding it), **dev** (the contract between the UI and the API),
-  **workflow** (how to run agents on a real product without them guessing or overwriting each other).
-- **Seven command-line tools** that check what the skills ask for. They read local files only and send nothing anywhere.
-
-![How the three skills fit together: brief → nextcore-design (spec + drawing) → nextcore-dev (API contract) → ship, measured by zero-dependency tools, all inside nextcore-workflow](docs/overview.svg)
-
-## Try it in one minute
+## Quick start
 
 ```bash
-npx -y -p github:kennetvn/nextcore-skills slop-check resources --warn-only
-npx -y -p github:kennetvn/nextcore-skills token-audit resources/sass/_tokens.scss
+# Claude Code — add the skills
+/plugin marketplace add kennetvn/nextcore-skills
+/plugin install nextcore-design@nextcore    # and/or nextcore-dev@nextcore, nextcore-workflow@nextcore
+
+# Any project, any stack — run a check (nothing to install, nothing sent anywhere)
+npx -y -p github:kennetvn/nextcore-skills slop-check <templates-or-css-folder> --warn-only
 ```
 
-The first run downloads the package (≈20 s, no dependencies to install). Point `slop-check` at your templates/CSS
-folder; point `token-audit` at the file where your colours are defined (CSS custom properties or SCSS/LESS variables —
-skip it if you have none). Output on a small Laravel view:
+Cursor, Codex, Gemini CLI, Copilot, Windsurf: [install for other agents](#install-the-skills). Sample output and the
+other six tools: [try it in one minute](#try-it-in-one-minute).
 
-```text
-ERROR  resources/views/rooms.blade.php:1  [color-literal] hex outside tokens — use var(--…)
-warn   resources/views/rooms.blade.php:1  [purple-gradient] default AI gradient — use brand tokens
-ERROR  resources/views/rooms.blade.php:1  [transition-all] list the properties you animate
-warn   resources/views/rooms.blade.php:2  [emoji-icon] use an icon set, not emoji
-ERROR  resources/views/rooms.blade.php:3  [placeholder-data] use realistic sample data
-ERROR  resources/views/rooms.blade.php:4  [break-all] cuts identifiers in half — widen the box or shrink text
-warn   resources/sass/_tokens.scss:6      [pixel-patch] off-scale spacing looks like a pixel patch
-…  (2 more warnings trimmed)
-slop-check: 9 finding(s), 4 error(s)
+## The three skills
 
-ERROR  [contrast] light: $warning-fg on $warning
-        1.63:1 (X-fg on X) — needs 4.5:1 for body text
-ERROR  [contrast] light: $ink-muted on $bg
-        2.07:1 (text on surface) — needs 4.5:1 for body text
-```
+![How the skills fit together: size → discover → spec + draw → critique → contract → build 1:1 → audit → validate; incidents become cases, rules and checks.](docs/pipeline.svg)
 
-On the 2,226-file production app these rules come from, `slop-check` reported 4,932 findings in 2 seconds. On an old
-codebase that is normal: run it with `--warn-only`, fix new code first, and let the number go down.
+**[nextcore-design](plugins/nextcore-design/README.md)** — for anyone shipping UI. Size the task and discover first
+(the problem, the job to be done, every branch of the flow), then a spec and a drawing in 5 states × 3 widths, a
+review by a separate *critic* agent, a 1:1 build, and validation that a user can actually finish the job. Two words you'll meet: a **design card** is a short checklist attached to each design
+(which feature, which page, why, built yet, plus measured devices, states, colours and fonts); a **squint test** shows
+each design small, in grayscale and without shadows to check the important things still stand out.
+It never picks colours or fonts for you — it keeps the design system you have.
+
+**[nextcore-dev](plugins/nextcore-dev/skills/nextcore-dev/SKILL.md)** — for backend and full-stack work. Turns the
+design's list of fields into an API contract (one response shape, error codes the UI maps to states), auth on every
+route proved by a counting check, money as decimals, hand-written migrations, safe production data fixes, one system
+for background jobs, 14 backend traps, and notes for Next.js, Laravel, Django, Rails, Express/Nest, plain PHP and
+WordPress.
+
+**[nextcore-workflow](plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md)** — for whoever runs the agents.
+Rules a machine can check become git hooks you install, each proved by making it fail once on purpose; a diagnosis before the
+third fix; evidence before "done"; several agents on one repo without overwriting each other's work; decisions written
+on issues; numbers in docs that get re-measured; cleaning up the machine after long agent sessions.
+
+## The tools
+
+| Tool | Checks | Use it |
+|---|---|---|
+| `slop-check` | 11 signs of autopilot UI code: hard-coded colours, the default purple gradient, `transition: all`, emoji icons, fake sample data, pixel patches… | in CI on templates / CSS |
+| `token-audit` | text/background colour pairs meet WCAG contrast in light **and** dark mode; colours missing a dark version; `var()` that points to nothing | when colours change |
+| `design-card` | each design has phone/tablet/desktop, the 4 states, brand colours and fonts, and a page that exists | before approving a design |
+| `design-review` | an HTML sheet (and screenshot) of each design small, grayscale and undecorated | reviewing a design |
+| `spec-check` | the thinking before the drawing and after the build: task size, problem, job to be done, every flow branch, checkable assumptions, a validation report once it ships | before drawing; before calling it done |
+| `doc-drift` | numbers written in docs that are no longer true | at session start, in CI |
+| `third-patch` | blocks a third fix to the same file in 72 h without a diagnosis note | pre-commit hook |
+
+Run any of them with `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` prints its options. All are plain Node ≥18 with no dependencies, and each is tested both ways: it must catch a bad example
+and stay silent on a good one.
 
 ## What changes when an agent follows the skills
 
@@ -90,6 +101,50 @@ Write a diagnosis before patching again: docs/diagnosis/<area>.md naming the fil
   ## Symptom · ## Hypothesis · ## Observation
 ```
 
+## Try it in one minute
+
+```bash
+npx -y -p github:kennetvn/nextcore-skills slop-check resources --warn-only
+npx -y -p github:kennetvn/nextcore-skills token-audit resources/sass/_tokens.scss
+```
+
+The first run downloads the package (≈20 s, no dependencies to install). Point `slop-check` at your templates/CSS
+folder; point `token-audit` at the file where your colours are defined (CSS custom properties or SCSS/LESS variables —
+skip it if you have none). Output on a small Laravel view:
+
+<details>
+<summary>Sample output on a small Laravel view</summary>
+
+```text
+ERROR  resources/views/rooms.blade.php:1  [color-literal] hex outside tokens — use var(--…)
+warn   resources/views/rooms.blade.php:1  [purple-gradient] default AI gradient — use brand tokens
+ERROR  resources/views/rooms.blade.php:1  [transition-all] list the properties you animate
+warn   resources/views/rooms.blade.php:2  [emoji-icon] use an icon set, not emoji
+ERROR  resources/views/rooms.blade.php:3  [placeholder-data] use realistic sample data
+ERROR  resources/views/rooms.blade.php:4  [break-all] cuts identifiers in half — widen the box or shrink text
+warn   resources/sass/_tokens.scss:6      [pixel-patch] off-scale spacing looks like a pixel patch
+…  (2 more warnings trimmed)
+slop-check: 9 finding(s), 4 error(s)
+
+ERROR  [contrast] light: $warning-fg on $warning
+        1.63:1 (X-fg on X) — needs 4.5:1 for body text
+ERROR  [contrast] light: $ink-muted on $bg
+        2.07:1 (text on surface) — needs 4.5:1 for body text
+```
+
+</details>
+
+On the 2,226-file production app these rules come from, `slop-check` reported 4,932 findings in 2 seconds. On an old
+codebase that is normal: run it with `--warn-only`, fix new code first, and let the number go down.
+
+## Cases
+
+**[cases/](cases/README.md)** — the incidents behind the rules, one file each: symptom with numbers, cause, fix with
+before/after, a command or test that catches it, and the rule for an agent. Filed by **layer** (code, data, infra,
+devops, performance, testing, ai-agents, process), **area** (api, database, security, jobs…) and **stack** (nextjs,
+prisma, mysql, nginx, pm2… — open list), so a Laravel or Django team can go straight to what applies to them. New
+cases arrive as the product keeps running; yours are welcome.
+
 ## Why these rules exist
 
 Each one was added after the opposite happened on the live product and was measured:
@@ -118,49 +173,6 @@ tools find them. They are **not** independent evidence that the skills make a te
 The fastest way to judge it: run the tools on your repository and count what they flag that you agree with. If you
 measure a before/after on a real project, [add it](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml)
 — that is the evidence this README can't supply on its own.
-
-## The three skills
-
-**[nextcore-design](plugins/nextcore-design/README.md)** — for anyone shipping UI. Spec first (goal, what matters
-most, where each value comes from), then a drawing in 5 states × 3 widths, a review by a separate *critic* agent, a
-1:1 build, and measurement. Two words you'll meet: a **design card** is a short checklist attached to each design
-(which feature, which page, why, built yet, plus measured devices, states, colours and fonts); a **squint test** shows
-each design small, in grayscale and without shadows to check the important things still stand out.
-It never picks colours or fonts for you — it keeps the design system you have.
-
-**[nextcore-dev](plugins/nextcore-dev/skills/nextcore-dev/SKILL.md)** — for backend and full-stack work. Turns the
-design's list of fields into an API contract (one response shape, error codes the UI maps to states), auth on every
-route proved by a counting check, money as decimals, hand-written migrations, safe production data fixes, one system
-for background jobs, 14 backend traps, and notes for Next.js, Laravel, Django, Rails, Express/Nest, plain PHP and
-WordPress.
-
-**[nextcore-workflow](plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md)** — for whoever runs the agents.
-Rules a machine can check become git hooks you install, each proved by making it fail once on purpose; a diagnosis before the
-third fix; evidence before "done"; several agents on one repo without overwriting each other's work; decisions written
-on issues; numbers in docs that get re-measured; cleaning up the machine after long agent sessions.
-
-## Cases
-
-**[cases/](cases/README.md)** — the incidents behind the rules, one file each: symptom with numbers, cause, fix with
-before/after, a command or test that catches it, and the rule for an agent. Filed by **layer** (code, data, infra,
-devops, performance, testing, ai-agents, process), **area** (api, database, security, jobs…) and **stack** (nextjs,
-prisma, mysql, nginx, pm2… — open list), so a Laravel or Django team can go straight to what applies to them. New
-cases arrive as the product keeps running; yours are welcome.
-
-## The tools
-
-| Tool | Checks | Use it |
-|---|---|---|
-| `slop-check` | 11 signs of autopilot UI code: hard-coded colours, the default purple gradient, `transition: all`, emoji icons, fake sample data, pixel patches… | in CI on templates / CSS |
-| `token-audit` | text/background colour pairs meet WCAG contrast in light **and** dark mode; colours missing a dark version; `var()` that points to nothing | when colours change |
-| `design-card` | each design has phone/tablet/desktop, the 4 states, brand colours and fonts, and a page that exists | before approving a design |
-| `design-review` | an HTML sheet (and screenshot) of each design small, grayscale and undecorated | reviewing a design |
-| `spec-check` | the thinking before the drawing and after the build: task size, problem, job to be done, every flow branch, checkable assumptions, a validation report once it ships | before drawing; before calling it done |
-| `doc-drift` | numbers written in docs that are no longer true | at session start, in CI |
-| `third-patch` | blocks a third fix to the same file in 72 h without a diagnosis note | pre-commit hook |
-
-Run any of them with `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` prints its options. All are plain Node ≥18 with no dependencies, and each is tested both ways: it must catch a bad example
-and stay silent on a good one.
 
 ## Works with your stack
 
@@ -197,28 +209,6 @@ Other agents: copy a skill's `SKILL.md` into your rules file — `.cursor/rules/
 | running several AI agents on one repo | nextcore-workflow: [parallel agents](plugins/nextcore-workflow/skills/nextcore-workflow/references/parallel-agents.md) and `third-patch` |
 | an AI agent asked "is this useful for my project?" | [AGENTS.md](AGENTS.md): measure the project first, then recommend |
 
-## Contribute
-
-**Start with [CONTRIBUTING.md](CONTRIBUTING.md)** — what we take, where each kind of contribution goes (case, rule,
-check, stack note, showcase), how to make it pass `npm test`, and what gets closed.
-
-Found a false positive, a stack the tools don't read yet, or a lesson from your own project? Open an issue — the
-[bug](https://github.com/kennetvn/nextcore-skills/issues/new?template=bug.yml),
-[rule](https://github.com/kennetvn/nextcore-skills/issues/new?template=rule.yml) and
-[lesson](https://github.com/kennetvn/nextcore-skills/issues/new?template=lesson.yml) templates ask for exactly what we
-need: a bad example, a good example that must stay silent, and where it bit you. Good first contributions:
-
-- run `slop-check` on your project and report anything it flags that is actually fine;
-- add your framework to the [stack notes](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md);
-- teach `token-audit` a token format it doesn't read yet (Style Dictionary / Tokens Studio JSON, Android `colors.xml`);
-- add a case from your own stack to [cases/](cases/README.md) — Laravel, Django, Go and Rails are still empty.
-
-Every accepted contribution is credited in the CHANGELOG and next to the rule it created
-([details](CONTRIBUTING.md#how-contributions-are-credited)). Teams that run agents can also let them submit lessons
-automatically ([lesson loop](plugins/nextcore-workflow/skills/nextcore-workflow/references/lesson-loop.md)).
-
-[![Contributors](https://contrib.rocks/image?repo=kennetvn/nextcore-skills)](https://github.com/kennetvn/nextcore-skills/graphs/contributors)
-
 ## Built with these skills
 
 | Product | What it is | Stack |
@@ -244,22 +234,68 @@ and AI-written code tends to have more lines per feature than hand-written code,
 estimate and what actually happened is not a measurement of what the skills did — see
 [what these numbers show](#what-these-numbers-show-and-what-they-dont).
 
+## Contribute
+
+**Start with [CONTRIBUTING.md](CONTRIBUTING.md)** — what we take, where each kind of contribution goes (case, rule,
+check, stack note, showcase), how to make it pass `npm test`, and what gets closed.
+
+Found a false positive, a stack the tools don't read yet, or a lesson from your own project? Open an issue — the
+[bug](https://github.com/kennetvn/nextcore-skills/issues/new?template=bug.yml),
+[rule](https://github.com/kennetvn/nextcore-skills/issues/new?template=rule.yml) and
+[lesson](https://github.com/kennetvn/nextcore-skills/issues/new?template=lesson.yml) templates ask for exactly what we
+need: a bad example, a good example that must stay silent, and where it bit you. Good first contributions:
+
+- run `slop-check` on your project and report anything it flags that is actually fine;
+- add your framework to the [stack notes](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md);
+- teach `token-audit` a token format it doesn't read yet (Style Dictionary / Tokens Studio JSON, Android `colors.xml`);
+- add a case from your own stack to [cases/](cases/README.md) — Laravel, Django, Go and Rails are still empty.
+
+Every accepted contribution is credited in the CHANGELOG and next to the rule it created
+([details](CONTRIBUTING.md#how-contributions-are-credited)). Teams that run agents can also let them submit lessons
+automatically ([lesson loop](plugins/nextcore-workflow/skills/nextcore-workflow/references/lesson-loop.md)).
+
+[![Contributors](https://contrib.rocks/image?repo=kennetvn/nextcore-skills)](https://github.com/kennetvn/nextcore-skills/graphs/contributors)
+
 ## FAQ
 
-**Do I need Claude Code?** No. The skills are Markdown any agent can follow; the tools are Node scripts.
+<details>
+<summary><b>Do I need Claude Code?</b></summary>
 
-**What is "Claude Design" in the docs?** Anthropic's canvas for drawing screens. You don't need it: the design tools
+No. The skills are Markdown any agent can follow; the tools are Node scripts.
+
+</details>
+
+<details>
+<summary><b>What is "Claude Design" in the docs?</b></summary>
+
+Anthropic's canvas for drawing screens. You don't need it: the design tools
 read plain `.html` mockups from any source.
 
-**Is my code sent anywhere?** No. Every tool reads local files and prints a report.
+</details>
 
-**Where do the numbers come from?** From [homestaynextcore.org](https://homestaynextcore.org): its repository, CI and
+<details>
+<summary><b>Is my code sent anywhere?</b></summary>
+
+No. Every tool reads local files and prints a report.
+
+</details>
+
+<details>
+<summary><b>Where do the numbers come from?</b></summary>
+
+From [homestaynextcore.org](https://homestaynextcore.org): its repository, CI and
 production logs (the code is private). The rules are written so you don't need to know that product to use them.
 
-**What happened to `kennetvn/nextcore-design` and the old 147-skill catalogue?** The design repo was merged into
+</details>
+
+<details>
+<summary><b>What happened to `kennetvn/nextcore-design` and the old 147-skill catalogue?</b></summary>
+
+The design repo was merged into
 `plugins/nextcore-design` with its full history. The old catalogue (never measured on a real project) is kept at tag
 [`legacy-v3.0.1`](https://github.com/kennetvn/nextcore-skills/tree/legacy-v3.0.1).
 
+</details>
 ## Credits
 
 Written in our own words, with ideas learned from these MIT projects:

@@ -4,7 +4,7 @@ contact_links:
     url: https://github.com/kennetvn/nextcore-skills/discussions
     about: Not sure it is a bug, a rule or a case yet? Start a discussion.
   - name: Security problem in a tool
-    url: https://github.com/kennetvn/nextcore-skills/blob/main/SECURITY.md
+    url: https://github.com/kennetvn/nextcore-skills/blob/main/.github/SECURITY.md
     about: Report privately, not in a public issue.
   - name: How to contribute — what goes where
     url: https://github.com/kennetvn/nextcore-skills/blob/main/CONTRIBUTING.md

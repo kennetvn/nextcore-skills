@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-labelledby="t d">
+  <title id="t">How the skills fit together</title>
+  <desc id="d">Size the task, discover the problem and the job, write the spec and draw every state, a separate critic reviews, build one to one, audit with scripts, validate that a user can finish the job. Incidents become cases, cases become rules and checks.</desc>
+  <style>
+    :root { --bg:#FFFFFF; --ink:#16181D; --soft:#4A5260; --line:#DCE3EA; --card:#F5F8FB; --brand:#0277B3; --brandbg:#E6F4FB; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0D1117; --ink:#E6EDF3; --soft:#9AA4B2; --line:#30363D; --card:#161B22; --brand:#4FB8EC; --brandbg:#0F2533; }
+    }
+    text { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; fill: var(--ink); }
+    .soft { fill: var(--soft); }
+    .brand { fill: var(--brand); }
+    .step { fill: var(--card); stroke: var(--line); }
+    .key { fill: var(--brandbg); stroke: var(--brand); }
+    .arrow { stroke: var(--soft); stroke-width: 2; fill: none; marker-end: url(#a); }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="var(--soft)"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="300" rx="16" fill="var(--bg)" stroke="var(--line)"/>
+
+  <!-- row of steps: label (owner skill) -->
+  <g font-size="19" font-weight="600" text-anchor="middle">
+    <rect class="step" x="24"  y="48" width="128" height="92" rx="12"/><text x="88"  y="88">Size</text><text x="88"  y="114" class="soft" font-size="14" font-weight="400">workflow</text>
+    <rect class="key"  x="172" y="48" width="138" height="92" rx="12"/><text x="241" y="88">Discover</text><text x="241" y="114" class="soft" font-size="14" font-weight="400">problem · job</text>
+    <rect class="key"  x="330" y="48" width="138" height="92" rx="12"/><text x="399" y="88">Spec + draw</text><text x="399" y="114" class="soft" font-size="14" font-weight="400">states × widths</text>
+    <rect class="step" x="488" y="48" width="128" height="92" rx="12"/><text x="552" y="88">Critique</text><text x="552" y="114" class="soft" font-size="14" font-weight="400">second agent</text>
+    <rect class="step" x="636" y="48" width="128" height="92" rx="12"/><text x="700" y="88">Contract</text><text x="700" y="114" class="soft" font-size="14" font-weight="400">dev</text>
+    <rect class="step" x="784" y="48" width="128" height="92" rx="12"/><text x="848" y="88">Build 1:1</text><text x="848" y="114" class="soft" font-size="14" font-weight="400">no re-layout</text>
+    <rect class="step" x="932" y="48" width="108" height="92" rx="12"/><text x="986" y="88">Audit</text><text x="986" y="114" class="soft" font-size="14" font-weight="400">scripts</text>
+    <rect class="key"  x="1060" y="48" width="116" height="92" rx="12"/><text x="1118" y="88">Validate</text><text x="1118" y="114" class="soft" font-size="14" font-weight="400">job finished?</text>
+  </g>
+  <g class="arrow">
+    <path d="M152 94H168"/><path d="M310 94H326"/><path d="M468 94H484"/><path d="M616 94H632"/>
+    <path d="M764 94H780"/><path d="M912 94H928"/><path d="M1040 94H1056"/>
+  </g>
+
+  <!-- learning loop -->
+  <path class="arrow" d="M1118 140V196H88V144"/>
+  <rect x="300" y="174" width="600" height="44" rx="22" fill="var(--bg)" stroke="var(--line)"/>
+  <text x="600" y="202" text-anchor="middle" font-size="17">incident → <tspan class="brand" font-weight="600">case</tspan> → rule → check</text>
+
+  <!-- tools strip -->
+  <text x="600" y="262" text-anchor="middle" class="soft" font-size="16">checked by: spec-check · design-card · design-review · slop-check · token-audit · third-patch · doc-drift</text>
+</svg>

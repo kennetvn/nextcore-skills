@@ -1,8 +1,9 @@
-# nextcore-skills
+<p align="center"><img src="docs/hero.svg" width="100%" alt="nextcore-skills — agent AI giao UI và API chạy được lâu. Skill và công cụ kiểm không phụ thuộc thư viện, rút ra từ một sản phẩm đang chạy: design, dev, workflow."></p>
 
-**Quy tắc và công cụ giúp agent viết code bằng AI giao code UI và backend chạy được lâu.** Rút ra từ [homestaynextcore.org](https://homestaynextcore.org),
-một nền tảng đặt phòng đang chạy thật, do các agent AI viết và vẫn vận hành, và được kiểm bằng vài script nhỏ bạn chạy được trên dự án
-của mình trong một phút: Next.js, Laravel, PHP thuần, Django, Rails, Vue, bất cứ thứ gì render ra HTML.
+Ba skill để agent viết code bằng AI làm theo — **design**, **dev**, **workflow** — và bảy cổng kiểm nhỏ bạn chạy được
+trên dự án của mình trong một phút: Next.js, Laravel, PHP thuần, Django, Rails, Vue, bất cứ thứ gì render ra HTML. Rút
+ra từ [homestaynextcore.org](https://homestaynextcore.org), một nền tảng đặt phòng đang chạy thật, do các agent AI viết
+và vẫn vận hành.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](LICENSE)
 [![test](https://github.com/kennetvn/nextcore-skills/actions/workflows/test.yml/badge.svg)](https://github.com/kennetvn/nextcore-skills/actions/workflows/test.yml)
@@ -10,45 +11,57 @@ của mình trong một phút: Next.js, Laravel, PHP thuần, Django, Rails, Vue
 [![Zero dependencies](https://img.shields.io/badge/dependencies-0-0293DA.svg)](package.json)
 [English](README.md)
 
-Repo có hai phần:
-
-- **Ba skill**: bộ hướng dẫn mà một agent AI (Claude Code, Cursor, Codex, Windsurf, Gemini CLI, Copilot) làm theo.
-  **design** (vẽ và soát màn hình trước khi code), **dev** (hợp đồng giữa UI và API),
-  **workflow** (cách cho agent làm trên một sản phẩm thật mà không đoán mò hay ghi đè việc của nhau).
-- **Bảy công cụ dòng lệnh** kiểm những gì skill yêu cầu. Chúng chỉ đọc tệp trên máy và không gửi gì đi đâu.
-
-![Ba skill khớp với nhau thế nào: yêu cầu → nextcore-design (đặc tả + bản vẽ) → nextcore-dev (hợp đồng API) → phát hành, đo bằng các công cụ không phụ thuộc thư viện, tất cả nằm trong nextcore-workflow](docs/overview.svg)
-
-## Thử trong một phút
+## Bắt đầu nhanh
 
 ```bash
-npx -y -p github:kennetvn/nextcore-skills slop-check resources --warn-only
-npx -y -p github:kennetvn/nextcore-skills token-audit resources/sass/_tokens.scss
+# Claude Code — thêm skill
+/plugin marketplace add kennetvn/nextcore-skills
+/plugin install nextcore-design@nextcore    # và/hoặc nextcore-dev@nextcore, nextcore-workflow@nextcore
+
+# Dự án bất kỳ, stack bất kỳ — chạy một cổng kiểm (không cần cài, không gửi gì đi)
+npx -y -p github:kennetvn/nextcore-skills slop-check <thư-mục-template-hoặc-css> --warn-only
 ```
 
-Lần chạy đầu tải gói về (≈20 s, không có thư viện nào phải cài). Trỏ `slop-check` vào thư mục template/CSS của bạn;
-trỏ `token-audit` vào tệp khai báo màu (CSS custom property hoặc biến SCSS/LESS; không có thì bỏ qua). Kết quả trên
-một view Laravel nhỏ:
+Cursor, Codex, Gemini CLI, Copilot, Windsurf: [cài cho agent khác](#cài-skill). Kết quả mẫu và sáu công cụ còn lại:
+[thử trong một phút](#thử-trong-một-phút).
 
-```text
-ERROR  resources/views/rooms.blade.php:1  [color-literal] hex outside tokens — use var(--…)
-warn   resources/views/rooms.blade.php:1  [purple-gradient] default AI gradient — use brand tokens
-ERROR  resources/views/rooms.blade.php:1  [transition-all] list the properties you animate
-warn   resources/views/rooms.blade.php:2  [emoji-icon] use an icon set, not emoji
-ERROR  resources/views/rooms.blade.php:3  [placeholder-data] use realistic sample data
-ERROR  resources/views/rooms.blade.php:4  [break-all] cuts identifiers in half — widen the box or shrink text
-warn   resources/sass/_tokens.scss:6      [pixel-patch] off-scale spacing looks like a pixel patch
-…  (2 more warnings trimmed)
-slop-check: 9 finding(s), 4 error(s)
+## Ba skill
 
-ERROR  [contrast] light: $warning-fg on $warning
-        1.63:1 (X-fg on X) — needs 4.5:1 for body text
-ERROR  [contrast] light: $ink-muted on $bg
-        2.07:1 (text on surface) — needs 4.5:1 for body text
-```
+![Các skill khớp với nhau thế nào: xác định cỡ → tìm hiểu vấn đề → đặc tả + vẽ → phản biện → hợp đồng API → thi công 1:1 → kiểm → kiểm chứng; sự cố thành case, quy tắc và cổng kiểm.](docs/pipeline.svg)
 
-Trên ứng dụng production 2,226 tệp nơi các quy tắc này ra đời, `slop-check` báo 4,932 phát hiện trong 2 giây. Với một
-codebase cũ thì vậy là bình thường: chạy kèm `--warn-only`, sửa code mới trước, để con số tự giảm dần.
+**[nextcore-design](plugins/nextcore-design/README.vi.md)**: cho ai giao UI. Xác định cỡ việc và tìm hiểu trước
+(vấn đề, việc người dùng cần làm, mọi nhánh của luồng), rồi đặc tả và bản vẽ 5 trạng thái × 3 khổ, một lượt soát bởi
+một *agent phản biện* tách riêng, thi công 1:1, và kiểm chứng người dùng thật sự làm xong được việc. Hai thuật ngữ bạn sẽ gặp: **phiếu thiết kế (design card)** là một checklist ngắn gắn vào
+mỗi bản vẽ (tính năng nào, trang nào, vì sao, đã dựng chưa, cộng thiết bị, trạng thái, màu và font đã đo); **phép thử
+nheo mắt (squint test)** cho xem mỗi bản vẽ ở cỡ nhỏ, thang xám và bỏ bóng đổ để kiểm những thứ quan trọng vẫn nổi bật.
+Skill không bao giờ chọn màu hay font thay bạn: nó giữ design system bạn đang có.
+
+**[nextcore-dev](plugins/nextcore-dev/skills/nextcore-dev/SKILL.md)**: cho việc backend và full-stack. Biến danh sách
+trường của bản vẽ thành hợp đồng API (một hình dạng phản hồi, mã lỗi để UI ánh xạ sang trạng thái), auth trên mọi route
+được chứng minh bằng một bước kiểm có đếm, tiền dùng số thập phân, migration viết tay, sửa dữ liệu production an toàn,
+một hệ thống duy nhất cho job nền, 14 bẫy backend, và ghi chú cho Next.js, Laravel, Django, Rails, Express/Nest, PHP
+thuần và WordPress.
+
+**[nextcore-workflow](plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md)**: cho người vận hành agent. Quy tắc nào
+máy kiểm được thì thành git hook bạn cài vào, mỗi hook được chứng minh bằng cách cố ý cho nó báo lỗi một lần; chẩn đoán trước lần vá
+thứ ba; bằng chứng trước khi báo "xong"; nhiều agent trên một repo mà không ghi đè việc của nhau; quyết định ghi trên
+issue; con số trong tài liệu được đo lại; dọn máy sau những phiên agent dài.
+
+## Các công cụ
+
+| Công cụ | Kiểm gì | Dùng khi |
+|---|---|---|
+| `slop-check` | 11 dấu hiệu của code UI viết theo quán tính: màu viết cứng, gradient tím mặc định, `transition: all`, icon emoji, dữ liệu mẫu giả, vá pixel… | trong CI, trên template / CSS |
+| `token-audit` | cặp màu chữ/nền đạt độ tương phản WCAG ở chế độ sáng **và** dark mode; màu thiếu bản tối; `var()` trỏ vào thứ không tồn tại | khi đổi màu |
+| `design-card` | mỗi bản vẽ có khổ điện thoại/máy tính bảng/desktop, đủ 4 trạng thái, màu và font thương hiệu, và trang đó có thật | trước khi duyệt bản vẽ |
+| `design-review` | một trang HTML (kèm ảnh chụp) cho xem mỗi bản vẽ ở cỡ nhỏ, thang xám, bỏ trang trí | khi soát bản vẽ |
+| `spec-check` | phần suy nghĩ trước khi vẽ và sau khi làm: cỡ task, vấn đề, việc người dùng cần làm, mọi nhánh của luồng, giả định kiểm được, báo cáo kiểm chứng khi đã lên | trước khi vẽ; trước khi báo xong |
+| `doc-drift` | con số ghi trong tài liệu nay không còn đúng | đầu phiên, trong CI |
+| `third-patch` | chặn lần sửa thứ ba vào cùng một tệp trong 72 h nếu chưa có ghi chú chẩn đoán | pre-commit hook |
+
+Chạy bất kỳ công cụ nào bằng `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` in ra các tuỳ chọn.
+Tất cả là Node ≥18 thuần, không phụ thuộc thư viện, và mỗi công cụ được thử theo hai chiều: phải bắt được
+ví dụ sai và im lặng với ví dụ đúng.
 
 ## Agent làm theo skill thì khác gì
 
@@ -91,6 +104,50 @@ Write a diagnosis before patching again: docs/diagnosis/<area>.md naming the fil
   ## Symptom · ## Hypothesis · ## Observation
 ```
 
+## Thử trong một phút
+
+```bash
+npx -y -p github:kennetvn/nextcore-skills slop-check resources --warn-only
+npx -y -p github:kennetvn/nextcore-skills token-audit resources/sass/_tokens.scss
+```
+
+Lần chạy đầu tải gói về (≈20 s, không có thư viện nào phải cài). Trỏ `slop-check` vào thư mục template/CSS của bạn;
+trỏ `token-audit` vào tệp khai báo màu (CSS custom property hoặc biến SCSS/LESS; không có thì bỏ qua). Kết quả trên
+một view Laravel nhỏ:
+
+<details>
+<summary>Kết quả mẫu trên một view Laravel nhỏ</summary>
+
+```text
+ERROR  resources/views/rooms.blade.php:1  [color-literal] hex outside tokens — use var(--…)
+warn   resources/views/rooms.blade.php:1  [purple-gradient] default AI gradient — use brand tokens
+ERROR  resources/views/rooms.blade.php:1  [transition-all] list the properties you animate
+warn   resources/views/rooms.blade.php:2  [emoji-icon] use an icon set, not emoji
+ERROR  resources/views/rooms.blade.php:3  [placeholder-data] use realistic sample data
+ERROR  resources/views/rooms.blade.php:4  [break-all] cuts identifiers in half — widen the box or shrink text
+warn   resources/sass/_tokens.scss:6      [pixel-patch] off-scale spacing looks like a pixel patch
+…  (2 more warnings trimmed)
+slop-check: 9 finding(s), 4 error(s)
+
+ERROR  [contrast] light: $warning-fg on $warning
+        1.63:1 (X-fg on X) — needs 4.5:1 for body text
+ERROR  [contrast] light: $ink-muted on $bg
+        2.07:1 (text on surface) — needs 4.5:1 for body text
+```
+
+</details>
+
+Trên ứng dụng production 2,226 tệp nơi các quy tắc này ra đời, `slop-check` báo 4,932 phát hiện trong 2 giây. Với một
+codebase cũ thì vậy là bình thường: chạy kèm `--warn-only`, sửa code mới trước, để con số tự giảm dần.
+
+## Các case
+
+**[cases/](cases/README.md)** — những sự cố đứng sau các quy tắc, mỗi case một tệp: triệu chứng có số đo, nguyên nhân,
+cách sửa kèm số trước/sau, một lệnh hoặc test bắt được nó, và quy tắc cho agent. Xếp theo **tầng** (code, data, infra,
+devops, performance, testing, ai-agents, process), **mảng** (api, database, security, jobs…) và **stack** (nextjs,
+prisma, mysql, nginx, pm2… — danh sách mở), để nhóm Laravel hay Django đi thẳng tới phần hợp với mình. Case mới được
+thêm dần khi sản phẩm tiếp tục chạy; case của bạn cũng được chào đón.
+
 ## Vì sao có các quy tắc này
 
 Mỗi quy tắc được thêm vào sau khi điều ngược lại đã xảy ra trên sản phẩm thật và đã được đo:
@@ -119,50 +176,6 @@ ra được chúng. Chúng **không** phải bằng chứng độc lập rằng 
 Cách nhanh nhất để đánh giá: chạy công cụ trên repository của bạn và đếm những gì nó báo mà bạn đồng ý. Nếu bạn đo được
 trước/sau trên một dự án thật, [thêm vào đây](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml)
 — đó là bằng chứng mà README này tự nó không đưa ra được.
-
-## Ba skill
-
-**[nextcore-design](plugins/nextcore-design/README.vi.md)**: cho ai giao UI. Đặc tả trước (mục tiêu, điều gì quan
-trọng nhất, mỗi giá trị lấy từ đâu), rồi bản vẽ 5 trạng thái × 3 khổ, một lượt soát bởi một *agent phản biện* tách
-riêng, thi công 1:1, và đo. Hai thuật ngữ bạn sẽ gặp: **phiếu thiết kế (design card)** là một checklist ngắn gắn vào
-mỗi bản vẽ (tính năng nào, trang nào, vì sao, đã dựng chưa, cộng thiết bị, trạng thái, màu và font đã đo); **phép thử
-nheo mắt (squint test)** cho xem mỗi bản vẽ ở cỡ nhỏ, thang xám và bỏ bóng đổ để kiểm những thứ quan trọng vẫn nổi bật.
-Skill không bao giờ chọn màu hay font thay bạn: nó giữ design system bạn đang có.
-
-**[nextcore-dev](plugins/nextcore-dev/skills/nextcore-dev/SKILL.md)**: cho việc backend và full-stack. Biến danh sách
-trường của bản vẽ thành hợp đồng API (một hình dạng phản hồi, mã lỗi để UI ánh xạ sang trạng thái), auth trên mọi route
-được chứng minh bằng một bước kiểm có đếm, tiền dùng số thập phân, migration viết tay, sửa dữ liệu production an toàn,
-một hệ thống duy nhất cho job nền, 14 bẫy backend, và ghi chú cho Next.js, Laravel, Django, Rails, Express/Nest, PHP
-thuần và WordPress.
-
-**[nextcore-workflow](plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md)**: cho người vận hành agent. Quy tắc nào
-máy kiểm được thì thành git hook bạn cài vào, mỗi hook được chứng minh bằng cách cố ý cho nó báo lỗi một lần; chẩn đoán trước lần vá
-thứ ba; bằng chứng trước khi báo "xong"; nhiều agent trên một repo mà không ghi đè việc của nhau; quyết định ghi trên
-issue; con số trong tài liệu được đo lại; dọn máy sau những phiên agent dài.
-
-## Các case
-
-**[cases/](cases/README.md)** — những sự cố đứng sau các quy tắc, mỗi case một tệp: triệu chứng có số đo, nguyên nhân,
-cách sửa kèm số trước/sau, một lệnh hoặc test bắt được nó, và quy tắc cho agent. Xếp theo **tầng** (code, data, infra,
-devops, performance, testing, ai-agents, process), **mảng** (api, database, security, jobs…) và **stack** (nextjs,
-prisma, mysql, nginx, pm2… — danh sách mở), để nhóm Laravel hay Django đi thẳng tới phần hợp với mình. Case mới được
-thêm dần khi sản phẩm tiếp tục chạy; case của bạn cũng được chào đón.
-
-## Các công cụ
-
-| Công cụ | Kiểm gì | Dùng khi |
-|---|---|---|
-| `slop-check` | 11 dấu hiệu của code UI viết theo quán tính: màu viết cứng, gradient tím mặc định, `transition: all`, icon emoji, dữ liệu mẫu giả, vá pixel… | trong CI, trên template / CSS |
-| `token-audit` | cặp màu chữ/nền đạt độ tương phản WCAG ở chế độ sáng **và** dark mode; màu thiếu bản tối; `var()` trỏ vào thứ không tồn tại | khi đổi màu |
-| `design-card` | mỗi bản vẽ có khổ điện thoại/máy tính bảng/desktop, đủ 4 trạng thái, màu và font thương hiệu, và trang đó có thật | trước khi duyệt bản vẽ |
-| `design-review` | một trang HTML (kèm ảnh chụp) cho xem mỗi bản vẽ ở cỡ nhỏ, thang xám, bỏ trang trí | khi soát bản vẽ |
-| `spec-check` | phần suy nghĩ trước khi vẽ và sau khi làm: cỡ task, vấn đề, việc người dùng cần làm, mọi nhánh của luồng, giả định kiểm được, báo cáo kiểm chứng khi đã lên | trước khi vẽ; trước khi báo xong |
-| `doc-drift` | con số ghi trong tài liệu nay không còn đúng | đầu phiên, trong CI |
-| `third-patch` | chặn lần sửa thứ ba vào cùng một tệp trong 72 h nếu chưa có ghi chú chẩn đoán | pre-commit hook |
-
-Chạy bất kỳ công cụ nào bằng `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` in ra các tuỳ chọn.
-Tất cả là Node ≥18 thuần, không phụ thuộc thư viện, và mỗi công cụ được thử theo hai chiều: phải bắt được
-ví dụ sai và im lặng với ví dụ đúng.
 
 ## Chạy được với stack của bạn
 
@@ -199,28 +212,6 @@ thư mục `references/` của nó nằm cạnh.
 | người chạy nhiều agent AI trên một repo | nextcore-workflow: [agent song song](plugins/nextcore-workflow/skills/nextcore-workflow/references/parallel-agents.md) và `third-patch` |
 | một agent AI được hỏi "cái này có ích cho dự án của tôi không?" | [AGENTS.md](AGENTS.md): đo dự án trước, rồi mới khuyến nghị |
 
-## Đóng góp
-
-**Đọc [CONTRIBUTING.md](CONTRIBUTING.md) trước** — nhận gì, mỗi loại đóng góp đặt ở đâu (case, quy tắc, cổng kiểm,
-ghi chú stack, showcase), làm sao để qua `npm test`, và loại nào bị đóng. Issue viết tiếng Việt vẫn được nhận.
-
-Gặp báo sai, một stack mà công cụ chưa đọc được, hay một bài học từ dự án của bạn? Mở issue. Các mẫu
-[bug](https://github.com/kennetvn/nextcore-skills/issues/new?template=bug.yml),
-[rule](https://github.com/kennetvn/nextcore-skills/issues/new?template=rule.yml) và
-[lesson](https://github.com/kennetvn/nextcore-skills/issues/new?template=lesson.yml) hỏi đúng những gì chúng tôi cần:
-một ví dụ sai, một ví dụ đúng phải được để yên, và chỗ nó đã gây chuyện cho bạn. Những đóng góp đầu tiên dễ bắt tay:
-
-- chạy `slop-check` trên dự án của bạn và báo những chỗ nó đánh dấu mà thật ra không sao;
-- thêm framework của bạn vào [ghi chú theo stack](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md);
-- dạy `token-audit` đọc một định dạng token nó chưa đọc được (JSON của Style Dictionary / Tokens Studio, `colors.xml` của Android);
-- thêm một case từ stack của bạn vào [cases/](cases/README.md) — Laravel, Django, Go và Rails còn trống.
-
-Mỗi đóng góp được nhận đều được ghi công trong CHANGELOG và cạnh quy tắc mà nó tạo ra
-([chi tiết](CONTRIBUTING.md#how-contributions-are-credited)). Team nào chạy agent cũng có thể để agent tự gửi bài học
-([vòng bài học](plugins/nextcore-workflow/skills/nextcore-workflow/references/lesson-loop.md)).
-
-[![Người đóng góp](https://contrib.rocks/image?repo=kennetvn/nextcore-skills)](https://github.com/kennetvn/nextcore-skills/graphs/contributors)
-
 ## Sản phẩm dùng các skill này
 
 | Sản phẩm | Là gì | Stack |
@@ -246,22 +237,68 @@ viết thường nhiều dòng hơn cho cùng một tính năng so với code vi
 tính đó và những gì đã thực sự diễn ra không phải phép đo tác dụng của skill — xem
 [các con số này chứng minh gì](#các-con-số-này-chứng-minh-gì-và-không-chứng-minh-gì).
 
+## Đóng góp
+
+**Đọc [CONTRIBUTING.md](CONTRIBUTING.md) trước** — nhận gì, mỗi loại đóng góp đặt ở đâu (case, quy tắc, cổng kiểm,
+ghi chú stack, showcase), làm sao để qua `npm test`, và loại nào bị đóng. Issue viết tiếng Việt vẫn được nhận.
+
+Gặp báo sai, một stack mà công cụ chưa đọc được, hay một bài học từ dự án của bạn? Mở issue. Các mẫu
+[bug](https://github.com/kennetvn/nextcore-skills/issues/new?template=bug.yml),
+[rule](https://github.com/kennetvn/nextcore-skills/issues/new?template=rule.yml) và
+[lesson](https://github.com/kennetvn/nextcore-skills/issues/new?template=lesson.yml) hỏi đúng những gì chúng tôi cần:
+một ví dụ sai, một ví dụ đúng phải được để yên, và chỗ nó đã gây chuyện cho bạn. Những đóng góp đầu tiên dễ bắt tay:
+
+- chạy `slop-check` trên dự án của bạn và báo những chỗ nó đánh dấu mà thật ra không sao;
+- thêm framework của bạn vào [ghi chú theo stack](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md);
+- dạy `token-audit` đọc một định dạng token nó chưa đọc được (JSON của Style Dictionary / Tokens Studio, `colors.xml` của Android);
+- thêm một case từ stack của bạn vào [cases/](cases/README.md) — Laravel, Django, Go và Rails còn trống.
+
+Mỗi đóng góp được nhận đều được ghi công trong CHANGELOG và cạnh quy tắc mà nó tạo ra
+([chi tiết](CONTRIBUTING.md#how-contributions-are-credited)). Team nào chạy agent cũng có thể để agent tự gửi bài học
+([vòng bài học](plugins/nextcore-workflow/skills/nextcore-workflow/references/lesson-loop.md)).
+
+[![Người đóng góp](https://contrib.rocks/image?repo=kennetvn/nextcore-skills)](https://github.com/kennetvn/nextcore-skills/graphs/contributors)
+
 ## Câu hỏi thường gặp
 
-**Có cần Claude Code không?** Không. Skill là Markdown, agent nào cũng làm theo được; công cụ là script Node.
+<details>
+<summary><b>Có cần Claude Code không?</b></summary>
 
-**"Claude Design" trong tài liệu là gì?** Canvas của Anthropic để vẽ màn hình. Bạn không cần nó: các công cụ design
+Không. Skill là Markdown, agent nào cũng làm theo được; công cụ là script Node.
+
+</details>
+
+<details>
+<summary><b>"Claude Design" trong tài liệu là gì?</b></summary>
+
+Canvas của Anthropic để vẽ màn hình. Bạn không cần nó: các công cụ design
 đọc mockup `.html` thường từ bất kỳ nguồn nào.
 
-**Code của tôi có bị gửi đi đâu không?** Không. Mọi công cụ đọc tệp trên máy và in ra báo cáo.
+</details>
 
-**Số liệu lấy từ đâu?** Từ [homestaynextcore.org](https://homestaynextcore.org): repository, CI và log production của
+<details>
+<summary><b>Code của tôi có bị gửi đi đâu không?</b></summary>
+
+Không. Mọi công cụ đọc tệp trên máy và in ra báo cáo.
+
+</details>
+
+<details>
+<summary><b>Số liệu lấy từ đâu?</b></summary>
+
+Từ [homestaynextcore.org](https://homestaynextcore.org): repository, CI và log production của
 nó (mã nguồn không công khai). Các quy tắc được viết để bạn dùng được mà không cần biết sản phẩm đó.
 
-**`kennetvn/nextcore-design` và bộ catalogue 147 skill cũ đi đâu rồi?** Repo design đã được gộp vào
+</details>
+
+<details>
+<summary><b>`kennetvn/nextcore-design` và bộ catalogue 147 skill cũ đi đâu rồi?</b></summary>
+
+Repo design đã được gộp vào
 `plugins/nextcore-design` cùng toàn bộ lịch sử. Bộ catalogue cũ (chưa từng được đo trên một dự án thật) được giữ ở tag
 [`legacy-v3.0.1`](https://github.com/kennetvn/nextcore-skills/tree/legacy-v3.0.1).
 
+</details>
 ## Ghi công
 
 Viết bằng lời của chúng tôi, với ý tưởng học từ các dự án MIT sau:

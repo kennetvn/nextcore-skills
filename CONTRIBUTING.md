@@ -16,7 +16,7 @@ Issues and discussions in Vietnamese are welcome; files in the repo are in Engli
 | how the backend principles map to your framework | a PR to the stack notes | [`stacks.md`](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md) |
 | a product built with the skills | a [showcase issue](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml) | [Built with these skills](README.md#built-with-these-skills) |
 | a question or a loose idea | a [discussion](https://github.com/kennetvn/nextcore-skills/discussions) | — |
-| a security problem in a tool | a private report, see [SECURITY.md](SECURITY.md) | — |
+| a security problem in a tool | a private report, see [SECURITY.md](.github/SECURITY.md) | — |
 
 Not sure? Open a discussion. A new rule or a new tool should start as an issue so nobody writes code that gets
 declined.
