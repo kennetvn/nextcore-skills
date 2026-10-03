@@ -44,6 +44,13 @@ Run it from the project root. It copies the skills where your harness reads them
 
 ## 2. Measure (2–3 min, read-only)
 
+**One call does it:** `npx -y -p github:kennetvn/nextcore-skills nextcore measure` detects the stack, the UI folder, the
+colour-token file, drawings, API routes, a database and git history, runs the checks below in one process, and prints
+a recommendation with the reason for each skill. `nextcore all --agent <you>` then installs exactly what it recommended
+(`--dry-run` first if the person wants to see it). Still open 3–5 of the findings it lists before quoting totals, and
+check auth per API route yourself — it counts routes, it does not judge guards. The steps below are what it runs, for
+when you need one of them alone.
+
 Nothing is installed yet, so read the rules from GitHub: [design](https://raw.githubusercontent.com/kennetvn/nextcore-skills/main/plugins/nextcore-design/skills/nextcore-design/SKILL.md) ·
 [dev](https://raw.githubusercontent.com/kennetvn/nextcore-skills/main/plugins/nextcore-dev/skills/nextcore-dev/SKILL.md) · [workflow](https://raw.githubusercontent.com/kennetvn/nextcore-skills/main/plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md).
 
@@ -104,8 +111,26 @@ Say which level and why, quoting what you measured. "L0 — you already do this"
 - Not tied to Next.js: stack notes cover plain PHP/WordPress, Laravel, Django, Rails, Express/Nest, FastAPI, Go; the
   design checkers read Blade, Twig, ERB, Jinja, SCSS and any HTML template.
 
-## 6. Learned something general?
+## 6. Found an improvement? Ask, then contribute — never on your own
 
-Follow `nextcore-workflow/references/lesson-loop.md`, or open a
-[lesson issue](https://github.com/kennetvn/nextcore-skills/issues/new?template=lesson.yml) with the numbers — that is
-how the next project avoids it.
+While using the skills you may find a check that fires on correct code, a trap the rules miss, a stack they don't
+cover, or a measured incident other teams would hit. That is worth sending back — **with the person's permission,
+under their account**. You are working for them, on their code; anything public is their decision.
+
+1. **Is it worth it?** It happened (a number, a file, an output), it is general (a team on another stack would hit it),
+   and it is not already there — search the repo's issues and `cases/` first.
+2. **Draft it anonymised.** No product or company names, domains, IPs, emails, people, ticket numbers, internal paths,
+   customer data or pieces of their private code. Rewrite the example as a minimal one that shows the same thing.
+   Keep the numbers — they are the evidence.
+3. **Ask once, show exactly what will be posted.** For example: *"I found a false positive in token-audit that others
+   will hit. With your permission I'll open this issue on kennetvn/nextcore-skills from your GitHub account: <title +
+   full body>. Post it, edit it, or skip?"* Do nothing public until they say yes. "Skip" is a fine answer; don't ask
+   again for the same thing.
+4. **Post through their own tools** — `gh issue create` / a PR from their fork, with their GitHub login. Use the
+   matching template (bug, rule, lesson, showcase). End the body with *"Drafted by an AI agent, reviewed and posted
+   by @<their handle>."*
+5. **One at a time, and tell them where it went** (the issue or PR link). No batches of issues, no PRs to other
+   repositories, no posting from an account that isn't theirs.
+
+No GitHub access, or they would rather not post? Save the draft as `nextcore-contribution.md` in the project for them
+to send later, and move on with the task.

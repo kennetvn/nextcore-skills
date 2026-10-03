@@ -17,8 +17,8 @@ own project in a minute: Next.js, Laravel, plain PHP, Django, Rails, Vue, anythi
 /plugin marketplace add kennetvn/nextcore-skills
 /plugin install nextcore-design@nextcore      # also: nextcore-dev, nextcore-workflow
 
-# Any project, any stack — no install, nothing sent anywhere
-npx -y -p github:kennetvn/nextcore-skills slop-check src --warn-only
+# Any project, any stack — measure, see what fits (nothing installed, nothing sent)
+npx -y -p github:kennetvn/nextcore-skills nextcore measure
 ```
 
 **Or let your agent do it** — paste this to Claude Code, Cursor, Codex, Gemini CLI, Copilot or Windsurf:
@@ -204,8 +204,8 @@ measure a before/after on a real project, [add it](https://github.com/kennetvn/n
 
 `@nextcore` is the marketplace name from the first command, not a version.
 
-Any agent, one command from the project root — it writes where that agent reads, keeps your own files, and re-running
-only updates:
+Measure and install only what fits, in one call: `nextcore all --agent <agent>`. Or install chosen skills — it writes
+where that agent reads, keeps your own files, and re-running only updates:
 
 ```bash
 # --agent claude · cursor · codex · gemini · copilot · windsurf · generic

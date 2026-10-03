@@ -206,3 +206,25 @@ test('nextcore-install: keeps the user\'s own text, refuses to overwrite a file 
   assert.match(install(e, '--agent', 'cursor', '--dry-run').stdout, /would write/);
   assert.deepEqual(readdirSync(e), []);
 });
+
+test('nextcore measure/all: detects a small Next.js project, recommends design + dev, installs only those', () => {
+  const d = mkdtempSync(join(tmpdir(), 'nc-measure-'));
+  mkdirSync(join(d, 'app/api/orders'), { recursive: true });
+  writeFileSync(join(d, 'package.json'), JSON.stringify({ dependencies: { next: '16.0.0', '@prisma/client': '5.22.0' } }));
+  writeFileSync(join(d, 'app/globals.css'), ':root{--bg:#ffffff;--ink:#9ca3af}\n.card{border:1px solid #e5e7eb;transition:all .2s}\n');
+  writeFileSync(join(d, 'app/page.tsx'), 'export default function P(){return <main className="card">John Doe ordered 1000 items</main>}\n');
+  writeFileSync(join(d, 'app/api/orders/route.ts'), 'export async function GET(){ return Response.json([]) }\n');
+  const nc = (...a) => spawnSync(process.execPath, [join(root, 'tools/nextcore.mjs'), ...a, '--dir', d], { encoding: 'utf8' });
+  const m = JSON.parse(nc('measure', '--json').stdout);
+  assert.deepEqual(m.stack, ['Next.js']);
+  assert.equal(m.tokenFile, 'app/globals.css');
+  assert.equal(m.apiRoutes, 1);
+  assert.equal(m.checks.slop.errors, 3);
+  assert.equal(m.checks.tokens.errors, 1);
+  assert.deepEqual(Object.keys(m.recommend).sort(), ['design', 'dev']);
+  assert.match(m.skipped.workflow, /no git history/);
+  const r = nc('all', '--agent', 'generic');
+  assert.equal(r.status, 0, r.stderr);
+  assert.ok(existsSync(join(d, '.nextcore/nextcore-design/SKILL.md')) && existsSync(join(d, '.nextcore/nextcore-dev/SKILL.md')));
+  assert.ok(!existsSync(join(d, '.nextcore/nextcore-workflow')), 'workflow was not recommended, so not installed');
+});

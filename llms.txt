@@ -8,7 +8,8 @@ agent harness) and "use it on this task" (size the task, open one file).
 
 ## Start here
 - [AGENTS.md](AGENTS.md): evaluate → install → use, for any AI coding agent
-- Install for yourself: `npx -y -p github:kennetvn/nextcore-skills nextcore-install --agent <claude|cursor|codex|gemini|copilot|windsurf|generic>`
+- Measure + recommend: `npx -y -p github:kennetvn/nextcore-skills nextcore measure` · measure + install what fits: `… nextcore all --agent <claude|cursor|codex|gemini|copilot|windsurf|generic>`
+- Found an improvement while using them? AGENTS.md §6 — ask the person, post from their account, anonymised
 - [README](README.md): overview for people
 
 ## Cases

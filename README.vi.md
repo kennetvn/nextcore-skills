@@ -18,8 +18,8 @@ và vẫn vận hành.
 /plugin marketplace add kennetvn/nextcore-skills
 /plugin install nextcore-design@nextcore      # thêm: nextcore-dev, nextcore-workflow
 
-# Dự án bất kỳ, stack bất kỳ — không cần cài, không gửi gì đi
-npx -y -p github:kennetvn/nextcore-skills slop-check src --warn-only
+# Dự án bất kỳ, stack bất kỳ — đo, xem skill nào hợp (không cài, không gửi gì đi)
+npx -y -p github:kennetvn/nextcore-skills nextcore measure
 ```
 
 **Hoặc để agent tự làm** — dán câu này cho Claude Code, Cursor, Codex, Gemini CLI, Copilot hay Windsurf:
@@ -206,7 +206,8 @@ trước/sau trên một dự án thật, [thêm vào đây](https://github.com/
 
 `@nextcore` là tên marketplace ở lệnh đầu tiên, không phải số phiên bản.
 
-Agent bất kỳ, một lệnh từ thư mục gốc dự án — ghi đúng chỗ agent đó đọc, giữ nguyên tệp của bạn, chạy lại chỉ cập nhật:
+Đo và chỉ cài những gì hợp, một lệnh: `nextcore all --agent <agent>`. Hoặc cài skill tự chọn — ghi đúng chỗ agent đó đọc,
+giữ nguyên tệp của bạn, chạy lại chỉ cập nhật:
 
 ```bash
 # --agent claude · cursor · codex · gemini · copilot · windsurf · generic

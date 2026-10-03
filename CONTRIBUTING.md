@@ -88,6 +88,14 @@ Closed, with the reason, when it is:
 - Maintainers aim to answer new issues and PRs within a week. An issue waiting on the author for 30 days is closed; reopen
   it any time.
 
+## 5b. Contributions drafted by an AI agent
+
+Welcome — most improvements here will be found by agents using the skills. The rules are the same as for anyone,
+plus: a person **approved the exact text** and posts it from **their own account**; the body ends with
+*"Drafted by an AI agent, reviewed and posted by @handle"*; the numbers come from a real run, not a guess; nothing from
+the person's private code or data is in it. Issues from accounts without a person behind them, batches of similar
+issues, or text nobody checked are closed. The protocol an agent follows: [AGENTS.md §6](AGENTS.md#6-found-an-improvement-ask-then-contribute--never-on-your-own).
+
 ## 6. How contributions are credited
 
 1. **CHANGELOG** — the entry ends with `(thanks @handle)`.

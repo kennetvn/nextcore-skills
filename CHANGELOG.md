@@ -4,6 +4,17 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.9.0] — 2026-10-03
+
+### Added
+- `nextcore` — one call: `measure` (detects stack, UI folder, colour-token file, drawings, API routes, database, git
+  history; runs slop-check, token-audit and spec-check in one process; recommends skills with a reason each), `all`
+  (measure, then install exactly the recommended skills for an agent), `install`. On the small test project it gave
+  the same numbers a fresh agent had measured by hand (4 slop findings, a 2.54:1 pair, 1 route, Prisma without schema)
+  in 0.7 s; on the 6,000-file source product in 19 s. Fix hot-spots skip generated files, lockfiles, baselines and notes.
+- AGENTS.md §6 and CONTRIBUTING §5b: an agent that finds an improvement asks the person first, shows the exact text,
+  posts from their own account with an "AI-drafted, reviewed by" line, anonymised, one at a time — never on its own.
+
 ## [1.8.1] — 2026-10-03
 
 A fresh agent was given only the README sentence on a small Next.js project. It measured (4 slop findings, a 2.54:1
