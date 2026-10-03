@@ -1,0 +1,22 @@
+{
+  "name": "nextcore-design",
+  "version": "1.0.0",
+  "description": "Design-first skill for AI coding agents: draw before you code, lock design tokens, cover all 5 states, verify by measurement. Ships zero-dependency checkers: slop-check, token-audit, design-card.",
+  "type": "module",
+  "license": "MIT",
+  "author": "kennetvn",
+  "repository": { "type": "git", "url": "git+https://github.com/kennetvn/nextcore-design.git" },
+  "homepage": "https://github.com/kennetvn/nextcore-design#readme",
+  "bugs": { "url": "https://github.com/kennetvn/nextcore-design/issues" },
+  "keywords": ["agent-skills", "claude-code", "claude-skills", "cursor", "codex", "design-system", "design-tokens", "wcag", "contrast", "ui-ux", "anti-ai-slop", "design-first"],
+  "engines": { "node": ">=18" },
+  "bin": {
+    "slop-check": "skills/nextcore-design/scripts/slop-check.mjs",
+    "token-audit": "skills/nextcore-design/scripts/token-audit.mjs",
+    "design-card": "skills/nextcore-design/scripts/design-card.mjs"
+  },
+  "files": ["skills/", "README.md", "README.vi.md", "LICENSE", "CHANGELOG.md"],
+  "scripts": {
+    "test": "node --test tests/tools.test.mjs"
+  }
+}

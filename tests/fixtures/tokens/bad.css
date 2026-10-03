@@ -1,0 +1,12 @@
+/* bad: yellow button with white text, muted text too light, a near-white surface with no dark value */
+:root {
+  --ds-bg: #FFFFFF;
+  --ds-ink: #14161A;
+  --ds-ink-muted: #9AA0A6;
+  --ds-bg-muted: #F5F5F5;
+  --ds-warning: #FFD000;
+  --ds-warning-fg: #FFFFFF;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --ds-bg: #0E1014; --ds-ink: #F2F4F7; --ds-ink-muted: #8A9099; }
+}

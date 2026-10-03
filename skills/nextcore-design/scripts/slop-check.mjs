@@ -35,7 +35,7 @@ const RULES = [
   { id: 'italic-heading', level: 'warn', scope: 'style', re: /h[1-6][^{}]*\{[^}]*font-style\s*:\s*italic/g, advice: 'emphasise with weight/colour of the same font' },
   { id: 'italic-heading', level: 'warn', scope: 'markup', re: /<h[1-6]\b[^>]*>[^<]*<(?:em|i)\b/g, advice: 'emphasise with weight/colour of the same font' },
   { id: 'emoji-icon', level: 'warn', scope: 'markup', re: /\p{Extended_Pictographic}️?/gu, advice: 'use an icon set, not emoji' },
-  { id: 'placeholder-data', level: 'error', scope: 'markup', re: /lorem ipsum|\bjohn doe\b|\bjane (?:doe|smith)\b|nguy[eễ]n v[aă]n [ab]\b|\bacme (?:inc|corp)\b/gi, advice: 'use realistic sample data' },
+  { id: 'placeholder-data', level: 'error', scope: 'markup', re: /(?<!placeholder\s*=\s*["'{`][^"'`\n]{0,60})(?:lorem ipsum|\bjohn doe\b|\bjane (?:doe|smith)\b|nguy[eễ]n v[aă]n [ab]\b|\bacme (?:inc|corp)\b)/gi, advice: 'use realistic sample data (a format hint inside placeholder="…" is fine)' },
   { id: 'round-number', level: 'warn', scope: 'markup', re: />[^<{}]*?(?<![\d.,])(?:[1-9]0{3,}|[1-9]0{0,2}[.,]000)(?![\d.,])[^<{}]*</g, advice: 'organic numbers read as real (1,247 not 1,000)' },
 ];
 

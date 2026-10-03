@@ -34,16 +34,19 @@ description: "Design-first for AI agents: draw the screen as a canvas/artifact B
 5. **Vague brief or no reference ⇒ draw 3 directions that differ in LAYOUT** (not 3 recolours), let the
    human pick, and record why. Clear brief ⇒ one direction.
 
-## §3 One product area = one canvas
+## §3 One master canvas, sources in the repo, a card on every drawing
 
-Keep one canvas per product area (CRM, onboarding, settings…). A new feature is a new **page** inside the
-existing canvas, never a new canvas. Name artboards with a feature prefix (`Inbox-Main`, not `Main`).
-Reuse the existing frame artboards (sidebar, list column, light/dark tokens) — do not rebuild the frame.
-Keep the source of every drawing in the repo next to the code, so any account / machine can republish it.
-Best: ONE master canvas for the whole product (one page per area), shared *Can edit* with every Claude account
-you use, rebuilt from the repo by a script; every drawing carries a measured design card. Draw in an
-Artifact canvas, not a claude.ai/design project (agents cannot read those back). Full playbook for multiple
-accounts and parallel agents: `references/canvas-workflow.md`.
+- **The repo is the original.** One folder per drawing next to the code (`design/<slug>/` with the artboards,
+  the canvas index and a `card.json`). The canvas on claude.ai is only a projection: any account or machine can
+  rebuild it from the repo, and switching accounts never loses a drawing.
+- **One master canvas for the whole product**, one *page* per product area (CRM, onboarding, settings…). A new
+  feature is a new folder + a page section, never a new canvas or artifact. Reuse the area's frame artboards
+  (sidebar, list column, light/dark) instead of redrawing them. Name artboards with a feature prefix.
+- **Every drawing carries a design card** — what a reviewer needs before saying yes: feature, live route(s),
+  why this design, built yet, plus measured devices / states / colour DNA / type DNA
+  (`scripts/design-card.mjs`). Orange card = fix it before asking for approval.
+- Draw in an **Artifact canvas**, not a claude.ai/design project — agents cannot read those back. Several Claude
+  accounts or parallel agents on one canvas: `references/canvas-workflow.md`.
 
 ## §4 Every screen = at least 5 artboards
 
@@ -55,7 +58,12 @@ accounts and parallel agents: `references/canvas-workflow.md`.
 | **Error** | inline field error under the field + a toast for the action; plain sentence, no exclamation mark |
 | **Success** | confirmation toast or a state change |
 
-Add a narrow artboard (390px) whenever the layout changes shape on mobile, not just shrinks.
+Also draw the **interactive** states that matter (hover, focus-visible, pressed, disabled) — on touch there is
+no hover, so every hover-only affordance needs a visible alternative.
+
+**Device matrix — three widths, not one.** Draw 1280–1440 (desktop), **768 (tablet)** and 390 (phone) whenever the
+layout changes shape, not just shrinks. Tablet is the one everybody skips: measured on 56 production drawings,
+only 5 had a tablet artboard — and tablet is where two-column layouts break.
 
 ## §5 Lock the tokens INSIDE the drawing
 
@@ -70,7 +78,12 @@ spacing             var(--ds-space-N)            (one scale, no magic px)
 ```
 
 Read exact values from the token source file, **not from a table in some doc** — tables drift (a real
-case: a spacing table documented every value at 2× the truth).
+case: a spacing table documented every value at 2× the truth). Before drawing, run
+`scripts/token-audit.mjs <tokens.css>`: it checks WCAG contrast of every text/background pair **in every theme**
+and flags near-white / near-black tokens that have no dark-mode value (they vanish in dark mode).
+
+Fonts are part of the brand DNA too: only the product's families. Measured on 56 production drawings, 20 used a
+font the product does not ship (an agent "picking something nicer").
 
 Backgrounds should not be one flat colour; glass needs something behind it (glass on a flat background is
 invisible glass). Text over an image needs a scrim **measured at the text position**.
@@ -109,6 +122,8 @@ drawing is wrong, fix the drawing first (D1 → D2), then the code.
 - **Priority order when auditing:** accessibility (contrast, keyboard, aria) → tap targets ≥44px →
   performance (images, CLS) → layout per breakpoint → type & colour → motion → forms → navigation →
   charts. A failure higher up blocks checking lower items.
+- **Before asking for approval:** `scripts/design-card.mjs <drawings> --tokens … --fonts … --app … --strict`
+  must pass (phone + tablet + desktop, 4 states, ≥85% colours on token, brand fonts only, routes exist).
 - Open the real page at 390 / 768 / 1440 and **look at the screenshot**; also read
   `references/measurement-traps.md` — most "it passed" reports come from a wrong measurement.
 
@@ -122,3 +137,14 @@ drawing is wrong, fix the drawing first (D1 → D2), then the code.
 - ❌ Re-laying out while coding without updating the drawing
 - ❌ Saying "done" without same-condition before/after screenshots
 - ❌ Drawing a field that has no data source
+- ❌ Asking for approval while the design card is orange; drawing without a tablet artboard
+
+## §10 Tools (zero dependencies, Node ≥18)
+
+| Script | Answers | Typical use |
+|---|---|---|
+| `scripts/slop-check.mjs <src>` | does the code carry "AI slop" tells? (10 rules) | pre-commit / CI on UI source |
+| `scripts/token-audit.mjs <tokens.css> [--src <dir>]` | do my tokens pass contrast in every theme? any token missing a dark value? any `var()` that resolves to nothing? | when tokens change; CI |
+| `scripts/design-card.mjs <drawings> --tokens … --fonts … [--app …]` | is each drawing complete and on-brand? | before asking for approval |
+
+Templates: `templates/brief.md` (reading line, dials, field map, edge-case data) · `templates/card.json`.

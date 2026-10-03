@@ -2,3 +2,5 @@
 setTimeout(() => {}, 1000);
 export const Row = () => <p className="row">Trần Thị Mai Hương · 1.247 khách · <a href="#add">Thêm</a></p>;
 export const Logo = () => <svg><path fill="#4285F4" d="M0 0h1v1z" /></svg>;
+// a format hint inside placeholder= is not fake data
+export const Name = () => <input placeholder="NGUYEN VAN A" />;

@@ -1,0 +1,64 @@
+// Two-way tests: every check must fire on the bad fixtures, nothing may fire on the good ones.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const fx = (...p) => join(here, 'fixtures', ...p);
+const tool = (name, ...args) => {
+  const r = spawnSync(process.execPath, [join(here, '..', 'skills', 'nextcore-design', 'scripts', name), ...args], { encoding: 'utf8' });
+  return { code: r.status, json: args.includes('--json') ? JSON.parse(r.stdout) : null, out: r.stdout };
+};
+
+test('slop-check: all 10 rules fire on bad fixtures', () => {
+  const rules = new Set(tool('slop-check.mjs', fx('bad'), '--json', '--warn-only').json.map((f) => f.rule));
+  for (const r of ['color-literal', 'rgb-literal', 'purple-gradient', 'transition-all', 'break-all', 'grid-1fr', 'italic-heading', 'emoji-icon', 'placeholder-data', 'round-number']) {
+    assert.ok(rules.has(r), `rule ${r} did not fire`);
+  }
+});
+
+test('slop-check: zero findings on good fixtures (tokens, fallbacks, logos, placeholders)', () => {
+  assert.deepEqual(tool('slop-check.mjs', fx('good'), '--json').json, []);
+});
+
+test('slop-check: exits 1 on errors, 0 with --warn-only', () => {
+  assert.equal(tool('slop-check.mjs', fx('bad')).code, 1);
+  assert.equal(tool('slop-check.mjs', fx('bad'), '--warn-only').code, 0);
+});
+
+test('token-audit: catches low contrast, missing dark value, undefined var', () => {
+  const r = tool('token-audit.mjs', fx('tokens', 'bad.css'), '--src', fx('tokens', 'bad-src'), '--json');
+  const got = r.json.findings.map((f) => `${f.rule} ${f.where}`);
+  assert.ok(got.some((g) => g.includes('contrast') && g.includes('--ds-warning-fg on --ds-warning')), 'fg-on-fill contrast');
+  assert.ok(got.some((g) => g.includes('contrast') && g.includes('--ds-ink-muted on --ds-bg')), 'muted text contrast');
+  assert.ok(got.some((g) => g.startsWith('dark-missing --ds-bg-muted')), 'near-white surface without dark value');
+  assert.ok(got.some((g) => g.startsWith('undefined-var')), 'undefined var()');
+  assert.equal(r.code, 1);
+});
+
+test('token-audit: clean token file + JS-defined vars (next/font, chart --color-${key}) pass', () => {
+  const r = tool('token-audit.mjs', fx('tokens', 'good.css'), '--src', fx('tokens', 'good-src'), '--json');
+  assert.deepEqual(r.json.findings, []);
+  assert.equal(r.json.pairsChecked, 6);
+  assert.equal(r.code, 0);
+});
+
+const card = (kind) => tool('design-card.mjs', fx('drawings', kind), '--tokens', fx('tokens', 'good.css'), '--fonts', 'Inter,Fraunces', '--app', fx('app'), '--json', '--strict');
+
+test('design-card: a complete drawing passes every check', () => {
+  const r = card('good');
+  assert.equal(r.json.length, 1);
+  assert.deepEqual(r.json[0].problems, []);
+  assert.equal(r.code, 0);
+});
+
+test('design-card: an incomplete drawing reports every gap', () => {
+  const r = card('bad');
+  const p = r.json[0].problems.join(' | ');
+  for (const want of ['no phone artboard', 'no tablet artboard', 'no empty state', 'no loading state', 'no error state', 'no success state', 'on token', 'off-brand font: poppins', 'route /settings/billing has no page']) {
+    assert.ok(p.includes(want), `missing problem: ${want}`);
+  }
+  assert.equal(r.code, 1);
+});

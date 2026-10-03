@@ -1,0 +1,19 @@
+/* good: every text/surface pair passes 4.5:1 in both themes, every near-white surface has a dark value */
+:root {
+  --ds-bg: #FFFFFF;
+  --ds-surface: #F4F6F8;
+  --ds-ink: #14161A;
+  --ds-ink-muted: #545B66;
+  --ds-primary: #0B63CE;
+  --ds-primary-fg: #FFFFFF;
+  --ds-danger-soft: #FDE8E8;
+  --ds-danger-ink: #9B1C1C;
+}
+:root[data-theme="dark"] {
+  --ds-bg: #0E1014;
+  --ds-surface: #171A20;
+  --ds-ink: #F2F4F7;
+  --ds-ink-muted: #A7AFBA;
+  --ds-danger-soft: #3A1414;
+  --ds-danger-ink: #FCA5A5;
+}

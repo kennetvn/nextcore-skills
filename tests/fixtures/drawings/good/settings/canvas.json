@@ -1,0 +1,65 @@
+{
+ "v": 3,
+ "title": "Team settings",
+ "boards": {
+  "Main.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 1280,
+   "h": 800,
+   "title": "Settings \u00b7 data"
+  },
+  "Tablet.dc.html": {
+   "x": 1400,
+   "y": 0,
+   "w": 768,
+   "h": 800,
+   "title": "Settings \u00b7 768"
+  },
+  "Mobile.dc.html": {
+   "x": 2800,
+   "y": 0,
+   "w": 390,
+   "h": 800,
+   "title": "Settings \u00b7 390"
+  },
+  "Empty.dc.html": {
+   "x": 4200,
+   "y": 0,
+   "w": 1280,
+   "h": 800,
+   "title": "Empty \u2014 no team yet"
+  },
+  "Loading.dc.html": {
+   "x": 5600,
+   "y": 0,
+   "w": 1280,
+   "h": 800,
+   "title": "Loading skeleton"
+  },
+  "Error.dc.html": {
+   "x": 7000,
+   "y": 0,
+   "w": 1280,
+   "h": 800,
+   "title": "Error \u2014 save failed"
+  },
+  "Success.dc.html": {
+   "x": 8400,
+   "y": 0,
+   "w": 1280,
+   "h": 800,
+   "title": "Success \u2014 saved toast"
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "Tablet.dc.html",
+  "Mobile.dc.html",
+  "Empty.dc.html",
+  "Loading.dc.html",
+  "Error.dc.html",
+  "Success.dc.html"
+ ],
+ "notes": {}
+}
