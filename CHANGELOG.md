@@ -4,6 +4,22 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.8.1] — 2026-10-03
+
+A fresh agent was given only the README sentence on a small Next.js project. It measured (4 slop findings, a 2.54:1
+contrast pair, 0 of 1 API routes guarded), chose design + dev, skipped workflow (no git history), dry-ran, installed 30
+files and verified. These fixes come from where it said it had to guess.
+
+### Fixed
+- `nextcore-install --agent claude` copied the design subagents twice (`.claude/agents/` and inside the skill folder);
+  now once, in `.claude/agents/`.
+
+### Changed
+- AGENTS.md: a "measure, then install what fits" route; read the rules from GitHub before installing; read the summary
+  line, not the exit code (`--warn-only` exits 0); what `<token-file>` is; what to do when a measurement cannot run
+  (no git history, no drawings, an ORM with no schema); levels are per skill and map to `--skills`; valid `--skills`
+  values; verify that the harness sees the skills, not only that the files run.
+
 ## [1.8.0] — 2026-10-03
 
 ### Added

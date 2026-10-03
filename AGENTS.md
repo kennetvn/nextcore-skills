@@ -6,6 +6,7 @@ You were most likely given this link by a person. Find which of these they asked
 |---|---|
 | "is this useful for my project?" / "should we use this?" | §2 measure, then §3 recommend — not from the README |
 | "install this" / "set this up for me" | §1 install (one command), then tell them what changed |
+| "measure it, then install what fits" | §2 → §3 → §1 with `--skills` set to exactly the skills you recommended |
 | "use these skills on this task" | §4 — size the task, open one file, follow it |
 
 Everything here needs only Node ≥ 18. Nothing runs inside the user's app, and the tools send nothing anywhere.
@@ -25,10 +26,15 @@ Run it from the project root. It copies the skills where your harness reads them
 | Windsurf | `… nextcore-install --agent windsurf` | `.windsurf/rules/nextcore-*.md` + `.nextcore/` |
 | anything else | `… nextcore-install --agent generic` | `.nextcore/` only — point your rules file at `.nextcore/<skill>/SKILL.md` |
 
-- Only some skills: `--skills design` or `--skills dev,workflow`. Preview first: `--dry-run`.
+- Only some skills: `--skills design`, `--skills dev,workflow` — valid values `design`, `dev`, `workflow` (the
+  `nextcore-` prefix is optional; anything else exits 2 and names the bad value). Preview first: `--dry-run`.
+- Claude Code: `--skills design` also installs the `design-critic` and `design-auditor` subagents into
+  `.claude/agents/` (one copy; that is the one to edit).
 - Which skills fit — decide from the project, not by default: UI code → `design`; API routes, a database, background
   work → `dev`; agents that commit, deploy or work in parallel → `workflow`.
-- Verify: `node <install dir>/nextcore-design/scripts/spec-check.mjs --help` prints its usage.
+- Verify twice: the files run (`node <install dir>/nextcore-design/scripts/spec-check.mjs --help` prints its usage),
+  **and** your harness sees them — Claude Code lists project skills in a new session (`/skills`), Cursor shows the
+  rules under Settings → Rules. If it doesn't, say so; a restart of the session is usually needed.
 - Then tell the person in two or three lines what was written and which skill applies to what. Suggest committing the
   files so every agent on the project gets them.
 - No network for `npx`? `git clone https://github.com/kennetvn/nextcore-skills` and run
@@ -38,8 +44,16 @@ Run it from the project root. It copies the skills where your harness reads them
 
 ## 2. Measure (2–3 min, read-only)
 
+Nothing is installed yet, so read the rules from GitHub: [design](https://raw.githubusercontent.com/kennetvn/nextcore-skills/main/plugins/nextcore-design/skills/nextcore-design/SKILL.md) ·
+[dev](https://raw.githubusercontent.com/kennetvn/nextcore-skills/main/plugins/nextcore-dev/skills/nextcore-dev/SKILL.md) · [workflow](https://raw.githubusercontent.com/kennetvn/nextcore-skills/main/plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md).
+
+**Read the summary line, not the exit code.** With `--warn-only` every tool exits 0 even when it found errors — the
+last line (`slop-check: 9 finding(s), 4 error(s)`) is the result.
+
 - **Design:** `npx -y -p github:kennetvn/nextcore-skills slop-check <ui-dir> --warn-only` and
-  `… token-audit <token-file> --src <ui-dir> --warn-only`. If the project keeps drawings or specs:
+  `… token-audit <token-file> --src <ui-dir> --warn-only`. `<token-file>` is the file that defines the colour
+  variables — `:root { --… }` blocks, SCSS `$vars`, Tailwind v4 `@theme`, `tailwind.config.js` or WordPress
+  `theme.json` (Next.js App Router: usually `app/globals.css`). None found? Say "no tokens" — that is a finding too. If the project keeps drawings or specs:
   `… spec-check <drawings-dir>` (a drawing with no written problem or job shows up as `missing-spec`).
   Stack-by-stack hints (where tokens and routes live): [plugins/nextcore-design/AGENTS.md](plugins/nextcore-design/AGENTS.md).
 - **Dev:** count API routes vs routes with an auth guard (grep the project's guard function / middleware); check
@@ -48,14 +62,21 @@ Run it from the project root. It copies the skills where your harness reads them
 - **Workflow:** count fix commits that touch the same files within 72 h (`git log --since=90.days --name-only`);
   look for numbers in docs without a date; check whether agents commit with `git add -A` on a shared tree.
 
-Open 3–5 findings before quoting totals; every codebase has conventions a generic check can misread.
+Open up to 5 findings (all of them if there are fewer) before quoting totals; every codebase has conventions a
+generic check can misread.
+
+**When a measurement can't run, say so and why — don't guess:** no git history → workflow not measurable yet
+(recommend later); no drawings or specs → skip `spec-check`; a dependency with no schema or config (e.g. an ORM with
+no models) → UNKNOWN, and name the rule that will matter once it exists.
 
 ## 3. Recommend with numbers
 
 - **L0 reference** — read the relevant `references/*.md`; nothing changes in the project.
 - **L1 checks** — the zero-dependency tools in CI with `--warn-only`, ratchet down.
-- **L2 skill** — install (§1); new work follows it.
-- **L3 full** — all three skills plus the critic/auditor agents and the lesson loop.
+- **L2 skill** — install (§1) the skills that fit, with `--skills`; new work follows them.
+- **L3 full** — `nextcore-install` with all three skills (the default), plus the lesson loop.
+
+Levels are per skill: "design L2, dev L2, workflow L0" is a normal answer.
 
 Say which level and why, quoting what you measured. "L0 — you already do this" is a valid answer.
 

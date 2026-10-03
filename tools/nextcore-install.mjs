@@ -11,7 +11,7 @@
 //           copilot   a marked block in .github/copilot-instructions.md + .nextcore/<skill>/
 //           windsurf  .windsurf/rules/<skill>.md             + .nextcore/<skill>/
 //           generic   .nextcore/<skill>/ only — point your agent's rules file at .nextcore/<skill>/SKILL.md
-// --skills  which skills (default: all three)
+// --skills  comma list of design · dev · workflow (default: all three; `nextcore-design` etc. also accepted)
 // --dir     project root (default: current directory)
 // --dry-run print what would be written, write nothing
 // --force   overwrite skill files that differ from this version (your own files outside these paths are never touched)
@@ -61,8 +61,12 @@ function skillInfo(s) {
   return { name: `nextcore-${s}`, src, description, body };
 }
 
-function copySkill(info, destRoot) {
-  for (const f of walk(info.src)) want(join(destRoot, info.name, relative(info.src, f)), readFileSync(f));
+function copySkill(info, destRoot, skipAgents = false) {
+  for (const f of walk(info.src)) {
+    const rel = relative(info.src, f);
+    if (skipAgents && /^agents[\\/]/.test(rel)) continue; // Claude Code: they go to .claude/agents/ once, not twice
+    want(join(destRoot, info.name, rel), readFileSync(f));
+  }
 }
 
 function block(lines) {
@@ -74,7 +78,7 @@ const pointer = (i) => `- **${i.name}** — read \`.nextcore/${i.name}/SKILL.md\
 
 if (agent === 'claude') {
   for (const i of infos) {
-    copySkill(i, '.claude/skills');
+    copySkill(i, '.claude/skills', true);
     const agentsDir = join(i.src, 'agents');
     if (existsSync(agentsDir)) for (const f of readdirSync(agentsDir)) want(join('.claude/agents', f), readFileSync(join(agentsDir, f)));
   }

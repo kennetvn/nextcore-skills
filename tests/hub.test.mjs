@@ -179,6 +179,7 @@ test('nextcore-install: every agent layout installs, runs, and a second run chan
   }
   const d = mkdtempSync(join(tmpdir(), 'nci-run-'));
   install(d, '--agent', 'claude', '--skills', 'design');
+  assert.ok(!existsSync(join(d, '.claude/skills/nextcore-design/agents')), 'Claude: subagents only in .claude/agents/, not twice');
   const help = spawnSync(process.execPath, [join(d, '.claude/skills/nextcore-design/scripts/spec-check.mjs'), '--help'], { encoding: 'utf8' });
   assert.equal(help.status, 0, 'installed tools run from their new place');
 });
