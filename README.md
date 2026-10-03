@@ -7,7 +7,7 @@ into numbers.
 [![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](LICENSE)
 [![Node ≥18](https://img.shields.io/badge/node-%E2%89%A518-16181D.svg)](package.json)
 [![Zero dependencies](https://img.shields.io/badge/dependencies-0-0293DA.svg)](package.json)
-[![Tests: 7 two-way](https://img.shields.io/badge/tests-7%20two--way-16181D.svg)](tests/tools.test.mjs)
+[![test](https://github.com/kennetvn/nextcore-design/actions/workflows/test.yml/badge.svg)](https://github.com/kennetvn/nextcore-design/actions/workflows/test.yml)
 [Tiếng Việt](README.vi.md)
 
 ![Workflow: read the brief → draw 5 states at 3 widths → design card gate → build 1:1 → measure in a real browser](docs/flow.svg)

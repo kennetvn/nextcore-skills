@@ -15,6 +15,7 @@ versioning: [SemVer](https://semver.org/).
 - `references/canvas-workflow.md`: Claude Design vs Artifact canvas, one master canvas across Claude accounts and
   parallel agents.
 - Skill: device matrix (tablet 768 is mandatory), interactive states, design-card gate before approval, tools table.
+- CI: `npm test` + dogfood runs on Ubuntu · Windows · macOS × Node 18 · 20 · 22.
 - English README (primary) + `README.vi.md`, workflow diagram, `package.json` with `bin` for `npx`, two-way
   `node:test` suite, contributing guide, issue/PR templates.
 
