@@ -10,7 +10,7 @@ Issues and discussions in Vietnamese are welcome; files in the repo are in Engli
 
 | You have… | Open | It ends up in |
 |---|---|---|
-| a production incident or measurement trap, with numbers | a PR adding `cases/<slug>.md`, or a [lesson issue](https://github.com/kennetvn/nextcore-skills/issues/new?template=lesson.yml) | [`cases/`](cases/README.md) |
+| a production incident or measurement trap, with numbers | a PR adding `cases/<category>/<slug>.md`, or a [lesson issue](https://github.com/kennetvn/nextcore-skills/issues/new?template=lesson.yml) | [`cases/`](cases/README.md) |
 | a rule an agent should follow (design, API contract, running agents) | a [rule issue](https://github.com/kennetvn/nextcore-skills/issues/new?template=rule.yml) first | `plugins/<skill>/skills/<skill>/SKILL.md` or its `references/` |
 | a checker that flags something correct, misses something wrong, or crashes | a [bug issue](https://github.com/kennetvn/nextcore-skills/issues/new?template=bug.yml) or a PR with a fixture | the tool + `tests/fixtures/` |
 | how the backend principles map to your framework | a PR to the stack notes | [`stacks.md`](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md) |
@@ -41,7 +41,7 @@ Three skills, three scopes — put a rule in the one an agent would be reading w
 
 ## 3. How to make each kind
 
-**A case.** Copy [`cases/TEMPLATE.md`](cases/TEMPLATE.md) to `cases/<short-english-kebab>.md`. Fill the frontmatter
+**A case.** Copy [`cases/TEMPLATE.md`](cases/TEMPLATE.md) to `cases/<category>/<short-english-kebab>.md` — the folder is the subject (`zalo`, `facebook`, `devops`, `backend`…; list in `taxonomy.json`). A new platform folder starts with a playbook from [`cases/PLAYBOOK-TEMPLATE.md`](cases/PLAYBOOK-TEMPLATE.md). Fill the frontmatter
 (`layer`, `area`, `kind`, `skill` from [`taxonomy.json`](cases/taxonomy.json); `stack` is free, lowercase, one word per
 tool) and the five sections — Symptom · Cause · Fix · How to catch it · Rule. Numbers in Symptom and Fix. Then
 `npm run cases` (rebuilds the index) and `npm test`. A layer or area that doesn't exist yet: add it to `taxonomy.json` in

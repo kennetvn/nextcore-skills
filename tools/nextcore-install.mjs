@@ -61,11 +61,17 @@ function skillInfo(s) {
   return { name: `nextcore-${s}`, src, description, body };
 }
 
+const UPDATE_NOTE = `> Installed from nextcore-skills ${VERSION}. The skills keep changing (new checks, cases, fixes): about once a week,
+> or whenever a rule here looks out of date, run \`npx -y -p github:kennetvn/nextcore-skills nextcore update\` from the
+> project root — it shows what changed since ${VERSION} and updates these files in place.\n`;
+const withNote = (md) => md.replace(/^(---\n[\s\S]*?\n---\n)?/, (fm) => `${fm}\n${UPDATE_NOTE}`);
+
 function copySkill(info, destRoot, skipAgents = false) {
   for (const f of walk(info.src)) {
     const rel = relative(info.src, f);
     if (skipAgents && /^agents[\\/]/.test(rel)) continue; // Claude Code: they go to .claude/agents/ once, not twice
-    want(join(destRoot, info.name, rel), readFileSync(f));
+    const buf = readFileSync(f);
+    want(join(destRoot, info.name, rel), rel === 'SKILL.md' ? withNote(buf.toString('utf8').replace(/\r\n/g, '\n')) : buf);
   }
 }
 
@@ -75,6 +81,9 @@ function block(lines) {
 
 const infos = skills.map(skillInfo);
 const pointer = (i) => `- **${i.name}** — read \`.nextcore/${i.name}/SKILL.md\` (and only the \`references/\` file the task touches) when: ${i.description}`;
+
+const manifestDir = agent === 'claude' ? '.claude/skills' : '.nextcore';
+want(`${manifestDir}/nextcore-install.json`, `${JSON.stringify({ version: VERSION, agent, skills: infos.map((i) => i.name.replace('nextcore-', '')) }, null, 2)}\n`);
 
 if (agent === 'claude') {
   for (const i of infos) {
@@ -88,7 +97,7 @@ if (agent === 'claude') {
   if (agent === 'cursor') {
     for (const i of infos) {
       want(`.cursor/rules/${i.name}.mdc`, `---\ndescription: ${JSON.stringify(i.description)}\nalwaysApply: false\n---\n\n` +
-        `> Files referenced below (references/, templates/, scripts/) live in \`.nextcore/${i.name}/\`.\n${i.body}`);
+        `> Files referenced below (references/, templates/, scripts/) live in \`.nextcore/${i.name}/\`.\n${UPDATE_NOTE}${i.body}`);
     }
   } else if (agent === 'windsurf') {
     for (const i of infos) {
@@ -102,7 +111,7 @@ if (agent === 'claude') {
     const checks = infos.filter((i) => existsSync(join(i.src, 'scripts')))
       .map((i) => `\`.nextcore/${i.name}/scripts/\` (${readdirSync(join(i.src, 'scripts')).map((f) => f.replace(/\.mjs$/, '')).join(', ')})`);
     const blk = block(['Skills installed in `.nextcore/` (https://github.com/kennetvn/nextcore-skills):', '', ...infos.map(pointer),
-      ...(checks.length ? ['', `Checks, each with \`--help\`: ${checks.join(' · ')}.`] : [])]);
+      ...(checks.length ? ['', `Checks, each with \`--help\`: ${checks.join(' · ')}.`] : []), '', UPDATE_NOTE.trim()]);
     const a = old.indexOf(START), b = old.indexOf(END);
     const next = a >= 0 && b > a ? old.slice(0, a) + blk + old.slice(b + END.length).replace(/^\n/, '') : `${old}${old && !old.endsWith('\n') ? '\n' : ''}${old ? '\n' : ''}${blk}`;
     plan.push({ path, content: next, block: true });

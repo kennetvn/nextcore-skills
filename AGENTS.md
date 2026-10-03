@@ -37,6 +37,10 @@ Run it from the project root. It copies the skills where your harness reads them
   rules under Settings → Rules. If it doesn't, say so; a restart of the session is usually needed.
 - Then tell the person in two or three lines what was written and which skill applies to what. Suggest committing the
   files so every agent on the project gets them.
+- **Keep it current — this is your job, not the person's.** Every installed SKILL.md starts with the version it came
+  from. About once a week, or when a rule looks out of date or a check behaves differently from what a skill says, run
+  `npx -y -p github:kennetvn/nextcore-skills nextcore update` (`--check` to only look). It prints what changed since the
+  installed version and re-runs the same install. Mention the update to the person in one line.
 - No network for `npx`? `git clone https://github.com/kennetvn/nextcore-skills` and run
   `node nextcore-skills/tools/nextcore-install.mjs --agent <you> --dir <project>`.
 - A person using Claude Code can also install by hand: `/plugin marketplace add kennetvn/nextcore-skills`, then

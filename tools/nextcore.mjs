@@ -4,6 +4,7 @@
 //   npx -y -p github:kennetvn/nextcore-skills nextcore measure [--dir .] [--json]
 //   npx -y -p github:kennetvn/nextcore-skills nextcore all --agent <agent> [--dir .] [--skills …] [--dry-run]
 //   npx -y -p github:kennetvn/nextcore-skills nextcore install --agent <agent> [--skills …] [--dry-run]
+//   npx -y -p github:kennetvn/nextcore-skills nextcore update [--check] [--dir .]
 //
 // measure  read-only. Detects the stack, the UI folder, the colour-token file, drawings/specs, API routes, a database
 //          and git history; runs slop-check, token-audit and spec-check in the same process tree (no extra npx);
@@ -11,6 +12,9 @@
 // all      measure, then install exactly the recommended skills for --agent (claude · cursor · codex · gemini ·
 //          copilot · windsurf · generic). --skills overrides the recommendation. --dry-run installs nothing.
 // install  same as nextcore-install (see its --help).
+// update   compares the installed version (.claude/skills/ or .nextcore/nextcore-install.json) with this package —
+//          npx fetches the latest — prints what changed in between from CHANGELOG.md, and re-runs the same install
+//          (same agent, same skills). --check prints and changes nothing.
 //
 // Read the summary, not the exit code: measure exits 0 whatever it finds; all/install exit 1 only on an install conflict.
 
@@ -38,12 +42,38 @@ const TOOL = {
 };
 const node = (script, a, cwd = DIR) => spawnSync(process.execPath, [script, ...a], { cwd, encoding: 'utf8', maxBuffer: 1 << 26 });
 
+if (cmd === 'update') {
+  const VERSION = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).version;
+  const found = ['.claude/skills', '.nextcore'].map((d) => join(DIR, d, 'nextcore-install.json')).filter((f) => existsSync(f));
+  if (!found.length) {
+    console.log('nextcore update: no install found here (.claude/skills/ or .nextcore/nextcore-install.json) — run nextcore all --agent <you> first.');
+    process.exit(0);
+  }
+  const num = (v) => v.split('.').map(Number);
+  const newer = (a, b) => { const [x, y] = [num(a), num(b)]; for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] > y[i]; return false; };
+  const log = readFileSync(join(ROOT, 'CHANGELOG.md'), 'utf8').replace(/\r\n/g, '\n');
+  let status = 0;
+  for (const f of found) {
+    const m = JSON.parse(readFileSync(f, 'utf8'));
+    const where = relative(DIR, dirname(f)).replace(/\\/g, '/');
+    if (!newer(VERSION, m.version)) { console.log(`${where}: up to date (${m.version}).`); continue; }
+    const notes = [...log.matchAll(/^## \[(\d+\.\d+\.\d+)\][^\n]*\n([\s\S]*?)(?=^## \[|$(?![\s\S]))/gm)]
+      .filter(([, v]) => newer(v, m.version) && !newer(v, VERSION));
+    console.log(`${where}: ${m.version} → ${VERSION} (${m.agent}: ${m.skills.join(', ')}) — what changed:\n`);
+    for (const [, v, body] of notes) console.log(`## ${v}\n${body.trim()}\n`);
+    if (args.includes('--check')) continue;
+    const r = spawnSync(process.execPath, [TOOL.install, '--agent', m.agent, '--skills', m.skills.join(','), '--dir', DIR, ...(args.includes('--force') ? ['--force'] : [])], { stdio: 'inherit' });
+    status = Math.max(status, r.status ?? 1);
+  }
+  process.exit(status);
+}
+
 if (cmd === 'install') {
   const r = spawnSync(process.execPath, [TOOL.install, ...args.slice(1)], { stdio: 'inherit' });
   process.exit(r.status ?? 1);
 }
 if (!['measure', 'all'].includes(cmd)) {
-  console.error(`nextcore: unknown command "${cmd}" — use measure, all or install (--help)`);
+  console.error(`nextcore: unknown command "${cmd}" — use measure, all, install or update (--help)`);
   process.exit(2);
 }
 

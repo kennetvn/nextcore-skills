@@ -3,92 +3,86 @@
 Things that broke, or measured wrong, while AI agents built and ran a production app — each with the symptom, the
 cause, the fix with numbers, a way to catch it, and the rule an agent should follow next time.
 
-The skills say *what* to do; cases show *why*, on a specific stack. They are filed on three axes so the library can
-grow in any direction:
+The skills say *what* to do; cases show *why*, on a specific stack. Experience is shared, not code: every case is
+written from scratch, without the product's source or data.
 
-- **layer** — where it lives: code, data, infra, devops, performance, testing, ai-agents, process;
-- **area** — which part of the product: ui, api, database, security, payments, jobs…;
-- **stack** — the tools involved: nextjs, prisma, mysql, nginx, pm2, laravel, django… (open list).
+**One folder per subject.** Platforms you integrate with — `zalo/`, `facebook/`, `discord/` — and engineering areas —
+`devops/`, `infra/`, `backend/`, `data/`, `ai-agents/`, `testing/`, `design/`… A platform folder starts with a
+**playbook** (`README.md`): what still works and when it was last checked, how to re-check it yourself, how to deploy
+it, the failures seen so far. The cases next to it are single incidents: symptom with numbers, cause, fix, how to
+catch it, the rule.
 
-Lists and meanings: [taxonomy.json](taxonomy.json). New case: copy [TEMPLATE.md](TEMPLATE.md), then `npm run cases` and
-`npm test` (they check the fields, the sections, the index and that nothing private leaked). Cases from other teams
-are welcome — open a [lesson issue](https://github.com/kennetvn/nextcore-skills/issues/new?template=lesson.yml) or a PR.
+Each case also carries **layer**, **area** and **stack** in its frontmatter, so it can be found from any direction.
+Lists and meanings: [taxonomy.json](taxonomy.json).
+
+New case: copy [TEMPLATE.md](TEMPLATE.md) to `cases/<category>/<slug>.md`; new platform: start its folder with
+[PLAYBOOK-TEMPLATE.md](PLAYBOOK-TEMPLATE.md) as `README.md`. Then `npm run cases` and `npm test` (fields, sections,
+the index, nothing private). Cases from other teams are welcome — open a
+[lesson issue](https://github.com/kennetvn/nextcore-skills/issues/new?template=lesson.yml) or a PR.
 
 ## Index
 
 <!-- cases:start -->
-9 cases. Newest first inside each group; a case can sit in more than one layer.
+9 cases in 7 folders. Newest first in each folder.
 
-### By layer
+### [ai-agents](ai-agents/) — LLM calls, tool use, agents writing or running the code
 
-**code** — application logic, framework and library behaviour
-
-| Case | Area | Stack | Kind |
+| Case | Layer | Stack | Kind |
 |---|---|---|---|
-| [In a multi-step generateText call, r.text is only the last step, so the model's apology was dropped](ai-sdk-multistep-text-is-last-step.md) | messaging, backend | vercel-ai-sdk, typescript | incident |
-| [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](pm2-reload-sends-sigint.md) | backend | pm2, nodejs, nextjs | incident |
-| [The documented Prisma singleton created three connection pools per process in Next.js production](prisma-singleton-three-pools-nextjs.md) | database, backend | prisma, nextjs, mysql | incident |
+| [In a multi-step generateText call, r.text is only the last step, so the model's apology was dropped](ai-agents/ai-sdk-multistep-text-is-last-step.md) | ai-agents, code | vercel-ai-sdk, typescript | incident |
 
-**data** — schemas, migrations, exports, backfills, data correctness
+### [backend](backend/) — server code, ORM, request handling
 
-| Case | Area | Stack | Kind |
+| Case | Layer | Stack | Kind |
 |---|---|---|---|
-| [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](mysql-batch-escapes-base64-newlines.md) | database, jobs | mysql, nodejs, shell | measurement-trap |
+| [The documented Prisma singleton created three connection pools per process in Next.js production](backend/prisma-singleton-three-pools-nextjs.md) | performance, code | prisma, nextjs, mysql | incident |
 
-**infra** — web server, reverse proxy, cache, OS, network
+### [data](data/) — exports, backfills, migrations, data correctness
 
-| Case | Area | Stack | Kind |
+| Case | Layer | Stack | Kind |
 |---|---|---|---|
-| [nginx `if ($var)` treats the string "0" as false, so a header block let "0" through](nginx-if-zero-is-false.md) | security | nginx, nextjs | measurement-trap |
-| [A panel's default nginx config cached /api responses for every site on the server](panel-nginx-default-cached-api.md) | api, backend | nginx, aapanel, nextjs | incident |
+| [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](data/mysql-batch-escapes-base64-newlines.md) | data | mysql, nodejs, shell | measurement-trap |
 
-**devops** — CI/CD, deploys, process managers, runners
+### [design](design/) — screens, drawings, specs, design process
 
-| Case | Area | Stack | Kind |
+| Case | Layer | Stack | Kind |
 |---|---|---|---|
-| [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](ci-turbopack-cache-crashed-postcss.md) | frontend | nextjs, turbopack, github-actions | incident |
-| [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](pm2-reload-sends-sigint.md) | backend | pm2, nodejs, nextjs | incident |
+| [56 screens shipped from approved drawings, none of which said what problem they solved](design/drawings-shipped-without-a-problem.md) | process, ai-agents | nextjs, claude-design | measurement-trap |
 
-**performance** — memory, CPU, latency, connections, bundle size
+### [devops](devops/) — CI/CD, deploys, process managers, runners
 
-| Case | Area | Stack | Kind |
+| Case | Layer | Stack | Kind |
 |---|---|---|---|
-| [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](ci-turbopack-cache-crashed-postcss.md) | frontend | nextjs, turbopack, github-actions | incident |
-| [The documented Prisma singleton created three connection pools per process in Next.js production](prisma-singleton-three-pools-nextjs.md) | database, backend | prisma, nextjs, mysql | incident |
+| [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](devops/ci-turbopack-cache-crashed-postcss.md) | devops, performance | nextjs, turbopack, github-actions | incident |
+| [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](devops/pm2-reload-sends-sigint.md) | devops, code | pm2, nodejs, nextjs | incident |
 
-**testing** — tests, gates and checks that pass or fail for the wrong reason
+### [infra](infra/) — web server, reverse proxy, cache, OS
 
-| Case | Area | Stack | Kind |
+| Case | Layer | Stack | Kind |
 |---|---|---|---|
-| [A test with a hard-coded month turned red for everyone at midnight on the 1st](hard-coded-month-test-time-bomb.md) | backend | vitest, typescript | incident |
+| [nginx `if ($var)` treats the string "0" as false, so a header block let "0" through](infra/nginx-if-zero-is-false.md) | infra | nginx, nextjs | measurement-trap |
+| [A panel's default nginx config cached /api responses for every site on the server](infra/panel-nginx-default-cached-api.md) | infra | nginx, aapanel, nextjs | incident |
 
-**ai-agents** — LLM calls, tool use, agents writing or running the code
+### [testing](testing/) — tests and gates that pass or fail for the wrong reason
 
-| Case | Area | Stack | Kind |
+| Case | Layer | Stack | Kind |
 |---|---|---|---|
-| [In a multi-step generateText call, r.text is only the last step, so the model's apology was dropped](ai-sdk-multistep-text-is-last-step.md) | messaging, backend | vercel-ai-sdk, typescript | incident |
-| [56 screens shipped from approved drawings, none of which said what problem they solved](drawings-shipped-without-a-problem.md) | ui, frontend | nextjs, claude-design | measurement-trap |
-
-**process** — how people and agents work together
-
-| Case | Area | Stack | Kind |
-|---|---|---|---|
-| [56 screens shipped from approved drawings, none of which said what problem they solved](drawings-shipped-without-a-problem.md) | ui, frontend | nextjs, claude-design | measurement-trap |
+| [A test with a hard-coded month turned red for everyone at midnight on the 1st](testing/hard-coded-month-test-time-bomb.md) | testing | vitest, typescript | incident |
 
 ### By stack
 
-- **aapanel** — [A panel's default nginx config cached /api responses for every site on the server](panel-nginx-default-cached-api.md)
-- **claude-design** — [56 screens shipped from approved drawings, none of which said what problem they solved](drawings-shipped-without-a-problem.md)
-- **github-actions** — [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](ci-turbopack-cache-crashed-postcss.md)
-- **mysql** — [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](mysql-batch-escapes-base64-newlines.md) · [The documented Prisma singleton created three connection pools per process in Next.js production](prisma-singleton-three-pools-nextjs.md)
-- **nextjs** — [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](ci-turbopack-cache-crashed-postcss.md) · [56 screens shipped from approved drawings, none of which said what problem they solved](drawings-shipped-without-a-problem.md) · [nginx `if ($var)` treats the string "0" as false, so a header block let "0" through](nginx-if-zero-is-false.md) · [A panel's default nginx config cached /api responses for every site on the server](panel-nginx-default-cached-api.md) · [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](pm2-reload-sends-sigint.md) · [The documented Prisma singleton created three connection pools per process in Next.js production](prisma-singleton-three-pools-nextjs.md)
-- **nginx** — [nginx `if ($var)` treats the string "0" as false, so a header block let "0" through](nginx-if-zero-is-false.md) · [A panel's default nginx config cached /api responses for every site on the server](panel-nginx-default-cached-api.md)
-- **nodejs** — [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](mysql-batch-escapes-base64-newlines.md) · [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](pm2-reload-sends-sigint.md)
-- **pm2** — [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](pm2-reload-sends-sigint.md)
-- **prisma** — [The documented Prisma singleton created three connection pools per process in Next.js production](prisma-singleton-three-pools-nextjs.md)
-- **shell** — [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](mysql-batch-escapes-base64-newlines.md)
-- **turbopack** — [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](ci-turbopack-cache-crashed-postcss.md)
-- **typescript** — [In a multi-step generateText call, r.text is only the last step, so the model's apology was dropped](ai-sdk-multistep-text-is-last-step.md) · [A test with a hard-coded month turned red for everyone at midnight on the 1st](hard-coded-month-test-time-bomb.md)
-- **vercel-ai-sdk** — [In a multi-step generateText call, r.text is only the last step, so the model's apology was dropped](ai-sdk-multistep-text-is-last-step.md)
-- **vitest** — [A test with a hard-coded month turned red for everyone at midnight on the 1st](hard-coded-month-test-time-bomb.md)
+- **aapanel** — [A panel's default nginx config cached /api responses for every site on the server](infra/panel-nginx-default-cached-api.md)
+- **claude-design** — [56 screens shipped from approved drawings, none of which said what problem they solved](design/drawings-shipped-without-a-problem.md)
+- **github-actions** — [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](devops/ci-turbopack-cache-crashed-postcss.md)
+- **mysql** — [The documented Prisma singleton created three connection pools per process in Next.js production](backend/prisma-singleton-three-pools-nextjs.md) · [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](data/mysql-batch-escapes-base64-newlines.md)
+- **nextjs** — [The documented Prisma singleton created three connection pools per process in Next.js production](backend/prisma-singleton-three-pools-nextjs.md) · [56 screens shipped from approved drawings, none of which said what problem they solved](design/drawings-shipped-without-a-problem.md) · [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](devops/ci-turbopack-cache-crashed-postcss.md) · [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](devops/pm2-reload-sends-sigint.md) · [nginx `if ($var)` treats the string "0" as false, so a header block let "0" through](infra/nginx-if-zero-is-false.md) · [A panel's default nginx config cached /api responses for every site on the server](infra/panel-nginx-default-cached-api.md)
+- **nginx** — [nginx `if ($var)` treats the string "0" as false, so a header block let "0" through](infra/nginx-if-zero-is-false.md) · [A panel's default nginx config cached /api responses for every site on the server](infra/panel-nginx-default-cached-api.md)
+- **nodejs** — [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](data/mysql-batch-escapes-base64-newlines.md) · [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](devops/pm2-reload-sends-sigint.md)
+- **pm2** — [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](devops/pm2-reload-sends-sigint.md)
+- **prisma** — [The documented Prisma singleton created three connection pools per process in Next.js production](backend/prisma-singleton-three-pools-nextjs.md)
+- **shell** — [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](data/mysql-batch-escapes-base64-newlines.md)
+- **turbopack** — [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](devops/ci-turbopack-cache-crashed-postcss.md)
+- **typescript** — [In a multi-step generateText call, r.text is only the last step, so the model's apology was dropped](ai-agents/ai-sdk-multistep-text-is-last-step.md) · [A test with a hard-coded month turned red for everyone at midnight on the 1st](testing/hard-coded-month-test-time-bomb.md)
+- **vercel-ai-sdk** — [In a multi-step generateText call, r.text is only the last step, so the model's apology was dropped](ai-agents/ai-sdk-multistep-text-is-last-step.md)
+- **vitest** — [A test with a hard-coded month turned red for everyone at midnight on the 1st](testing/hard-coded-month-test-time-bomb.md)
 <!-- cases:end -->

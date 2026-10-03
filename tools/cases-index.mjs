@@ -4,9 +4,11 @@
 //   node tools/cases-index.mjs           # rewrite the index
 //   node tools/cases-index.mjs --check   # exit 1 if a case is invalid or the index is stale (used by the tests)
 //
-// A case is cases/<slug>.md with frontmatter (title, date, layer, area, stack, kind, skill) whose values come from
-// cases/taxonomy.json (stack is free), and the sections listed in taxonomy.sections, in that order.
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+// A case is cases/<category>/<slug>.md — <category> one of taxonomy.category — with frontmatter (title, date, layer,
+// area, stack, kind, skill) whose values come from cases/taxonomy.json (stack is free), and the sections listed in
+// taxonomy.sections, in that order. A platform category (zalo, facebook…) may carry a README.md playbook; when it does,
+// it needs a "Verified: <version> · <runtime> · <date>" line and the playbook sections.
+import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -45,23 +47,60 @@ export function parseCase(file, text) {
   return c;
 }
 
+const PLAYBOOK = ['Read this first', 'Status', 'Audit it yourself', 'Deploy', 'Known failures', 'Open questions'];
+
 export function loadCases() {
-  return readdirSync(DIR)
-    .filter((f) => f.endsWith('.md') && !['README.md', 'TEMPLATE.md'].includes(f))
-    .sort()
-    .map((f) => parseCase(f, readFileSync(join(DIR, f), 'utf8')));
+  const out = [];
+  for (const n of readdirSync(DIR).sort()) {
+    const p = join(DIR, n);
+    if (!statSync(p).isDirectory()) {
+      if (n.endsWith('.md') && !['README.md', 'TEMPLATE.md', 'PLAYBOOK-TEMPLATE.md'].includes(n)) {
+        out.push({ file: n, errors: ['cases live in a category folder: cases/<category>/' + n] });
+      }
+      continue;
+    }
+    for (const f of readdirSync(p).filter((x) => x.endsWith('.md') && x !== 'README.md').sort()) {
+      const c = parseCase(`${n}/${f}`, readFileSync(join(p, f), 'utf8'));
+      c.category = n;
+      if (!TAX.category[n]) c.errors.push(`folder "${n}" is not a category in taxonomy.json`);
+      out.push(c);
+    }
+  }
+  return out;
 }
 
-export function renderIndex(cases) {
+/** Playbook READMEs of platform folders: [{ category, file, verified, errors }]. */
+export function loadPlaybooks() {
+  const out = [];
+  for (const [n, meta] of Object.entries(TAX.category)) {
+    const p = join(DIR, n, 'README.md');
+    if (!existsSync(p)) continue;
+    const t = readFileSync(p, 'utf8').replace(/\r\n/g, '\n');
+    const errors = [];
+    if (!meta.platform) errors.push('only platform categories carry a playbook README');
+    const verified = (t.match(/^Verified: (.+ · \d{4}-\d{2}-\d{2})$/m) || [])[1];
+    if (!verified) errors.push('"Verified: <version> · <runtime> · <YYYY-MM-DD>" line');
+    const heads = [...t.matchAll(/^## (.+)$/gm)].map((m) => m[1].trim());
+    for (const r of PLAYBOOK) if (!heads.includes(r)) errors.push(`missing "## ${r}"`);
+    out.push({ category: n, file: `${n}/README.md`, verified, title: (t.match(/^# (.+)$/m) || [])[1] || n, errors });
+  }
+  return out;
+}
+
+export function renderIndex(cases, playbooks = []) {
   const link = (c) => `[${c.title}](${c.file})`;
-  const out = [`${cases.length} case${cases.length === 1 ? '' : 's'}. Newest first inside each group; a case can sit in more than one layer.`, ''];
-  out.push('### By layer', '');
-  for (const [layer, what] of Object.entries(TAX.layer)) {
-    const rows = cases.filter((c) => c.layer.includes(layer)).sort((a, b) => b.date.localeCompare(a.date));
-    if (!rows.length) continue;
-    out.push(`**${layer}** — ${what}`, '', '| Case | Area | Stack | Kind |', '|---|---|---|---|');
-    for (const c of rows) out.push(`| ${link(c)} | ${c.area.join(', ')} | ${c.stack.join(', ')} | ${c.kind} |`);
-    out.push('');
+  const out = [`${cases.length} case${cases.length === 1 ? '' : 's'} in ${new Set(cases.map((c) => c.category)).size} folders. Newest first in each folder.`, ''];
+  for (const [cat, meta] of Object.entries(TAX.category)) {
+    const rows = cases.filter((c) => c.category === cat).sort((a, b) => b.date.localeCompare(a.date));
+    const pb = playbooks.find((p) => p.category === cat);
+    if (!rows.length && !pb) continue;
+    out.push(`### [${cat}](${cat}/) — ${meta.what}`, '');
+    if (pb) out.push(`**Playbook:** [${pb.title}](${pb.file}) — verified ${pb.verified}`, '');
+    if (rows.length) {
+      out.push('| Case | Layer | Stack | Kind |', '|---|---|---|---|');
+      for (const c of rows) out.push(`| ${link(c)} | ${c.layer.join(', ')} | ${c.stack.join(', ')} | ${c.kind} |`);
+      out.push('');
+    }
   }
   const stacks = {};
   for (const c of cases) for (const s of c.stack) (stacks[s] ??= []).push(c);
@@ -72,13 +111,14 @@ export function renderIndex(cases) {
 
 if (process.argv[1]?.endsWith('cases-index.mjs')) {
   const cases = loadCases();
-  const bad = cases.filter((c) => c.errors.length);
+  const playbooks = loadPlaybooks();
+  const bad = [...cases, ...playbooks].filter((c) => c.errors.length);
   for (const c of bad) console.error(`cases/${c.file}: ${c.errors.join('; ')}`);
   const readmePath = join(DIR, 'README.md');
   const readme = readFileSync(readmePath, 'utf8').replace(/\r\n/g, '\n');
   const a = readme.indexOf(START), b = readme.indexOf(END);
   if (a < 0 || b < 0) { console.error('cases/README.md: index markers missing'); process.exit(1); }
-  const next = `${readme.slice(0, a + START.length)}\n${renderIndex(cases.filter((c) => !c.errors.length))}\n${readme.slice(b)}`;
+  const next = `${readme.slice(0, a + START.length)}\n${renderIndex(cases.filter((c) => !c.errors.length), playbooks.filter((p) => !p.errors.length))}\n${readme.slice(b)}`;
   if (process.argv.includes('--check')) {
     if (next !== readme) console.error('cases/README.md: index is stale — run `npm run cases`');
     process.exit(bad.length || next !== readme ? 1 : 0);

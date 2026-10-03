@@ -8,7 +8,7 @@ kind: incident
 skill: dev
 ---
 
-<!-- Copy to cases/<short-kebab-slug>.md. Values for layer/area/kind/skill: cases/taxonomy.json. stack is free
+<!-- Copy to cases/<category>/<short-kebab-slug>.md (category: a folder listed in taxonomy.json). Values for layer/area/kind/skill: cases/taxonomy.json. stack is free
      (lowercase, one word per tool). Keep it under ~60 lines. No product names, hostnames, IPs, people or ticket
      numbers. Then run `npm run cases` and `npm test`. -->
 

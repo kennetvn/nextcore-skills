@@ -45,7 +45,7 @@ function isViolet(hex) {
 const RULES = [
   { id: 'color-literal', level: 'error', scope: 'style', re: /#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b/gi, tokenAware: true, advice: 'hex outside tokens — use var(--…)' },
   { id: 'rgb-literal', level: 'warn', scope: 'style', re: /\b(?:rgba?|hsla?)\(\s*\d/gi, tokenAware: true, advice: 'prefer a token (shadow/overlay tokens too)' },
-  { id: 'color-literal', level: 'error', scope: 'markup', re: /(?:color|background|bg|border|fill|stroke|shadow|gradient)(?!\s*=)[^;\n]{0,40}?#(?:[0-9a-f]{6}|[0-9a-f]{3})\b/gi, advice: 'hex outside tokens — use var(--…)' },
+  { id: 'color-literal', level: 'error', scope: 'markup', re: /(?:color|background|bg|border|fill|stroke|shadow|gradient)(?!\s*=)[^;\n]{0,40}?#(?:[0-9a-f]{6}|[0-9a-f]{3})\b/gi, tokenAware: true, advice: 'hex outside tokens — use var(--…)' },
   { id: 'purple-gradient', level: 'warn', scope: 'all', re: /gradient\([^)]*\b(purple|violet|indigo|fuchsia)\b|\b(?:from|via)-(?:purple|violet|indigo|fuchsia)-\d{2,3}\b/gi, advice: 'default AI gradient — use brand tokens' },
   // the same gradient written in hex (the classic #667eea → #764ba2): any stop with a violet hue
   { id: 'purple-gradient', level: 'warn', scope: 'all', re: /gradient\(((?:[^()]|\([^()]*\))*)\)/gi, test: (m) => [...m[1].matchAll(/#([0-9a-f]{6}|[0-9a-f]{3})\b/gi)].some(([, h]) => isViolet(h)), advice: 'default AI gradient — use brand tokens' },
@@ -133,7 +133,11 @@ for (const root of roots) {
     const raw = readFileSync(file, 'utf8');
     const text = stripComments(raw, isStyle);
     const tokenFile = TOKEN_FILE.test(basename(file));
-    const ranges = isStyle ? tokenRanges(text) : [];
+    // markup: token blocks inside <style> elements (a drawing's <helmet><style>:root{--brand:#…}</style>) count too
+    const ranges = isStyle ? tokenRanges(text) : [...text.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].flatMap((m) => {
+      const at = m.index + m[0].indexOf(m[1]);
+      return tokenRanges(m[1]).map(([a, b]) => [a + at, b + at]);
+    });
     const inToken = (idx) => ranges.some(([a, b]) => idx > a && idx < b);
     for (const rule of RULES) {
       if (rule.scope !== 'all' && rule.scope !== (isStyle ? 'style' : 'markup')) continue;

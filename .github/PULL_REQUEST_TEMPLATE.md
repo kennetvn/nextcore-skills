@@ -6,7 +6,7 @@
 
 ## Kind
 
-- [ ] case (`cases/<slug>.md`)
+- [ ] case (`cases/<category>/<slug>.md`) or a platform playbook (`cases/<platform>/README.md`)
 - [ ] rule / skill text
 - [ ] check or tool
 - [ ] stack note

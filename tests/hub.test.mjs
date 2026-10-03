@@ -240,3 +240,21 @@ test('nextcore measure: files the installer created do not count as the project\
   writeFileSync(join(d, 'CLAUDE.md'), '# House rules\n');
   assert.deepEqual(measure().agentFiles, ['CLAUDE.md'], 'a file the person wrote is');
 });
+
+test('nextcore update: installed skills carry their version, update shows what changed and re-runs the same install', () => {
+  const d = mkdtempSync(join(tmpdir(), 'nc-update-'));
+  install(d, '--agent', 'cursor', '--skills', 'design');
+  const version = JSON.parse(read('package.json')).version;
+  const skill = readFileSync(join(d, '.nextcore/nextcore-design/SKILL.md'), 'utf8');
+  assert.ok(skill.includes(`Installed from nextcore-skills ${version}.`) && skill.includes('nextcore update'), 'SKILL.md carries its version and the update reminder');
+  const up = (...a) => spawnSync(process.execPath, [join(root, 'tools/nextcore.mjs'), 'update', '--dir', d, ...a], { encoding: 'utf8' });
+  assert.match(up().stdout, /up to date/);
+  const mf = join(d, '.nextcore/nextcore-install.json');
+  writeFileSync(mf, JSON.stringify({ version: '1.7.0', agent: 'cursor', skills: ['design'] }));
+  const check = up('--check');
+  assert.match(check.stdout, new RegExp(`1\.7\.0 → ${version.replace(/\./g, '\.')}`));
+  assert.match(check.stdout, /## 1\.8\.0/, 'lists the versions in between');
+  assert.equal(JSON.parse(readFileSync(mf, 'utf8')).version, '1.7.0', '--check changes nothing');
+  assert.equal(up().status, 0);
+  assert.equal(JSON.parse(readFileSync(mf, 'utf8')).version, version, 'update re-ran the install');
+});

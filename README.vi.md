@@ -217,7 +217,8 @@ npx -y -p github:kennetvn/nextcore-skills nextcore-install --agent codex --dry-r
 
 Claude Code → `.claude/skills/` + `.claude/agents/` · Cursor → `.cursor/rules/*.mdc` · Codex → `AGENTS.md` · Gemini CLI →
 `GEMINI.md` · Copilot → `.github/copilot-instructions.md` · Windsurf → `.windsurf/rules/`; tệp skill nằm trong `.nextcore/`.
-Agent làm gì sau khi cài: [AGENTS.md §4](AGENTS.md#4-use--after-install).
+Giữ bản mới bằng `nextcore update` — skill đã cài tự nhắc agent chạy khoảng mỗi tuần, và lệnh in ra thay đổi trước khi
+cập nhật. Agent làm gì sau khi cài: [AGENTS.md §4](AGENTS.md#4-use--after-install).
 
 | Bạn là… | Bắt đầu với |
 |---|---|

@@ -4,6 +4,27 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.10.0] — 2026-10-03
+
+### Added
+- `nextcore update [--check]`: compares the installed version with the latest, prints what changed in between (from
+  this CHANGELOG) and re-runs the same install. Every installed SKILL.md (and the Cursor rule / AGENTS.md block) now
+  says which version it came from and tells the agent to run it about once a week — the agent keeps it current, not
+  the person. The installer records `nextcore-install.json` (version, agent, skills).
+
+### Changed
+- **Cases live in one folder per subject**: platforms (`zalo/`, `facebook/`, `discord/`) and engineering areas
+  (`devops/`, `infra/`, `backend/`, `data/`, `ai-agents/`, `testing/`, `design/`…). A platform folder can carry a
+  playbook `README.md` (what still works and when it was checked, how to re-check it, deploy, known failures) from
+  `cases/PLAYBOOK-TEMPLATE.md`. The index groups by folder; `npm test` checks folders against `taxonomy.json` and
+  playbooks for a `Verified:` line and their sections. The nine existing cases moved into their folders.
+
+### Fixed
+- `slop-check` reported every colour in a `<style>:root{--brand:#…}</style>` block inside an HTML drawing or template
+  (one-line blocks entirely, multi-line blocks after the first line): token blocks in `<style>` elements are now exempt
+  by block, like in CSS files. On two real drawing folders: 19 → 13 and 27 → 1 errors; what remains are inline
+  `style="…"` hex values. Reported by an agent drawing with the skill.
+
 ## [1.9.1] — 2026-10-03
 
 ### Fixed

@@ -1,5 +1,59 @@
 {
-  "$comment": "Closed lists for the case library. Add a value in the same PR as the first case that needs it. `stack` is open: lowercase, one word per tool (nextjs, prisma, mysql, nginx, laravel, django…).",
+  "$comment": "Closed lists for the case library. A case lives in cases/<category>/<slug>.md; platform categories also carry a README.md playbook (what still works, checked when, how to audit, deploy, known failures). Add a value in the same PR as the first case that needs it. `stack` is open: lowercase, one word per tool.",
+  "category": {
+    "zalo": {
+      "platform": true,
+      "what": "Zalo — official OA API and unofficial personal-account libraries (zca-js)"
+    },
+    "facebook": {
+      "platform": true,
+      "what": "Facebook / Messenger / Graph API and browser automation on Facebook"
+    },
+    "discord": {
+      "platform": true,
+      "what": "Discord bots and webhooks"
+    },
+    "payments": {
+      "platform": false,
+      "what": "payment gateways, bank transfer matching, money flows"
+    },
+    "ai-agents": {
+      "platform": false,
+      "what": "LLM calls, tool use, agents writing or running the code"
+    },
+    "backend": {
+      "platform": false,
+      "what": "server code, ORM, request handling"
+    },
+    "frontend": {
+      "platform": false,
+      "what": "client rendering, routing, state"
+    },
+    "data": {
+      "platform": false,
+      "what": "exports, backfills, migrations, data correctness"
+    },
+    "design": {
+      "platform": false,
+      "what": "screens, drawings, specs, design process"
+    },
+    "devops": {
+      "platform": false,
+      "what": "CI/CD, deploys, process managers, runners"
+    },
+    "infra": {
+      "platform": false,
+      "what": "web server, reverse proxy, cache, OS"
+    },
+    "testing": {
+      "platform": false,
+      "what": "tests and gates that pass or fail for the wrong reason"
+    },
+    "process": {
+      "platform": false,
+      "what": "how people and agents work together"
+    }
+  },
   "layer": {
     "code": "application logic, framework and library behaviour",
     "data": "schemas, migrations, exports, backfills, data correctness",
@@ -35,5 +89,11 @@
     "dev": "nextcore-dev",
     "workflow": "nextcore-workflow"
   },
-  "sections": ["Symptom", "Cause", "Fix", "How to catch it", "Rule"]
+  "sections": [
+    "Symptom",
+    "Cause",
+    "Fix",
+    "How to catch it",
+    "Rule"
+  ]
 }

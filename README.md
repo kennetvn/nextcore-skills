@@ -215,7 +215,8 @@ npx -y -p github:kennetvn/nextcore-skills nextcore-install --agent codex --dry-r
 
 Claude Code → `.claude/skills/` + `.claude/agents/` · Cursor → `.cursor/rules/*.mdc` · Codex → `AGENTS.md` · Gemini CLI →
 `GEMINI.md` · Copilot → `.github/copilot-instructions.md` · Windsurf → `.windsurf/rules/`; skill files in `.nextcore/`.
-What an agent should do after installing: [AGENTS.md §4](AGENTS.md#4-use--after-install).
+Stay current with `nextcore update` — installed skills tell the agent to run it about once a week, and it shows what
+changed before it updates. What an agent should do after installing: [AGENTS.md §4](AGENTS.md#4-use--after-install).
 
 | You are… | Start with |
 |---|---|

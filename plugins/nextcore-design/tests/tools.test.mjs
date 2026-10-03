@@ -141,3 +141,9 @@ test('spec-check: every rule fires on the bad specs', () => {
   assert.match(report, /UX validation has empty results/, 'an empty report counts as missing');
   assert.equal(r.code, 1);
 });
+
+test('slop-check: token blocks inside a <style> element are exempt by block, not by line; a hex right after one is not', () => {
+  assert.deepEqual(tool('slop-check.mjs', fx('good', 'root-block-in-style-tag.html'), '--json').json, []);
+  const bad = tool('slop-check.mjs', fx('bad', 'hex-after-root-block.html'), '--json', '--warn-only').json;
+  assert.deepEqual(bad.map((f) => `${f.rule}:${f.line}`), ['color-literal:3']);
+});
