@@ -14,6 +14,7 @@ Rút ra từ một codebase production (Next.js, hơn 200 trang) sau nhiều l�
 | `skills/nextcore-design/SKILL.md` | Quy trình: khi nào phải vẽ · đọc đề + 3 núm vặn · 1 khu vực = 1 canvas · 5 trạng thái · khoá token · bàn giao · nghiệm thu |
 | `skills/nextcore-design/references/slop-tells.md` | ~35 dấu hiệu "UI kiểu AI", gộp và khử trùng từ 5 skill hàng đầu |
 | `skills/nextcore-design/references/measurement-traps.md` | 19 bẫy đo khiến báo "đã đạt" mà thật ra sai, mỗi bẫy là một lần đã xảy ra |
+| `skills/nextcore-design/references/canvas-workflow.md` | Claude Design vs Artifact canvas · một canvas tổng cho nhiều tài khoản Claude và nhiều agent CLI · phiếu bản vẽ đo được · dọn artifact |
 | `skills/nextcore-design/scripts/slop-check.mjs` | Bộ quét không phụ thuộc thư viện: 10 luật máy kiểm được, chạy trong CI / pre-commit |
 
 ### Điểm khác so với các skill khác
@@ -39,6 +40,25 @@ cp -r nextcore-design/skills/nextcore-design <du-an>/.claude/skills/
 Cursor / Codex: chép nội dung `SKILL.md` vào `.cursor/rules/nextcore-design.mdc` hoặc `AGENTS.md`.
 
 Skill tự kích hoạt khi bạn nhờ agent dựng trang mới, thiết kế lại, gửi ảnh mẫu, hoặc nói "nhìn như template".
+
+## Mẹo: Claude Design hay Artifact canvas?
+
+Ba thứ cùng mang tên "Claude Design" nhưng khác nhau, chọn nhầm là agent mất bản vẽ:
+
+| Loại | Agent đọc/ghi được? | Dùng cho |
+|---|---|---|
+| **Artifact loại Design** (canvas `.dc.html`) | được | mọi bản vẽ agent dựng và bảo trì |
+| Dự án **claude.ai/design** | **không**, không hiện cả trong danh sách artifact của chủ | người tự vẽ tay; muốn đưa vào repo thì Share → Export → Project HTML (.zip) |
+| Artifact loại **Design System** | được | nguồn token cho app Design; phải sinh lại từ tệp token thật, không sửa tay |
+
+Dùng nhiều tài khoản Claude thay phiên, hoặc nhiều phiên CLI song song:
+1. **Bản gốc nằm trong repo**, mỗi bản vẽ một thư mục cạnh mã. Artifact chỉ là bản chiếu.
+2. **Một canvas tổng** cho cả sản phẩm (mỗi khu vực một trang), share **Can edit** cho mọi tài khoản; script dựng lại từ repo.
+3. **Mỗi lúc chỉ một phiên publish**, và đọc lại `project/canvas.json` trước khi publish (người có thể vừa sửa trên trang).
+4. **Phiếu bản vẽ đo được**: hạng mục · link thật · lý do · đã thi công chưa · thiết bị · 5 trạng thái · % màu đúng token · font.
+5. Agent **không xoá được artifact** (cần người bấm xác nhận): agent lập danh sách, người xoá.
+
+Chi tiết và số đo thật: [`references/canvas-workflow.md`](skills/nextcore-design/references/canvas-workflow.md).
 
 ## Bộ quét slop
 
@@ -81,7 +101,9 @@ Design-first skill for AI coding agents: draw the screen (canvas/artifact) befor
 design tokens in the drawing, cover all 5 states (empty · loading · data · error · success), build 1:1 from
 the drawing, verify by measuring in a real browser. Unlike taste/hallmark it never picks fonts or colours
 for you, so it works on top of an existing design system. Ships a zero-dependency `slop-check.mjs` scanner
-(10 rules, two-way tested) and 19 measurement traps from production. Install:
+(10 rules, two-way tested) and 19 measurement traps from production. Includes a playbook for running one master
+canvas across several Claude accounts and parallel agents, with a measured design card per drawing
+(`references/canvas-workflow.md`). Install:
 `cp -r skills/nextcore-design ~/.claude/skills/`.
 
 ## License

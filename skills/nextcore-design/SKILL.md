@@ -40,6 +40,10 @@ Keep one canvas per product area (CRM, onboarding, settings…). A new feature i
 existing canvas, never a new canvas. Name artboards with a feature prefix (`Inbox-Main`, not `Main`).
 Reuse the existing frame artboards (sidebar, list column, light/dark tokens) — do not rebuild the frame.
 Keep the source of every drawing in the repo next to the code, so any account / machine can republish it.
+Best: ONE master canvas for the whole product (one page per area), shared *Can edit* with every Claude account
+you use, rebuilt from the repo by a script; every drawing carries a measured design card. Draw in an
+Artifact canvas, not a claude.ai/design project (agents cannot read those back). Full playbook for multiple
+accounts and parallel agents: `references/canvas-workflow.md`.
 
 ## §4 Every screen = at least 5 artboards
 
