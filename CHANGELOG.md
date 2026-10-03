@@ -4,6 +4,17 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.11.0] — 2026-10-03
+
+### Added
+- **First platform playbook: [Zalo personal accounts with zca-js](cases/zalo/README.md)** — what still works (16 capabilities,
+  each with the date it was checked and the evidence), how to re-check it on your own account, how to run it (one
+  process per set of accounts, memory, signed bridge with timestamp, long-poll, backoff, self-imposed limits), seven
+  known failures with their fixes, and what it will not cover (bulk messaging, getting around anti-abuse limits).
+- Three Zalo cases: conversations the owner started from the phone had no customer name (62 → 0 after the fix);
+  "history" only goes back to when the session started; two test accounts made the assistant answer itself.
+- AGENTS.md §4: working with a third-party platform → read its playbook and re-check the rows you rely on.
+
 ## [1.10.0] — 2026-10-03
 
 ### Added

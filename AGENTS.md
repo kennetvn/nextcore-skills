@@ -104,6 +104,7 @@ Say which level and why, quoting what you measured. "L0 — you already do this"
 | API, data, auth, jobs | `nextcore-dev/SKILL.md` → the matching `references/` file | the contract table filled; auth counted |
 | a bug fixed twice already | `nextcore-workflow/references/diagnose-before-patch.md` | a diagnosis note before the third fix |
 | several agents on one repo | `nextcore-workflow/references/parallel-agents.md` | commits scoped to your own files |
+| working with a third-party platform (Zalo, Facebook, Discord…) | its playbook `cases/<platform>/README.md` in this repo — status table, then *Audit it yourself* | re-check the rows you relied on; report a row that is no longer true (§6) |
 
 3. Write unknowns as UNKNOWN / ASSUMPTION and keep going. Ask the person once, and only when the answer changes the
    architecture, a business rule, permissions or the user flow.

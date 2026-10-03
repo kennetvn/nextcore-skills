@@ -150,7 +150,8 @@ codebase that is normal: run it with `--warn-only`, fix new code first, and let 
 before/after, a command or test that catches it, and the rule for an agent. Filed by **layer** (code, data, infra,
 devops, performance, testing, ai-agents, process), **area** (api, database, security, jobs…) and **stack** (nextjs,
 prisma, mysql, nginx, pm2… — open list), so a Laravel or Django team can go straight to what applies to them. New
-cases arrive as the product keeps running; yours are welcome.
+cases arrive as the product keeps running; yours are welcome. Platforms you integrate with get a **playbook** — what still
+works and when it was checked, how to re-check it, how to run it: first one, [Zalo personal accounts with zca-js](cases/zalo/README.md).
 
 ## Why these rules exist
 

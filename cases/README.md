@@ -27,6 +27,8 @@ the index, nothing private). Cases from other teams are welcome — open a
 
 ### [zalo](zalo/) — Zalo — official OA API and unofficial personal-account libraries (zca-js)
 
+**Playbook:** [Zalo personal accounts with zca-js — playbook](zalo/README.md) — verified zca-js 2.1.2 · Node ≥ 18.18 · 2026-10-03
+
 | Case | Layer | Stack | Kind |
 |---|---|---|---|
 | ["Message history" from the unofficial Zalo library only goes back to when the session was created](zalo/history-only-since-the-session-started.md) | code, data | zca-js | measurement-trap |

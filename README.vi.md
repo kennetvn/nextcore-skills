@@ -152,7 +152,8 @@ codebase cũ thì vậy là bình thường: chạy kèm `--warn-only`, sửa co
 cách sửa kèm số trước/sau, một lệnh hoặc test bắt được nó, và quy tắc cho agent. Xếp theo **tầng** (code, data, infra,
 devops, performance, testing, ai-agents, process), **mảng** (api, database, security, jobs…) và **stack** (nextjs,
 prisma, mysql, nginx, pm2… — danh sách mở), để nhóm Laravel hay Django đi thẳng tới phần hợp với mình. Case mới được
-thêm dần khi sản phẩm tiếp tục chạy; case của bạn cũng được chào đón.
+thêm dần khi sản phẩm tiếp tục chạy; case của bạn cũng được chào đón. Nền tảng tích hợp có **sổ tay (playbook)** — cái gì còn
+dùng được và kiểm khi nào, cách tự kiểm lại, cách vận hành: đầu tiên là [Zalo cá nhân với zca-js](cases/zalo/README.md).
 
 ## Vì sao có các quy tắc này
 
