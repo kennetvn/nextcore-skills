@@ -12,9 +12,9 @@ const tool = (name, ...args) => {
   return { code: r.status, json: args.includes('--json') ? JSON.parse(r.stdout) : null, out: r.stdout };
 };
 
-test('slop-check: all 10 rules fire on bad fixtures', () => {
+test('slop-check: all 11 rules fire on bad fixtures', () => {
   const rules = new Set(tool('slop-check.mjs', fx('bad'), '--json', '--warn-only').json.map((f) => f.rule));
-  for (const r of ['color-literal', 'rgb-literal', 'purple-gradient', 'transition-all', 'break-all', 'grid-1fr', 'italic-heading', 'emoji-icon', 'placeholder-data', 'round-number']) {
+  for (const r of ['color-literal', 'rgb-literal', 'purple-gradient', 'transition-all', 'break-all', 'grid-1fr', 'italic-heading', 'emoji-icon', 'placeholder-data', 'round-number', 'pixel-patch']) {
     assert.ok(rules.has(r), `rule ${r} did not fire`);
   }
 });
@@ -61,4 +61,18 @@ test('design-card: an incomplete drawing reports every gap', () => {
     assert.ok(p.includes(want), `missing problem: ${want}`);
   }
   assert.equal(r.code, 1);
+});
+
+test('design-review: one sheet, four squint views per artboard, 5-second questions per drawing', async () => {
+  const { mkdtempSync, readFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const out = join(mkdtempSync(join(tmpdir(), 'ncd-')), 'review.html');
+  const r = tool('design-review.mjs', fx('drawings'), '--out', out);
+  assert.equal(r.code, 0);
+  const html = readFileSync(out, 'utf8');
+  const count = (s) => html.split(s).length - 1;
+  // 7 artboards in good + 1 in bad
+  for (const view of ['distance 50%', 'distance 25%', 'grayscale', 'no decoration']) assert.equal(count(`<figcaption>${view}</figcaption>`), 8, view);
+  assert.equal(count('5-second test'), 2);
+  assert.ok(html.includes('html{filter:grayscale(1)!important}'), 'no-decoration view stays grayscale');
 });

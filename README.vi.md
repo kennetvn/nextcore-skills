@@ -1,8 +1,8 @@
 # nextcore-design
 
 **Vẽ trước, code sau, và đo cả hai.** Một skill design-first (vẽ trước khi code) cho các AI coding agent (Claude Code,
-Cursor, Codex, Windsurf, Gemini CLI, Copilot), kèm ba công cụ kiểm không cần dependency, biến câu "nhìn ổn đấy"
-thành con số.
+Cursor, Codex, Windsurf, Gemini CLI, Copilot), một cặp agent phản biện/agent kiểm toán, và bốn công cụ không cần dependency,
+biến câu "nhìn ổn đấy" thành con số.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](LICENSE)
 [![Node ≥18](https://img.shields.io/badge/node-%E2%89%A518-16181D.svg)](package.json)
@@ -54,6 +54,7 @@ Các công cụ kiểm chạy ở bất kỳ đâu có Node ≥18, không cần 
 npx -y -p github:kennetvn/nextcore-design slop-check src
 npx -y -p github:kennetvn/nextcore-design token-audit src/styles/tokens.css --src src
 npx -y -p github:kennetvn/nextcore-design design-card design --tokens src/styles/tokens.css --fonts "Inter,Fraunces" --app src/app
+npx -y -p github:kennetvn/nextcore-design design-review design --shot review.png
 ```
 
 ## Bên trong có gì
@@ -61,13 +62,17 @@ npx -y -p github:kennetvn/nextcore-design design-card design --tokens src/styles
 | Đường dẫn | Là gì |
 |---|---|
 | [`skills/nextcore-design/SKILL.md`](skills/nextcore-design/SKILL.md) | Quy trình: khi nào cần vẽ · đọc brief + 3 núm chỉnh · một canvas tổng · 5 trạng thái × 3 khổ rộng · khoá token · bàn giao · nghiệm thu |
-| [`scripts/slop-check.mjs`](skills/nextcore-design/scripts/slop-check.mjs) | 10 luật máy móc bắt "AI slop" (dấu vết UI sinh tự động) cho CSS/TSX/HTML/Vue/Svelte; exit code dùng được trong CI |
+| [`scripts/slop-check.mjs`](skills/nextcore-design/scripts/slop-check.mjs) | 11 luật máy móc bắt "AI slop" (dấu vết UI sinh tự động) và vá bằng pixel cho CSS/TSX/HTML/Vue/Svelte; exit code dùng được trong CI |
 | [`scripts/token-audit.mjs`](skills/nextcore-design/scripts/token-audit.mjs) | Độ tương phản WCAG của các cặp token chữ/nền **ở mọi theme**, token thiếu giá trị dark, `var()` không trỏ tới đâu |
 | [`scripts/design-card.mjs`](skills/nextcore-design/scripts/design-card.mjs) | Phiếu cho từng bản vẽ: thiết bị, trạng thái, ADN màu, ADN chữ, route có tồn tại không; cổng `--strict` |
+| [`scripts/design-review.mjs`](skills/nextcore-design/scripts/design-review.mjs) | Tờ phép thử nheo mắt: mọi artboard ở 50% / 25%, thang xám và khi đã bỏ trang trí; có thể kèm ảnh chụp |
+| [`agents/`](skills/nextcore-design/agents) | `design-critic` (phản biện đối kháng trước khi code) · `design-auditor` (chạy các script sau khi code), là subagent của Claude Code |
+| [`references/design-thinking.md`](skills/nextcore-design/references/design-thinking.md) | Cách lập luận của designer lâu năm: SỰ THẬT với GIẢ ĐỊNH, thứ bậc thông tin trước tiên, mỗi phần tử có một "vì sao", trạng thái mở rộng, nội dung bản địa hoá, phép thử nheo mắt |
+| [`references/agent-pipeline.md`](skills/nextcore-design/references/agent-pipeline.md) | Designer → Critic → Implementer → Audit → Visual review → Iterate, kèm luật dừng |
 | [`references/canvas-workflow.md`](skills/nextcore-design/references/canvas-workflow.md) | Claude Design so với Artifact canvas · một canvas dùng chung cho nhiều tài khoản Claude và nhiều agent song song |
 | [`references/slop-tells.md`](skills/nextcore-design/references/slop-tells.md) | ~35 dấu hiệu cho thấy UI được sinh theo quán tính, gộp từ 5 skill hàng đầu |
 | [`references/measurement-traps.md`](skills/nextcore-design/references/measurement-traps.md) | 19 kiểu công cụ kiểm báo "đạt" trong khi trang đang hỏng, ca nào cũng đã xảy ra trên production |
-| [`templates/`](skills/nextcore-design/templates) | `brief.md` (dòng đọc, núm chỉnh, bản đồ trường dữ liệu, dữ liệu ca biên) · `card.json` |
+| [`templates/`](skills/nextcore-design/templates) | `spec.md` (mục tiêu, thứ bậc, nhật ký vì sao, bản đồ trường dữ liệu, trạng thái, responsive, a11y) · `card.json` · `report.md` |
 
 ## Các công cụ kiểm
 
@@ -94,6 +99,7 @@ slop-check: 4228 finding(s), 1447 error(s) — emoji-icon 372 · color-literal 1
 | `italic-heading` | warn | tiêu đề in nghiêng / `<em>` trong tiêu đề |
 | `emoji-icon` | warn | emoji dùng làm icon |
 | `round-number` | warn | số mẫu tròn trịnh (1,000 / 10,000) trong nội dung chữ |
+| `pixel-patch` | warn | khoảng cách lẻ (7px, 11px) hoặc margin âm lệch thang (−26px): lỗi bố cục bị vá bằng pixel |
 
 Nó **không** bắt hex nằm trong khối `:root` / `[data-theme]` / `@theme`, `var(--x, #fallback)`, path SVG của logo,
 `href="#id"`, hay chú thích.
@@ -130,6 +136,29 @@ design-card: 2 drawing(s), 1 pass, 1 need work
 Một bản vẽ là một thư mục artboard (`*.dc.html` / `*.html`), có thể kèm `canvas.json` của Claude Design
 (kích thước, tiêu đề) và một [`card.json`](skills/nextcore-design/templates/card.json) (hạng mục, route, lý do, đã dựng chưa).
 
+### `design-review`: thứ bậc có còn đứng vững khi nheo mắt không?
+
+```text
+$ node design-review.mjs design --shot review.png
+design-review: 74 drawing(s) → design-review.html · 55 artboard(s) use canvas data bindings (shown unbound)
+design-review: screenshot → review.png
+```
+
+Mỗi artboard hiện ở 50% và 25% (phép thử khoảng cách), ở thang xám (phép thử đen trắng) và khi đã bỏ bóng đổ,
+dải chuyển màu, ảnh nền (phép thử thứ bậc không cần trang trí), kèm các câu hỏi 5 giây bên cạnh.
+Lần chạy thật đầu tiên, nó cho thấy một nút chính biến thành khối xám nặng ngang các chip lọc khi bỏ màu:
+thứ bậc chỉ nằm ở màu.
+
+## Quy trình agent
+
+```
+Designer ─▶ Critic ─▶ Implementer ─▶ Auditor (scripts) ─▶ Visual review ─▶ Iterate on measured gaps only
+```
+
+Agent phản biện là một agent **riêng**, chỉ thấy sản phẩm đầu ra và phải dẫn artboard + phần tử cho từng ý;
+agent kiểm toán chỉ báo những gì script đo được. Ba vòng không cải thiện đo được ⇒ dừng và giao các rủi ro còn lại
+cho người. Chi tiết và cách cài: [`references/agent-pipeline.md`](skills/nextcore-design/references/agent-pipeline.md).
+
 ## Trong CI
 
 ```yaml
@@ -156,7 +185,8 @@ Codebase cũ và lớn? Bắt đầu với `--warn-only` rồi siết dần.
 |---|---|---|
 | Chọn font và màu thay bạn | có, rất hợp khi bắt đầu từ trang trắng | **không**, giữ nguyên design system của bạn |
 | Đơn vị công việc | một trang code | một **bản vẽ** (5 trạng thái × 3 khổ rộng) người duyệt xong mới code |
-| "Xong" nghĩa là | nhìn ổn | **đo được**: phiếu bản vẽ, tương phản token, bảng khớp trên trình duyệt thật |
+| "Xong" nghĩa là | nhìn ổn | **đo được**: phiếu bản vẽ, tương phản token, tờ phép thử nheo mắt, bảng khớp trên trình duyệt thật |
+| Ai chấm | chính agent đã làm ra nó | một **agent phản biện riêng** + script |
 | Nhiều tài khoản / nhiều agent | — | một canvas tổng, repo là nguồn sự thật ([cẩm nang](skills/nextcore-design/references/canvas-workflow.md)) |
 
 Dùng kết hợp: để một skill về gu đề xuất hướng đi cho sản phẩm hoàn toàn mới, rồi khoá nó lại bằng skill này.

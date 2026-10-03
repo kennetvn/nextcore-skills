@@ -1,12 +1,16 @@
 ---
 name: nextcore-design
-description: "Design-first for AI agents: draw the screen as a canvas/artifact BEFORE writing UI code — locked design tokens, all 5 states (empty, loading, data, error, success), real sample data, then build 1:1 from the drawing and verify by measuring in a real browser. Use when building a new page/component, redesigning a screen, when the user shares a reference image, or says the UI looks generic / like a template / flat / AI-made."
+description: "Senior product-design discipline for AI agents: understand the product and the information hierarchy, draw the screen as a canvas BEFORE writing UI code (locked tokens, every state, phone/tablet/desktop, real data), have a separate critic review it, build 1:1, then audit with scripts and squint tests in a real browser. Use when building a new page/component, redesigning a screen, when the user shares a reference image, or says the UI looks generic / like a template / flat / AI-made."
 ---
 
 # nextcore-design — draw first, code second
 
 > Building a layout from zero in code and patching it turn by turn (colour, spacing, breakpoints…) is the
 > slowest way to reach a good UI. Draw it first, agree on the drawing, then copy the drawing into code.
+>
+> **Sequence:** understand → define (spec) → architect (information hierarchy) → design (drawing) → critique
+> (separate agent) → implement 1:1 → audit (scripts) → visual review (squint tests, real browser) → iterate only on
+> measured gaps. You are a designer who can code, not a coder who decorates.
 
 ## §1 When drawing first is mandatory
 
@@ -18,6 +22,12 @@ description: "Design-first for AI agents: draw the screen as a canvas/artifact B
 | The user says "looks like a template / bland / flat" | Adding one row to an existing table |
 
 ## §2 Read the brief BEFORE drawing — stops "a different style every time" and LLM defaults
+
+0. **Spec first** (`templates/spec.md`): goal, user, primary action, the 9 information-hierarchy questions, field
+   map, states, responsive structure. Label every claim **FACT / ASSUMPTION / HYPOTHESIS / DECISION** — never invent
+   research. Inventory the existing product first; reuse it and name its inconsistencies instead of starting a
+   second design system. Every non-content element gets a one-phrase **"why"** (hierarchy, status, scanning…) or is
+   removed. Details: `references/design-thinking.md`.
 
 1. **One reading line** at the top of the artboard (also for redesigns):
    `Reading as: <screen kind> for <who uses it>, <feel>, layout type <named skeleton>.`
@@ -58,8 +68,9 @@ description: "Design-first for AI agents: draw the screen as a canvas/artifact B
 | **Error** | inline field error under the field + a toast for the action; plain sentence, no exclamation mark |
 | **Success** | confirmation toast or a state change |
 
-Also draw the **interactive** states that matter (hover, focus-visible, pressed, disabled) — on touch there is
-no hover, so every hover-only affordance needs a visible alternative.
+Also consider **partial · permission denied · offline · long / unexpected content**, and the **interactive**
+states that matter (hover, focus-visible, pressed, disabled, loading) — on touch there is no hover, so every
+hover-only affordance needs a visible alternative. Draw them or rule them out in the spec with a reason.
 
 **Device matrix — three widths, not one.** Draw 1280–1440 (desktop), **768 (tablet)** and 390 (phone) whenever the
 layout changes shape, not just shrinks. Tablet is the one everybody skips: measured on 56 production drawings,
@@ -98,9 +109,19 @@ invisible glass). Text over an image needs a scrim **measured at the text positi
 - ✓ purple–blue gradient not in the tokens · ✓ italic headings / a second font injected for emphasis
   (emphasise with **weight or colour of the SAME font**)
 - ✓ `grid-template-columns: 1fr` (= `minmax(auto,1fr)` ⇒ horizontal page scroll; write `minmax(0,1fr)`)
+- ✓ pixel patches: odd spacing (7px, 11px) or off-scale negative margins — fix the layout, not the pixels
 - more than 3 corner radii on one screen · ≥6 identical cards when the content is not uniform
 - tracked-out ALL-CAPS eyebrow on every section · centred hero when the reading line did not ask for it
 - three identical "feature" columns · 01/02/03 numbering when the content has no order
+
+## §6b Critique, separately — then the squint tests
+
+- **A different agent critiques the drawing** before any code (`agents/design-critic.md`): it sees only the
+  artefacts, cites artboard + element for each point, and answers `ship` or `revise`. Pipeline and stop rule:
+  `references/agent-pipeline.md`.
+- **Squint tests** on `scripts/design-review.mjs` (25% / 50% / grayscale / no-decoration views): the 5-second test
+  (where am I, what is this for, what matters most, what next), the distance test, the black-and-white test.
+  If hierarchy disappears without colour or decoration, fix type, spacing, grouping and position — not colour.
 
 ## §7 Hand-off to code
 
@@ -138,13 +159,18 @@ drawing is wrong, fix the drawing first (D1 → D2), then the code.
 - ❌ Saying "done" without same-condition before/after screenshots
 - ❌ Drawing a field that has no data source
 - ❌ Asking for approval while the design card is orange; drawing without a tablet artboard
+- ❌ Critiquing your own drawing and calling it reviewed; claiming "users prefer…" without evidence
+- ❌ Fixing a layout with pixel nudges (`margin-top:-7px; translateY(3px)`); calling a design "perfect"
 
 ## §10 Tools (zero dependencies, Node ≥18)
 
 | Script | Answers | Typical use |
 |---|---|---|
-| `scripts/slop-check.mjs <src>` | does the code carry "AI slop" tells? (10 rules) | pre-commit / CI on UI source |
+| `scripts/slop-check.mjs <src>` | does the code carry "AI slop" tells or pixel patches? (11 rules) | pre-commit / CI on UI source |
 | `scripts/token-audit.mjs <tokens.css> [--src <dir>]` | do my tokens pass contrast in every theme? any token missing a dark value? any `var()` that resolves to nothing? | when tokens change; CI |
 | `scripts/design-card.mjs <drawings> --tokens … --fonts … [--app …]` | is each drawing complete and on-brand? | before asking for approval |
+| `scripts/design-review.mjs <drawings> [--shot review.png]` | does the hierarchy survive distance, grayscale and no decoration? | critic + visual review |
 
-Templates: `templates/brief.md` (reading line, dials, field map, edge-case data) · `templates/card.json`.
+Agents: `agents/design-critic.md` · `agents/design-auditor.md`. Templates: `templates/spec.md` · `templates/card.json` ·
+`templates/report.md` (end every meaningful design task with it: decisions, structure, states, responsive,
+accessibility, what was measured, **remaining risks**).

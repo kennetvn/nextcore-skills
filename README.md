@@ -1,7 +1,7 @@
 # nextcore-design
 
 **Draw first, code second — and measure both.** A design-first skill for AI coding agents (Claude Code,
-Cursor, Codex, Windsurf, Gemini CLI, Copilot) plus three zero-dependency checkers that turn "looks good to me"
+Cursor, Codex, Windsurf, Gemini CLI, Copilot), a critic/auditor agent pair, and four zero-dependency tools that turn "looks good to me"
 into numbers.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](LICENSE)
@@ -54,6 +54,7 @@ The checkers run anywhere with Node ≥18 — no install:
 npx -y -p github:kennetvn/nextcore-design slop-check src
 npx -y -p github:kennetvn/nextcore-design token-audit src/styles/tokens.css --src src
 npx -y -p github:kennetvn/nextcore-design design-card design --tokens src/styles/tokens.css --fonts "Inter,Fraunces" --app src/app
+npx -y -p github:kennetvn/nextcore-design design-review design --shot review.png
 ```
 
 ## What's inside
@@ -61,13 +62,17 @@ npx -y -p github:kennetvn/nextcore-design design-card design --tokens src/styles
 | Path | What it is |
 |---|---|
 | [`skills/nextcore-design/SKILL.md`](skills/nextcore-design/SKILL.md) | The workflow: when to draw · read the brief + 3 dials · one master canvas · 5 states × 3 widths · lock tokens · hand-off · acceptance |
-| [`scripts/slop-check.mjs`](skills/nextcore-design/scripts/slop-check.mjs) | 10 mechanical "AI slop" rules for CSS/TSX/HTML/Vue/Svelte; CI-ready exit codes |
+| [`scripts/slop-check.mjs`](skills/nextcore-design/scripts/slop-check.mjs) | 11 mechanical "AI slop" and pixel-patch rules for CSS/TSX/HTML/Vue/Svelte; CI-ready exit codes |
 | [`scripts/token-audit.mjs`](skills/nextcore-design/scripts/token-audit.mjs) | WCAG contrast of text/background token pairs **in every theme**, tokens missing a dark value, `var()` that resolves to nothing |
 | [`scripts/design-card.mjs`](skills/nextcore-design/scripts/design-card.mjs) | Per-drawing card: devices, states, colour DNA, type DNA, routes exist; `--strict` gate |
+| [`scripts/design-review.mjs`](skills/nextcore-design/scripts/design-review.mjs) | Squint-test sheet: every artboard at 50% / 25%, grayscale and with decoration stripped; optional screenshot |
+| [`agents/`](skills/nextcore-design/agents) | `design-critic` (adversarial review before code) · `design-auditor` (runs the scripts after code) — Claude Code subagents |
+| [`references/design-thinking.md`](skills/nextcore-design/references/design-thinking.md) | Senior-designer reasoning: FACT vs ASSUMPTION, information hierarchy first, a "why" for every element, extended states, localised content, squint tests |
+| [`references/agent-pipeline.md`](skills/nextcore-design/references/agent-pipeline.md) | Designer → Critic → Implementer → Audit → Visual review → Iterate, with a stop rule |
 | [`references/canvas-workflow.md`](skills/nextcore-design/references/canvas-workflow.md) | Claude Design vs Artifact canvas · one canvas across several Claude accounts and parallel agents |
 | [`references/slop-tells.md`](skills/nextcore-design/references/slop-tells.md) | ~35 signs a UI was generated on autopilot, merged from 5 leading skills |
 | [`references/measurement-traps.md`](skills/nextcore-design/references/measurement-traps.md) | 19 ways a check says "pass" while the page is broken — each happened in production |
-| [`templates/`](skills/nextcore-design/templates) | `brief.md` (reading line, dials, field map, edge-case data) · `card.json` |
+| [`templates/`](skills/nextcore-design/templates) | `spec.md` (goal, hierarchy, why-log, field map, states, responsive, a11y) · `card.json` · `report.md` |
 
 ## The checkers
 
@@ -94,6 +99,7 @@ slop-check: 4228 finding(s), 1447 error(s) — emoji-icon 372 · color-literal 1
 | `italic-heading` | warn | italic headings / `<em>` in headings |
 | `emoji-icon` | warn | emoji as icons |
 | `round-number` | warn | round sample numbers (1,000 / 10,000) in copy |
+| `pixel-patch` | warn | odd spacing (7px, 11px) or off-scale negative margins (−26px): a layout problem patched in pixels |
 
 It does **not** flag hex inside `:root` / `[data-theme]` / `@theme` blocks, `var(--x, #fallback)`, SVG logo
 paths, `href="#id"`, or comments.
@@ -130,6 +136,29 @@ design-card: 2 drawing(s), 1 pass, 1 need work
 A drawing is a folder of artboards (`*.dc.html` / `*.html`), optionally with a Claude Design `canvas.json`
 (sizes, titles) and a [`card.json`](skills/nextcore-design/templates/card.json) (feature, routes, why, built).
 
+### `design-review` — does the hierarchy survive a squint?
+
+```text
+$ node design-review.mjs design --shot review.png
+design-review: 74 drawing(s) → design-review.html · 55 artboard(s) use canvas data bindings (shown unbound)
+design-review: screenshot → review.png
+```
+
+Each artboard appears at 50% and 25% (distance test), in grayscale (black-and-white test) and with shadows,
+gradients and background images stripped (hierarchy-without-decoration test), with the 5-second questions beside it.
+On its first real run it showed a primary button that became a grey block equal in weight to the filter chips once
+colour was removed — the hierarchy lived in colour alone.
+
+## The pipeline
+
+```
+Designer ─▶ Critic ─▶ Implementer ─▶ Auditor (scripts) ─▶ Visual review ─▶ Iterate on measured gaps only
+```
+
+The critic is a **separate** agent that sees only the artefacts and must cite artboard + element for every point;
+the auditor only reports what the scripts measured. Three rounds without measurable improvement ⇒ stop and hand the
+remaining risks to a human. Details and install: [`references/agent-pipeline.md`](skills/nextcore-design/references/agent-pipeline.md).
+
 ## In CI
 
 ```yaml
@@ -156,7 +185,8 @@ Big legacy codebase? Start with `--warn-only` and ratchet down.
 |---|---|---|
 | Picks fonts and colours for you | yes — great for a blank page | **no** — keeps your design system |
 | Unit of work | a page of code | a **drawing** (5 states × 3 widths) the human approves, then code |
-| "Done" means | it looks good | **measured**: design card, token contrast, real-browser match table |
+| "Done" means | it looks good | **measured**: design card, token contrast, squint sheet, real-browser match table |
+| Who judges | the same agent that made it | a **separate critic agent** + scripts |
 | Multi-account / multi-agent | — | one master canvas, repo as source of truth ([playbook](skills/nextcore-design/references/canvas-workflow.md)) |
 
 Use them together: let a taste skill propose a direction for a brand-new product, then lock it with this one.

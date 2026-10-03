@@ -36,6 +36,14 @@ const RULES = [
   { id: 'italic-heading', level: 'warn', scope: 'markup', re: /<h[1-6]\b[^>]*>[^<]*<(?:em|i)\b/g, advice: 'emphasise with weight/colour of the same font' },
   { id: 'emoji-icon', level: 'warn', scope: 'markup', re: /\p{Extended_Pictographic}️?/gu, advice: 'use an icon set, not emoji' },
   { id: 'placeholder-data', level: 'error', scope: 'markup', re: /(?<!placeholder\s*=\s*["'{`][^"'`\n]{0,60})(?:lorem ipsum|\bjohn doe\b|\bjane (?:doe|smith)\b|nguy[eễ]n v[aă]n [ab]\b|\bacme (?:inc|corp)\b)/gi, advice: 'use realistic sample data (a format hint inside placeholder="…" is fine)' },
+  // "Design > code": odd pixel spacing (7px, 11px) or an off-scale negative margin (-26px) is usually a patch
+  // over a layout problem. On-scale negatives (-4, -8, -16) are legitimate bleeds; 1px/2px hairlines are fine.
+  {
+    id: 'pixel-patch', level: 'warn', scope: 'style',
+    re: /(?:^|[;{\s])(?:margin|padding|gap|row-gap|column-gap|inset|top|right|bottom|left)(?:-[a-z-]+)?\s*:([^;{}]*)/g,
+    test: (m) => [...m[1].matchAll(/(?<![\d.\w])(-?)(\d+)px/g)].some(([, neg, n]) => (+n >= 3 && +n % 2 === 1) || (neg && +n >= 2 && +n % 4 !== 0)),
+    advice: 'off-scale spacing looks like a pixel patch — fix the layout or use the spacing scale',
+  },
   { id: 'round-number', level: 'warn', scope: 'markup', re: />[^<{}]*?(?<![\d.,])(?:[1-9]0{3,}|[1-9]0{0,2}[.,]000)(?![\d.,])[^<{}]*</g, advice: 'organic numbers read as real (1,247 not 1,000)' },
 ];
 
@@ -103,6 +111,7 @@ for (const root of roots) {
       if (rule.tokenAware && tokenFile) continue;
       for (const m of text.matchAll(rule.re)) {
         if (rule.tokenAware && inToken(m.index)) continue;
+        if (rule.test && !rule.test(m)) continue;
         const line = lineOf(text, m.index);
         const snippet = raw.split('\n')[line - 1].trim().slice(0, 120);
         findings.push({ file: relative(process.cwd(), file), line, rule: rule.id, level: rule.level, advice: rule.advice, snippet });

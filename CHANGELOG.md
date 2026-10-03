@@ -3,6 +3,22 @@
 All notable changes to this project are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 versioning: [SemVer](https://semver.org/).
 
+## [1.1.0] — 2026-10-03
+
+### Added
+- `design-review.mjs`: squint-test sheet — every artboard at 50% / 25% (distance test), grayscale (black-and-white
+  test) and with shadows, gradients and background images stripped (hierarchy-without-decoration), plus the 5-second
+  questions; `--shot` screenshots it with a local Chrome/Edge. Flags artboards whose text is filled by a canvas runtime.
+- `slop-check` rule `pixel-patch` (warn): odd spacing (7px, 11px) and off-scale negative margins; on-scale bleeds
+  (−4, −8, −16px) and 1–2px hairlines are not flagged.
+- `agents/design-critic.md` and `agents/design-auditor.md`: Claude Code subagents for a separate critic before code
+  and a script-only auditor after it.
+- `references/design-thinking.md`: FACT / ASSUMPTION / HYPOTHESIS labels, study the product first, information
+  hierarchy before visuals, a "why" for every element, visual-direction block, extended data and component states,
+  localised content, authentic imagery, squint tests, design > code.
+- `references/agent-pipeline.md`: Designer → Critic → Implementer → Audit → Visual review → Iterate, with a stop rule.
+- `templates/spec.md` (replaces `brief.md`) and `templates/report.md`.
+
 ## [1.0.0] — 2026-10-03
 
 ### Added
