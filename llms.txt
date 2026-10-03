@@ -3,11 +3,13 @@
 > Claude Code plugin marketplace with three plugins distilled from a production product built and run by AI coding
 > agents: nextcore-design (UI), nextcore-dev (frontend ↔ backend contract), nextcore-workflow (running agents).
 
-Agents evaluating this for a project: read AGENTS.md and measure the project before recommending.
+Agents: read AGENTS.md first — it routes "is this useful?" (measure, then recommend), "install it" (one command per
+agent harness) and "use it on this task" (size the task, open one file).
 
 ## Start here
-- [AGENTS.md](AGENTS.md): evaluation protocol (which plugin → measure → recommend L0–L3)
-- [README](README.md): overview and install (`/plugin marketplace add kennetvn/nextcore-skills`)
+- [AGENTS.md](AGENTS.md): evaluate → install → use, for any AI coding agent
+- Install for yourself: `npx -y -p github:kennetvn/nextcore-skills nextcore-install --agent <claude|cursor|codex|gemini|copilot|windsurf|generic>`
+- [README](README.md): overview for people
 
 ## Cases
 - [cases/](cases/README.md): production incidents and measurement traps, one file each (Symptom · Cause · Fix · How to catch it · Rule), indexed by layer and stack; [taxonomy](cases/taxonomy.json)

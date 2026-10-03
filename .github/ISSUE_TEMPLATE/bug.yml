@@ -6,7 +6,7 @@ body:
     id: tool
     attributes:
       label: Which tool
-      options: [slop-check, token-audit, design-card, design-review, spec-check, doc-drift, third-patch, cases-index, nextcore-design skill, nextcore-dev skill, nextcore-workflow skill, marketplace / install]
+      options: [nextcore-install, slop-check, token-audit, design-card, design-review, spec-check, doc-drift, third-patch, cases-index, nextcore-design skill, nextcore-dev skill, nextcore-workflow skill, marketplace / install]
     validations:
       required: true
   - type: textarea

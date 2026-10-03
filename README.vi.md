@@ -22,8 +22,14 @@ và vẫn vận hành.
 npx -y -p github:kennetvn/nextcore-skills slop-check src --warn-only
 ```
 
-Cursor, Codex, Gemini CLI, Copilot, Windsurf: [cài cho agent khác](#cài-skill). Kết quả mẫu và sáu công cụ còn lại:
-[thử trong một phút](#thử-trong-một-phút).
+**Hoặc để agent tự làm** — dán câu này cho Claude Code, Cursor, Codex, Gemini CLI, Copilot hay Windsurf:
+
+```text
+Đọc https://github.com/kennetvn/nextcore-skills/blob/main/AGENTS.md, đo dự án này,
+cho tôi biết skill nào hợp và vì sao, rồi tự cài những skill đó cho bạn.
+```
+
+Cài tay cho agent khác: [cài skill](#cài-skill). Kết quả mẫu và sáu công cụ còn lại: [thử trong một phút](#thử-trong-một-phút).
 
 ## Ba skill
 
@@ -200,9 +206,17 @@ trước/sau trên một dự án thật, [thêm vào đây](https://github.com/
 
 `@nextcore` là tên marketplace ở lệnh đầu tiên, không phải số phiên bản.
 
-Agent khác: chép `SKILL.md` của skill vào tệp quy tắc của bạn, cụ thể `.cursor/rules/*.mdc` (Cursor), `AGENTS.md`
-(Codex), `GEMINI.md` (Gemini CLI), `.github/copilot-instructions.md` (Copilot), `.windsurf/rules/` (Windsurf), và để
-thư mục `references/` của nó nằm cạnh.
+Agent bất kỳ, một lệnh từ thư mục gốc dự án — ghi đúng chỗ agent đó đọc, giữ nguyên tệp của bạn, chạy lại chỉ cập nhật:
+
+```bash
+# --agent claude · cursor · codex · gemini · copilot · windsurf · generic
+npx -y -p github:kennetvn/nextcore-skills nextcore-install --agent cursor --skills design
+npx -y -p github:kennetvn/nextcore-skills nextcore-install --agent codex --dry-run
+```
+
+Claude Code → `.claude/skills/` + `.claude/agents/` · Cursor → `.cursor/rules/*.mdc` · Codex → `AGENTS.md` · Gemini CLI →
+`GEMINI.md` · Copilot → `.github/copilot-instructions.md` · Windsurf → `.windsurf/rules/`; tệp skill nằm trong `.nextcore/`.
+Agent làm gì sau khi cài: [AGENTS.md §4](AGENTS.md#4-use--after-install).
 
 | Bạn là… | Bắt đầu với |
 |---|---|

@@ -4,6 +4,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.8.0] — 2026-10-03
+
+### Added
+- `nextcore-install`: one command an agent can run itself — `--agent claude|cursor|codex|gemini|copilot|windsurf|generic`,
+  `--skills`, `--dry-run`. Writes where that harness reads (`.claude/skills` + `.claude/agents`, `.cursor/rules/*.mdc`,
+  a marked block in `AGENTS.md` / `GEMINI.md` / `.github/copilot-instructions.md`, `.windsurf/rules`), keeps the user's
+  own text, stops on files it did not create, re-runs only update. Tested for every harness, for idempotence, conflicts
+  and dry-run.
+- AGENTS.md rewritten as the agent's entry point: route by what the person asked (evaluate · install · use), the
+  install table, and how to use the skills after install (size the task, open one file, the check before "done").
+- README quick start: a sentence to paste to your agent; install section uses `nextcore-install`.
+
 ### Fixed
 - README quick start fits the column without a horizontal scrollbar.
 

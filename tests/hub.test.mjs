@@ -159,3 +159,49 @@ test('cases: the validator rejects a bad case and accepts the template shape', a
   assert.match(errs, /layer: unknown "speed"/);
   assert.match(errs, /sections must be exactly/);
 });
+
+const install = (dir, ...a) => spawnSync(process.execPath, [join(root, 'tools/nextcore-install.mjs'), '--dir', dir, ...a], { encoding: 'utf8' });
+
+test('nextcore-install: every agent layout installs, runs, and a second run changes nothing', () => {
+  const expect = {
+    claude: ['.claude/skills/nextcore-design/SKILL.md', '.claude/skills/nextcore-dev/references/stacks.md', '.claude/agents/design-critic.md'],
+    cursor: ['.cursor/rules/nextcore-design.mdc', '.nextcore/nextcore-workflow/SKILL.md'],
+    codex: ['AGENTS.md', '.nextcore/nextcore-design/scripts/spec-check.mjs'],
+    gemini: ['GEMINI.md'], copilot: ['.github/copilot-instructions.md'],
+    windsurf: ['.windsurf/rules/nextcore-dev.md'], generic: ['.nextcore/VERSION'],
+  };
+  for (const [agent, files] of Object.entries(expect)) {
+    const d = mkdtempSync(join(tmpdir(), `nci-${agent}-`));
+    const r = install(d, '--agent', agent);
+    assert.equal(r.status, 0, `${agent}: ${r.stderr}`);
+    for (const f of files) assert.ok(existsSync(join(d, f)), `${agent}: ${f}`);
+    assert.match(install(d, '--agent', agent).stdout, /wrote 0, unchanged \d+/, `${agent}: second run must be a no-op`);
+  }
+  const d = mkdtempSync(join(tmpdir(), 'nci-run-'));
+  install(d, '--agent', 'claude', '--skills', 'design');
+  const help = spawnSync(process.execPath, [join(d, '.claude/skills/nextcore-design/scripts/spec-check.mjs'), '--help'], { encoding: 'utf8' });
+  assert.equal(help.status, 0, 'installed tools run from their new place');
+});
+
+test('nextcore-install: keeps the user\'s own text, refuses to overwrite a file it did not create, dry-run writes nothing', () => {
+  const d = mkdtempSync(join(tmpdir(), 'nci-keep-'));
+  writeFileSync(join(d, 'AGENTS.md'), '# House rules\n\nUse pnpm.\n');
+  install(d, '--agent', 'codex');
+  install(d, '--agent', 'codex', '--skills', 'dev');
+  const md = readFileSync(join(d, 'AGENTS.md'), 'utf8');
+  assert.ok(md.startsWith('# House rules\n\nUse pnpm.\n'), 'user text kept');
+  assert.equal(md.split('nextcore-skills:start').length - 1, 1, 'one block, replaced in place');
+  assert.ok(md.includes('nextcore-dev') && !md.includes('**nextcore-design**'), 'block reflects the last install');
+
+  const c = mkdtempSync(join(tmpdir(), 'nci-conflict-'));
+  mkdirSync(join(c, '.claude/agents'), { recursive: true });
+  writeFileSync(join(c, '.claude/agents/design-critic.md'), 'my own critic\n');
+  const r = install(c, '--agent', 'claude', '--skills', 'design');
+  assert.equal(r.status, 1);
+  assert.match(r.stderr, /conflict: .*design-critic\.md/);
+  assert.equal(readFileSync(join(c, '.claude/agents/design-critic.md'), 'utf8'), 'my own critic\n');
+
+  const e = mkdtempSync(join(tmpdir(), 'nci-dry-'));
+  assert.match(install(e, '--agent', 'cursor', '--dry-run').stdout, /would write/);
+  assert.deepEqual(readdirSync(e), []);
+});

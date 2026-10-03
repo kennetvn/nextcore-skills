@@ -31,7 +31,7 @@ plugins/<skill>/
   skills/<skill>/references/  detail the SKILL links to (one topic per file)
   skills/<skill>/scripts/     zero-dependency Node tools (each listed in package.json "bin")
   tests/ (design) · tests/fixtures/   bad + good inputs for every check
-tools/                      repo maintenance scripts (cases-index)
+tools/                      nextcore-install (puts the skills where each agent reads them) · cases-index
 tests/hub.test.mjs          repo-wide checks: marketplace, links, privacy, cases, tools
 ```
 

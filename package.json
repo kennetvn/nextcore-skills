@@ -1,6 +1,6 @@
 {
   "name": "nextcore-skills",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "private": true,
   "description": "Skills from a real product: nextcore-design (UI), nextcore-dev (frontend <-> backend contract), nextcore-workflow (running AI agents). Zero-dependency tools: slop-check, token-audit, design-card, design-review, doc-drift.",
   "type": "module",
@@ -19,7 +19,8 @@
     "design-review": "plugins/nextcore-design/skills/nextcore-design/scripts/design-review.mjs",
     "doc-drift": "plugins/nextcore-workflow/skills/nextcore-workflow/scripts/doc-drift.mjs",
     "third-patch": "plugins/nextcore-workflow/skills/nextcore-workflow/scripts/third-patch.mjs",
-    "spec-check": "plugins/nextcore-design/skills/nextcore-design/scripts/spec-check.mjs"
+    "spec-check": "plugins/nextcore-design/skills/nextcore-design/scripts/spec-check.mjs",
+    "nextcore-install": "tools/nextcore-install.mjs"
   },
   "scripts": {
     "test": "node --test tests/hub.test.mjs plugins/nextcore-design/tests/tools.test.mjs",

@@ -21,8 +21,15 @@ own project in a minute: Next.js, Laravel, plain PHP, Django, Rails, Vue, anythi
 npx -y -p github:kennetvn/nextcore-skills slop-check src --warn-only
 ```
 
-Cursor, Codex, Gemini CLI, Copilot, Windsurf: [install for other agents](#install-the-skills). Sample output and the
-other six tools: [try it in one minute](#try-it-in-one-minute).
+**Or let your agent do it** — paste this to Claude Code, Cursor, Codex, Gemini CLI, Copilot or Windsurf:
+
+```text
+Read https://github.com/kennetvn/nextcore-skills/blob/main/AGENTS.md, measure this project,
+tell me which skills fit and why, then install those for yourself.
+```
+
+Install by hand for other agents: [install the skills](#install-the-skills). Sample output and the other six tools:
+[try it in one minute](#try-it-in-one-minute).
 
 ## The three skills
 
@@ -197,9 +204,18 @@ measure a before/after on a real project, [add it](https://github.com/kennetvn/n
 
 `@nextcore` is the marketplace name from the first command, not a version.
 
-Other agents: copy a skill's `SKILL.md` into your rules file — `.cursor/rules/*.mdc` (Cursor), `AGENTS.md` (Codex),
-`GEMINI.md` (Gemini CLI), `.github/copilot-instructions.md` (Copilot), `.windsurf/rules/` (Windsurf) — and keep its
-`references/` folder next to it.
+Any agent, one command from the project root — it writes where that agent reads, keeps your own files, and re-running
+only updates:
+
+```bash
+# --agent claude · cursor · codex · gemini · copilot · windsurf · generic
+npx -y -p github:kennetvn/nextcore-skills nextcore-install --agent cursor --skills design
+npx -y -p github:kennetvn/nextcore-skills nextcore-install --agent codex --dry-run
+```
+
+Claude Code → `.claude/skills/` + `.claude/agents/` · Cursor → `.cursor/rules/*.mdc` · Codex → `AGENTS.md` · Gemini CLI →
+`GEMINI.md` · Copilot → `.github/copilot-instructions.md` · Windsurf → `.windsurf/rules/`; skill files in `.nextcore/`.
+What an agent should do after installing: [AGENTS.md §4](AGENTS.md#4-use--after-install).
 
 | You are… | Start with |
 |---|---|
