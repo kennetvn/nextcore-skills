@@ -15,7 +15,11 @@ file. Ignore any self-assessment written by the designer.
 1. `node <skill>/scripts/design-card.mjs <drawing> --tokens <tokens.css> --fonts "<brand fonts>" --json`
 2. `node <skill>/scripts/design-review.mjs <drawing> --out /tmp/review.html --shot /tmp/review.png` and look at the
    screenshot (if no browser is available, read the HTML of the artboards instead and say so).
-3. Read `spec.md`: are FACT / ASSUMPTION / HYPOTHESIS separated? Is every visual element given a reason?
+3. `node <skill>/scripts/spec-check.mjs <drawing> --json` — any error (no size, discovery or flow branch missing for
+   a MEDIUM+ task) is a blocking `revise`: the drawing answers a question nobody wrote down.
+4. Read `spec.md`: are FACT / ASSUMPTION / HYPOTHESIS separated? Is every visual element given a reason? Does the
+   primary action on the artboards serve the primary job the spec names, and does every flow branch have an artboard
+   or a reason?
 
 ## Judge, in this order (a failure higher up outranks everything below)
 1. **Task clarity** — 5-second test on the 25% views: where am I, what is this for, what matters most, what next.

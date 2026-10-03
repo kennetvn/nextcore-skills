@@ -6,8 +6,8 @@
 > how it will be checked (`check: …`). Write UNKNOWN instead of inventing. No "users prefer…" without a source.
 > Discovery sections: `references/product-discovery.md`. `spec-check` validates this file.
 
-Size: <TRIVIAL | SMALL | MEDIUM | LARGE | PRODUCT_CHANGE | SYSTEM_CHANGE>
-Impact: <LOW | MEDIUM | HIGH> — callers / contracts / rules that depend on what changes
+Size: LARGE
+Impact: HIGH — changes who can invite staff
 
 ## Problem
 - Current problem (with a number from the product if there is one):
@@ -94,3 +94,6 @@ colour never the only signal:
 
 ## Open questions
 - (only those that change architecture or the primary task)
+
+## Notes
+- ASSUMPTION: owners want to invite staff by phone number.

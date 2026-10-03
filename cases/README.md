@@ -17,7 +17,7 @@ are welcome — open a [lesson issue](https://github.com/kennetvn/nextcore-skill
 ## Index
 
 <!-- cases:start -->
-8 cases. Newest first inside each group; a case can sit in more than one layer.
+9 cases. Newest first inside each group; a case can sit in more than one layer.
 
 ### By layer
 
@@ -67,13 +67,21 @@ are welcome — open a [lesson issue](https://github.com/kennetvn/nextcore-skill
 | Case | Area | Stack | Kind |
 |---|---|---|---|
 | [In a multi-step generateText call, r.text is only the last step, so the model's apology was dropped](ai-sdk-multistep-text-is-last-step.md) | messaging, backend | vercel-ai-sdk, typescript | incident |
+| [56 screens shipped from approved drawings, none of which said what problem they solved](drawings-shipped-without-a-problem.md) | ui, frontend | nextjs, claude-design | measurement-trap |
+
+**process** — how people and agents work together
+
+| Case | Area | Stack | Kind |
+|---|---|---|---|
+| [56 screens shipped from approved drawings, none of which said what problem they solved](drawings-shipped-without-a-problem.md) | ui, frontend | nextjs, claude-design | measurement-trap |
 
 ### By stack
 
 - **aapanel** — [A panel's default nginx config cached /api responses for every site on the server](panel-nginx-default-cached-api.md)
+- **claude-design** — [56 screens shipped from approved drawings, none of which said what problem they solved](drawings-shipped-without-a-problem.md)
 - **github-actions** — [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](ci-turbopack-cache-crashed-postcss.md)
 - **mysql** — [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](mysql-batch-escapes-base64-newlines.md) · [The documented Prisma singleton created three connection pools per process in Next.js production](prisma-singleton-three-pools-nextjs.md)
-- **nextjs** — [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](ci-turbopack-cache-crashed-postcss.md) · [nginx `if ($var)` treats the string "0" as false, so a header block let "0" through](nginx-if-zero-is-false.md) · [A panel's default nginx config cached /api responses for every site on the server](panel-nginx-default-cached-api.md) · [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](pm2-reload-sends-sigint.md) · [The documented Prisma singleton created three connection pools per process in Next.js production](prisma-singleton-three-pools-nextjs.md)
+- **nextjs** — [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](ci-turbopack-cache-crashed-postcss.md) · [56 screens shipped from approved drawings, none of which said what problem they solved](drawings-shipped-without-a-problem.md) · [nginx `if ($var)` treats the string "0" as false, so a header block let "0" through](nginx-if-zero-is-false.md) · [A panel's default nginx config cached /api responses for every site on the server](panel-nginx-default-cached-api.md) · [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](pm2-reload-sends-sigint.md) · [The documented Prisma singleton created three connection pools per process in Next.js production](prisma-singleton-three-pools-nextjs.md)
 - **nginx** — [nginx `if ($var)` treats the string "0" as false, so a header block let "0" through](nginx-if-zero-is-false.md) · [A panel's default nginx config cached /api responses for every site on the server](panel-nginx-default-cached-api.md)
 - **nodejs** — [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](mysql-batch-escapes-base64-newlines.md) · [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](pm2-reload-sends-sigint.md)
 - **pm2** — [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](pm2-reload-sends-sigint.md)

@@ -15,7 +15,7 @@ It has two parts:
 - **Three skills** — instruction sets an AI agent (Claude Code, Cursor, Codex, Windsurf, Gemini CLI, Copilot) follows:
   **design** (draw and review the screen before coding it), **dev** (the contract between the UI and the API),
   **workflow** (how to run agents on a real product without them guessing or overwriting each other).
-- **Six command-line tools** that check what the skills ask for. They read local files only and send nothing anywhere.
+- **Seven command-line tools** that check what the skills ask for. They read local files only and send nothing anywhere.
 
 ![How the three skills fit together: brief → nextcore-design (spec + drawing) → nextcore-dev (API contract) → ship, measured by zero-dependency tools, all inside nextcore-workflow](docs/overview.svg)
 
@@ -155,6 +155,7 @@ cases arrive as the product keeps running; yours are welcome.
 | `token-audit` | text/background colour pairs meet WCAG contrast in light **and** dark mode; colours missing a dark version; `var()` that points to nothing | when colours change |
 | `design-card` | each design has phone/tablet/desktop, the 4 states, brand colours and fonts, and a page that exists | before approving a design |
 | `design-review` | an HTML sheet (and screenshot) of each design small, grayscale and undecorated | reviewing a design |
+| `spec-check` | the thinking before the drawing and after the build: task size, problem, job to be done, every flow branch, checkable assumptions, a validation report once it ships | before drawing; before calling it done |
 | `doc-drift` | numbers written in docs that are no longer true | at session start, in CI |
 | `third-patch` | blocks a third fix to the same file in 72 h without a diagnosis note | pre-commit hook |
 

@@ -123,3 +123,21 @@ test('token-audit: Tailwind v3 config read without executing it — bad fails, g
   assert.ok(good.json.sources[0].endsWith('1 skipped (not a literal value)'), good.json.sources[0]);
   assert.equal(good.code, 0);
 });
+
+test('spec-check: a complete MEDIUM spec with its validation report, and a TRIVIAL one-liner, stay silent', () => {
+  const r = tool('spec-check.mjs', fx('specs', 'good'), '--json');
+  assert.equal(r.json.specs, 2);
+  assert.deepEqual(r.json.findings, []);
+  assert.equal(r.code, 0);
+});
+
+test('spec-check: every rule fires on the bad specs', () => {
+  const r = tool('spec-check.mjs', fx('specs', 'bad'), '--json');
+  const rules = new Set(r.json.findings.map((f) => f.rule));
+  for (const rule of ['missing-spec', 'missing-size', 'missing-product-discovery', 'missing-flow-branch', 'missing-states', 'missing-responsive', 'unresolved-assumption', 'high-impact-unreviewed', 'missing-validation']) {
+    assert.ok(rules.has(rule), `rule ${rule} did not fire`);
+  }
+  const report = r.json.findings.filter((f) => f.file.endsWith('validation-report.md')).map((f) => f.message).join(' | ');
+  assert.match(report, /UX validation has empty results/, 'an empty report counts as missing');
+  assert.equal(r.code, 1);
+});

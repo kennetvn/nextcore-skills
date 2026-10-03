@@ -1,0 +1,1 @@
+{ "feature": "Owner payout history", "routes": ["/finance/payouts"], "why": "Owners asked support when and how much they were paid.", "built": { "status": "live", "files": ["app/finance/payouts/page.tsx"] } }

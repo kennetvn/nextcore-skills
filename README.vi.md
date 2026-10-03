@@ -15,7 +15,7 @@ Repo có hai phần:
 - **Ba skill**: bộ hướng dẫn mà một agent AI (Claude Code, Cursor, Codex, Windsurf, Gemini CLI, Copilot) làm theo.
   **design** (vẽ và soát màn hình trước khi code), **dev** (hợp đồng giữa UI và API),
   **workflow** (cách cho agent làm trên một sản phẩm thật mà không đoán mò hay ghi đè việc của nhau).
-- **Sáu công cụ dòng lệnh** kiểm những gì skill yêu cầu. Chúng chỉ đọc tệp trên máy và không gửi gì đi đâu.
+- **Bảy công cụ dòng lệnh** kiểm những gì skill yêu cầu. Chúng chỉ đọc tệp trên máy và không gửi gì đi đâu.
 
 ![Ba skill khớp với nhau thế nào: yêu cầu → nextcore-design (đặc tả + bản vẽ) → nextcore-dev (hợp đồng API) → phát hành, đo bằng các công cụ không phụ thuộc thư viện, tất cả nằm trong nextcore-workflow](docs/overview.svg)
 
@@ -156,6 +156,7 @@ thêm dần khi sản phẩm tiếp tục chạy; case của bạn cũng đượ
 | `token-audit` | cặp màu chữ/nền đạt độ tương phản WCAG ở chế độ sáng **và** dark mode; màu thiếu bản tối; `var()` trỏ vào thứ không tồn tại | khi đổi màu |
 | `design-card` | mỗi bản vẽ có khổ điện thoại/máy tính bảng/desktop, đủ 4 trạng thái, màu và font thương hiệu, và trang đó có thật | trước khi duyệt bản vẽ |
 | `design-review` | một trang HTML (kèm ảnh chụp) cho xem mỗi bản vẽ ở cỡ nhỏ, thang xám, bỏ trang trí | khi soát bản vẽ |
+| `spec-check` | phần suy nghĩ trước khi vẽ và sau khi làm: cỡ task, vấn đề, việc người dùng cần làm, mọi nhánh của luồng, giả định kiểm được, báo cáo kiểm chứng khi đã lên | trước khi vẽ; trước khi báo xong |
 | `doc-drift` | con số ghi trong tài liệu nay không còn đúng | đầu phiên, trong CI |
 | `third-patch` | chặn lần sửa thứ ba vào cùng một tệp trong 72 h nếu chưa có ghi chú chẩn đoán | pre-commit hook |
 

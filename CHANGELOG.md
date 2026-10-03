@@ -4,6 +4,24 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.7.0] — 2026-10-03
+
+### Added
+- **Product discovery before the drawing** (nextcore-design `references/product-discovery.md`): problem with a number,
+  job to be done, success criteria for user / business / system, current-experience audit, a user flow with every
+  branch, evidence labels. `templates/spec.md` gains Size, Impact, Problem, Job to be done, Success criteria, User flow.
+- **Validation after the build** (`references/validation.md`, `templates/validation-report.md`): walk the primary job
+  on the real page through every branch; business validation states the mechanism and the measurement, never a
+  claimed uplift. `templates/decision-record.md` for decisions people will ask "why" about.
+- **Task sizing** (nextcore-workflow `references/task-sizing.md`, SKILL §0): six sizes decide which phases run;
+  impact LOW / MEDIUM / HIGH by counting callers, contracts and rules; ask a person only when the answer changes
+  architecture, a business rule, permissions or the flow.
+- **`spec-check`**: missing spec, size, discovery, flow branches, states, responsive decisions, unchecked
+  assumptions, unreviewed HIGH impact, and a missing or empty validation report once `card.json` says it shipped.
+  Two-way fixtures. Run on 84 production drawings: 65 drawing folders found, 0 with a spec.
+- The design critic runs `spec-check` first; the design auditor reports it.
+- Case: `drawings-shipped-without-a-problem`.
+
 ## [1.6.0] — 2026-10-03
 
 ### Changed

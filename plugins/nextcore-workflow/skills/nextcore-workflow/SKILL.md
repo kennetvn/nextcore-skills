@@ -15,6 +15,15 @@ Each lesson reads: **what happened (numbers) → why → rule.**
 
 ---
 
+## 0. Size the task before you start
+
+TRIVIAL · SMALL · MEDIUM · LARGE · PRODUCT_CHANGE · SYSTEM_CHANGE — write the size in the issue or spec. It decides
+which phases run: a typo skips discovery; a permission change gets an impact analysis and a second reviewer before
+code, however few lines it is. Rate impact LOW / MEDIUM / HIGH by counting callers, contracts and rules that depend on
+what changes. Unknowns are written down as UNKNOWN / ASSUMPTION and work continues; a person is asked only when the
+answer changes architecture, a business rule, permissions or the user flow. Table: `references/task-sizing.md`.
+
+
 ## 1. Enforce in tiers: gates for what a machine can check, reasoning for the rest
 
 Agents forget rules. A rule that a hook can check should be a hook, not a paragraph.
@@ -133,8 +142,9 @@ an unrequested change. Measure whether anything is actually stuck before patchin
 
 ## 10. Lessons flow back to the community
 
-When an agent learns something general, it flags it, writes an anonymized English section, a script
-opens a public issue, and a maintainer turns it into a rule with a two-way fixture.
+When an agent learns something general, it flags it, writes an anonymized English section, and a script publishes it
+as a case (symptom · cause · fix · how to catch it · rule) after the repo's own tests pass — or opens a public issue
+when there is no number yet. Incident → root cause → rule → check.
 Mechanism: `references/lesson-loop.md`.
 
 ---

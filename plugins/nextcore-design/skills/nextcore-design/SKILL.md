@@ -1,6 +1,6 @@
 ---
 name: nextcore-design
-description: "Senior product-design discipline for AI agents: understand the product and the information hierarchy, draw the screen as a canvas BEFORE writing UI code (locked tokens, every state, phone/tablet/desktop, real data), have a separate critic review it, build 1:1, then audit with scripts and squint tests in a real browser. Use when building a new page/component, redesigning a screen, when the user shares a reference image, or says the UI looks generic / like a template / flat / AI-made."
+description: "Senior product-design discipline for AI agents: size the task, run product discovery (problem, job to be done, success criteria, every flow branch), understand the information hierarchy, draw the screen as a canvas BEFORE writing UI code (locked tokens, every state, phone/tablet/desktop, real data), have a separate critic review it, build 1:1, then audit with scripts and squint tests in a real browser, and validate that a user can finish the job and how the business goal will be measured. Use when building a new page/component, redesigning a screen, when the user shares a reference image, or says the UI looks generic / like a template / flat / AI-made."
 ---
 
 # nextcore-design — draw first, code second
@@ -8,9 +8,10 @@ description: "Senior product-design discipline for AI agents: understand the pro
 > Building a layout from zero in code and patching it turn by turn (colour, spacing, breakpoints…) is the
 > slowest way to reach a good UI. Draw it first, agree on the drawing, then copy the drawing into code.
 >
-> **Sequence:** understand → define (spec) → architect (information hierarchy) → design (drawing) → critique
-> (separate agent) → implement 1:1 → audit (scripts) → visual review (squint tests, real browser) → iterate only on
-> measured gaps. You are a designer who can code, not a coder who decorates.
+> **Sequence:** size → discover (problem, job, success criteria, flow) → define (spec) → architect (information
+> hierarchy) → design (drawing) → critique (separate agent) → implement 1:1 → audit (scripts) → visual review →
+> **validate** (can the user finish the job? how will the business goal be measured?) → iterate only on measured gaps.
+> Build the right screen before building the screen right. You are a designer who can code, not a coder who decorates.
 
 ## §1 When drawing first is mandatory
 
@@ -23,7 +24,11 @@ description: "Senior product-design discipline for AI agents: understand the pro
 
 ## §2 Read the brief BEFORE drawing — stops "a different style every time" and LLM defaults
 
-0. **Spec first** (`templates/spec.md`): goal, user, primary action, the 9 information-hierarchy questions, field
+0. **Size, then discover.** Write `Size:` (`nextcore-workflow` → `references/task-sizing.md`). MEDIUM and larger
+   answer the problem (with a number), the job to be done, success criteria for user / business / system, an audit of
+   the current experience (reuse · extend · replace · preserve) and a user flow with every branch — error, recovery,
+   cancel, permission, expired, offline — before any artboard: `references/product-discovery.md`.
+   **Spec** (`templates/spec.md`): goal, user, primary action, the 9 information-hierarchy questions, field
    map, states, responsive structure. Label every claim **FACT / ASSUMPTION / HYPOTHESIS / DECISION** — never invent
    research. Inventory the existing product first; reuse it and name its inconsistencies instead of starting a
    second design system. Every non-content element gets a one-phrase **"why"** (hierarchy, status, scanning…) or is
@@ -145,6 +150,10 @@ drawing is wrong, fix the drawing first (D1 → D2), then the code.
   charts. A failure higher up blocks checking lower items.
 - **Before asking for approval:** `scripts/design-card.mjs <drawings> --tokens … --fonts … --app … --strict`
   must pass (phone + tablet + desktop, 4 states, ≥85% colours on token, brand fonts only, routes exist).
+- **Validate, not only verify** (MEDIUM+): walk the primary job on the real page from the real entry point, phone first,
+  through every flow branch; count steps and decisions; for the business goal write the expected mechanism and the
+  measurement (event, baseline, date) — never a claimed uplift. `templates/validation-report.md`,
+  `references/validation.md`. A screen that matches its drawing can still be one the user cannot finish.
 - Open the real page at 390 / 768 / 1440 and **look at the screenshot**; also read
   `references/measurement-traps.md` — most "it passed" reports come from a wrong measurement.
 
@@ -160,6 +169,8 @@ drawing is wrong, fix the drawing first (D1 → D2), then the code.
 - ❌ Drawing a field that has no data source
 - ❌ Asking for approval while the design card is orange; drawing without a tablet artboard
 - ❌ Critiquing your own drawing and calling it reviewed; claiming "users prefer…" without evidence
+- ❌ Drawing a MEDIUM+ screen before the problem, the job and the flow branches are written
+- ❌ Calling a built MEDIUM+ feature done without a validation report; claiming conversion went up without data
 - ❌ Fixing a layout with pixel nudges (`margin-top:-7px; translateY(3px)`); calling a design "perfect"
 
 ## §10 Tools (zero dependencies, Node ≥18)
@@ -170,7 +181,9 @@ drawing is wrong, fix the drawing first (D1 → D2), then the code.
 | `scripts/token-audit.mjs <tokens.css> [--src <dir>]` | do my tokens pass contrast in every theme? any token missing a dark value? any `var()` that resolves to nothing? | when tokens change; CI |
 | `scripts/design-card.mjs <drawings> --tokens … --fonts … [--app …]` | is each drawing complete and on-brand? | before asking for approval |
 | `scripts/design-review.mjs <drawings> [--shot review.png]` | does the hierarchy survive distance, grayscale and no decoration? | critic + visual review |
+| `scripts/spec-check.mjs <drawings>` | is discovery written for the task's size, every flow branch covered, every assumption checkable, a validation report present once built? | before drawing; before calling it done |
 
 Agents: `agents/design-critic.md` · `agents/design-auditor.md`. Templates: `templates/spec.md` · `templates/card.json` ·
+`templates/validation-report.md` · `templates/decision-record.md` ·
 `templates/report.md` (end every meaningful design task with it: decisions, structure, states, responsive,
 accessibility, what was measured, **remaining risks**).
