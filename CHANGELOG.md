@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.6.0] — 2026-10-03
+
 ### Changed
 - The live size card moved from a `quy-mo` branch here to its own repo, [kennetvn/nextcore-stats](https://github.com/kennetvn/nextcore-stats), so this repo keeps a single branch.
 

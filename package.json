@@ -1,6 +1,6 @@
 {
   "name": "nextcore-skills",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "private": true,
   "description": "Skills from a real product: nextcore-design (UI), nextcore-dev (frontend <-> backend contract), nextcore-workflow (running AI agents). Zero-dependency tools: slop-check, token-audit, design-card, design-review, doc-drift.",
   "type": "module",
