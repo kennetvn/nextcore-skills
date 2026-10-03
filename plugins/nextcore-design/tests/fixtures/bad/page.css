@@ -1,0 +1,9 @@
+:root { --ds-ink: #16181d; --ds-primary: rgb(2, 147, 218); }
+.card { color: #ff00aa; transition: all .2s; }
+.email { word-break: break-all; }
+.grid { grid-template-columns: repeat(3, 1fr); }
+h2 em, h2 { font-style: italic; }
+.hero { background: linear-gradient(135deg, purple, blue); }
+.shadow { box-shadow: 0 2px 4px rgba(0, 0, 0, .2); }
+.badge { margin-top: -7px; padding-left: 11px; }
+.admin-hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }

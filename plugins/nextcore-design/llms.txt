@@ -1,0 +1,27 @@
+# nextcore-design
+
+> Senior product-design discipline for AI coding agents: spec and information hierarchy first, draw before code,
+> a separate critic agent, then measure. Zero-dependency Node tools; works with any stack that renders HTML.
+
+Agents evaluating this repo for a project: read AGENTS.md and measure the project before recommending anything.
+
+## Start here
+- [AGENTS.md](AGENTS.md): 3-minute evaluation protocol (detect stack → measure → recommend L0–L3)
+- [Skill](skills/nextcore-design/SKILL.md): the workflow an agent follows
+- [README](README.md): overview, install, tool output examples
+
+## Tools (node skills/nextcore-design/scripts/<tool>.mjs, or npx -p github:kennetvn/nextcore-design <tool>)
+- [slop-check](skills/nextcore-design/scripts/slop-check.mjs): 11 rules — colour literals, AI gradients, transition-all, break-all, fake data, pixel patches…
+- [token-audit](skills/nextcore-design/scripts/token-audit.mjs): WCAG contrast of token pairs in every theme, missing dark values, undefined var()
+- [design-card](skills/nextcore-design/scripts/design-card.mjs): per-drawing completeness — devices, states, colour/type DNA, routes
+- [design-review](skills/nextcore-design/scripts/design-review.mjs): squint-test sheet — distance, grayscale, no-decoration
+
+## References
+- [design-thinking](skills/nextcore-design/references/design-thinking.md): FACT vs ASSUMPTION, hierarchy first, a "why" per element, states, content, squint tests
+- [agent-pipeline](skills/nextcore-design/references/agent-pipeline.md): Designer → Critic → Implementer → Audit → Visual review → Iterate
+- [measurement-traps](skills/nextcore-design/references/measurement-traps.md): 19 ways a check passes while the page is broken
+- [slop-tells](skills/nextcore-design/references/slop-tells.md): signs a UI was generated on autopilot
+- [canvas-workflow](skills/nextcore-design/references/canvas-workflow.md): one master canvas across Claude accounts and parallel agents
+
+## Related
+- [nextcore-skills](https://github.com/kennetvn/nextcore-skills): marketplace with nextcore-dev (frontend ↔ backend contract) and nextcore-workflow (running agents on a real product)

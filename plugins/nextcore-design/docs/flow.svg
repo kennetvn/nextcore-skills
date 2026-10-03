@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 220" width="960" height="220" role="img" aria-labelledby="t d">
+  <title id="t">nextcore-design workflow</title>
+  <desc id="d">Five steps: read the brief, draw 5 states at 3 widths, measure the design card, build one to one, verify in a real browser. Failing the card or the verification loops back to the drawing.</desc>
+  <style>
+    .box { fill: #F5F8FA; stroke: #C9D1DA; stroke-width: 1.5; }
+    .gate { fill: #E6F4FB; stroke: #0369A1; stroke-width: 1.5; }
+    .h { font: 600 15px system-ui, -apple-system, 'Segoe UI', sans-serif; fill: #0B0B0D; }
+    .s { font: 400 12px system-ui, -apple-system, 'Segoe UI', sans-serif; fill: #3D4450; }
+    .n { font: 700 12px ui-monospace, 'SF Mono', Menlo, monospace; fill: #0369A1; }
+    .ln { stroke: #8A94A3; stroke-width: 1.5; fill: none; }
+    .back { stroke: #B45309; stroke-width: 1.5; fill: none; stroke-dasharray: 5 4; }
+    .bt { font: 500 12px system-ui, -apple-system, 'Segoe UI', sans-serif; fill: #B45309; }
+    @media (prefers-color-scheme: dark) {
+      .box { fill: #16181D; stroke: #3A414B; }
+      .gate { fill: #0B2A3B; stroke: #56C5FF; }
+      .h { fill: #F2F4F7; } .s { fill: #A7AFBA; } .n { fill: #56C5FF; }
+      .ln { stroke: #6B7480; } .back { stroke: #F59E0B; } .bt { fill: #F59E0B; }
+    }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#8A94A3"/>
+    </marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#D97706"/>
+    </marker>
+  </defs>
+
+  <rect class="box" x="10" y="40" width="160" height="96" rx="12"/>
+  <text class="n" x="26" y="64">01</text><text class="h" x="26" y="86">Read the brief</text>
+  <text class="s" x="26" y="106">reading line · 3 dials</text><text class="s" x="26" y="122">field map · edge data</text>
+
+  <rect class="box" x="200" y="40" width="170" height="96" rx="12"/>
+  <text class="n" x="216" y="64">02</text><text class="h" x="216" y="86">Draw first</text>
+  <text class="s" x="216" y="106">5 states × 3 widths</text><text class="s" x="216" y="122">tokens only, real data</text>
+
+  <rect class="gate" x="400" y="40" width="170" height="96" rx="12"/>
+  <text class="n" x="416" y="64">03 · gate</text><text class="h" x="416" y="86">Design card</text>
+  <text class="s" x="416" y="106">devices · states · colour</text><text class="s" x="416" y="122">fonts · routes (measured)</text>
+
+  <rect class="box" x="600" y="40" width="160" height="96" rx="12"/>
+  <text class="n" x="616" y="64">04</text><text class="h" x="616" y="86">Build 1:1</text>
+  <text class="s" x="616" y="106">no re-layout mid-build</text><text class="s" x="616" y="122">slop-check in CI</text>
+
+  <rect class="gate" x="790" y="40" width="160" height="96" rx="12"/>
+  <text class="n" x="806" y="64">05 · gate</text><text class="h" x="806" y="86">Measure</text>
+  <text class="s" x="806" y="106">real browser, 3 widths</text><text class="s" x="806" y="122">before / after, match table</text>
+
+  <path class="ln" d="M170 88H196" marker-end="url(#a)"/>
+  <path class="ln" d="M370 88H396" marker-end="url(#a)"/>
+  <path class="ln" d="M570 88H596" marker-end="url(#a)"/>
+  <path class="ln" d="M760 88H786" marker-end="url(#a)"/>
+
+  <path class="back" d="M485 136V158H290V142" marker-end="url(#b)"/>
+  <text class="bt" x="302" y="176">orange card ⇒ fix the drawing</text>
+  <path class="back" d="M870 136V196H270V142" marker-end="url(#b)"/>
+  <text class="bt" x="520" y="214">mismatch ⇒ fix the code, or the drawing becomes D2</text>
+</svg>

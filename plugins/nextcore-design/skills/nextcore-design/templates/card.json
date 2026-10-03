@@ -1,0 +1,6 @@
+{
+  "feature": "Settings · invite and manage team members",
+  "routes": ["/settings/team"],
+  "why": "Owners could not remove a member without contacting support; this page lets them do it themselves.",
+  "built": { "status": "not-yet", "files": [] }
+}

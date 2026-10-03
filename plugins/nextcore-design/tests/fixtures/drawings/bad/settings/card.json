@@ -1,0 +1,6 @@
+{
+ "feature": "Settings",
+ "routes": [
+  "/settings/billing"
+ ]
+}

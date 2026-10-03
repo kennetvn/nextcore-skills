@@ -1,0 +1,13 @@
+{
+ "feature": "Settings \u00b7 invite and manage team members",
+ "routes": [
+  "/settings"
+ ],
+ "why": "Owners could not remove a member without support; this page lets them do it.",
+ "built": {
+  "status": "built",
+  "files": [
+   "src/app/settings/page.tsx"
+  ]
+ }
+}
