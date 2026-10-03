@@ -15,10 +15,10 @@ own project in a minute: Next.js, Laravel, plain PHP, Django, Rails, Vue, anythi
 ```bash
 # Claude Code — add the skills
 /plugin marketplace add kennetvn/nextcore-skills
-/plugin install nextcore-design@nextcore    # and/or nextcore-dev@nextcore, nextcore-workflow@nextcore
+/plugin install nextcore-design@nextcore      # also: nextcore-dev, nextcore-workflow
 
-# Any project, any stack — run a check (nothing to install, nothing sent anywhere)
-npx -y -p github:kennetvn/nextcore-skills slop-check <templates-or-css-folder> --warn-only
+# Any project, any stack — no install, nothing sent anywhere
+npx -y -p github:kennetvn/nextcore-skills slop-check src --warn-only
 ```
 
 Cursor, Codex, Gemini CLI, Copilot, Windsurf: [install for other agents](#install-the-skills). Sample output and the

@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+### Fixed
+- README quick start fits the column without a horizontal scrollbar.
+
 ## [1.7.1] — 2026-10-03
 
 ### Changed

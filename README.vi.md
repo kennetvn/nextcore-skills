@@ -16,10 +16,10 @@ và vẫn vận hành.
 ```bash
 # Claude Code — thêm skill
 /plugin marketplace add kennetvn/nextcore-skills
-/plugin install nextcore-design@nextcore    # và/hoặc nextcore-dev@nextcore, nextcore-workflow@nextcore
+/plugin install nextcore-design@nextcore      # thêm: nextcore-dev, nextcore-workflow
 
-# Dự án bất kỳ, stack bất kỳ — chạy một cổng kiểm (không cần cài, không gửi gì đi)
-npx -y -p github:kennetvn/nextcore-skills slop-check <thư-mục-template-hoặc-css> --warn-only
+# Dự án bất kỳ, stack bất kỳ — không cần cài, không gửi gì đi
+npx -y -p github:kennetvn/nextcore-skills slop-check src --warn-only
 ```
 
 Cursor, Codex, Gemini CLI, Copilot, Windsurf: [cài cho agent khác](#cài-skill). Kết quả mẫu và sáu công cụ còn lại:
