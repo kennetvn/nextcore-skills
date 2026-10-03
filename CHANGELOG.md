@@ -2,6 +2,18 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: [SemVer](https://semver.org/).
 
+## [1.5.0] — 2026-10-03
+
+### Added
+- `token-audit` reads WordPress `theme.json` palettes (`--wp--preset--color--<slug>`; a style variation titled
+  dark/night given as a second file is the dark theme) and Tailwind v3 `tailwind.config.{js,cjs,mjs,ts}` colours
+  (`theme.colors` / `theme.extend.colors`, nested keys flattened to `--color-<group>-<shade>`, `DEFAULT` →
+  `--color-<group>`) without executing the file; it prints how many values it skipped or could not read as a colour.
+  Two-way fixtures for both. (closes 1, 2)
+- `token-audit`: `hsl()` / `hsla()` colours; `contrast` counts as a text token and pairs are found under any prefix
+  (`wp--preset--color--contrast` on `…--base`).
+- Stack notes: FastAPI and Go (net/http + chi) columns for every backend principle, plus their traps. (closes 3)
+
 ## [1.4.0] — 2026-10-03
 
 ### Added

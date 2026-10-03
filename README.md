@@ -165,8 +165,8 @@ and stay silent on a good one.
 
 | Stack | `slop-check` reads | `token-audit` reads | Pages for `design-card` |
 |---|---|---|---|
-| Next.js / React / Remix | `.tsx .jsx .css` | CSS custom properties, Tailwind v4 `@theme` | `--app src/app` or `--app pages` |
-| Laravel / plain PHP / WordPress | `.blade.php .php .css .scss` | SCSS `$vars`, CSS custom properties | `--routes routes/web.php` |
+| Next.js / React / Remix | `.tsx .jsx .css` | CSS custom properties, Tailwind v4 `@theme`, Tailwind v3 `tailwind.config.js` | `--app src/app` or `--app pages` |
+| Laravel / plain PHP / WordPress | `.blade.php .php .css .scss` | SCSS `$vars`, CSS custom properties, WordPress `theme.json` palette | `--routes routes/web.php` |
 | Symfony / Craft | `.twig` | CSS / SCSS | `--routes routes.txt` |
 | Django / Flask | `.html .jinja .j2` | CSS / SCSS | `--routes routes.txt` |
 | Rails | `.erb` | CSS / SCSS | `bin/rails routes > routes.txt` |
@@ -206,7 +206,8 @@ need: a bad example, a good example that must stay silent, and where it bit you.
 
 - run `slop-check` on your project and report anything it flags that is actually fine;
 - add your framework to the [stack notes](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md);
-- teach `token-audit` a token format it doesn't read yet (Tailwind config, `theme.json`).
+- teach `token-audit` a token format it doesn't read yet (Style Dictionary / Tokens Studio JSON, Android `colors.xml`);
+- add a case from your own stack to [cases/](cases/README.md) — Laravel, Django, Go and Rails are still empty.
 
 Every accepted contribution is credited in the CHANGELOG and next to the rule it created
 ([details](CONTRIBUTING.md#how-contributions-are-credited)). Teams that run agents can also let them submit lessons

@@ -167,8 +167,8 @@ ví dụ sai và im lặng với ví dụ đúng.
 
 | Stack | `slop-check` đọc | `token-audit` đọc | Trang cho `design-card` |
 |---|---|---|---|
-| Next.js / React / Remix | `.tsx .jsx .css` | CSS custom property, Tailwind v4 `@theme` | `--app src/app` hoặc `--app pages` |
-| Laravel / PHP thuần / WordPress | `.blade.php .php .css .scss` | SCSS `$vars`, CSS custom property | `--routes routes/web.php` |
+| Next.js / React / Remix | `.tsx .jsx .css` | CSS custom property, Tailwind v4 `@theme`, Tailwind v3 `tailwind.config.js` | `--app src/app` hoặc `--app pages` |
+| Laravel / PHP thuần / WordPress | `.blade.php .php .css .scss` | SCSS `$vars`, CSS custom property, bảng màu `theme.json` của WordPress | `--routes routes/web.php` |
 | Symfony / Craft | `.twig` | CSS / SCSS | `--routes routes.txt` |
 | Django / Flask | `.html .jinja .j2` | CSS / SCSS | `--routes routes.txt` |
 | Rails | `.erb` | CSS / SCSS | `bin/rails routes > routes.txt` |
@@ -208,7 +208,8 @@ một ví dụ sai, một ví dụ đúng phải được để yên, và chỗ 
 
 - chạy `slop-check` trên dự án của bạn và báo những chỗ nó đánh dấu mà thật ra không sao;
 - thêm framework của bạn vào [ghi chú theo stack](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md);
-- dạy `token-audit` đọc một định dạng token nó chưa đọc được (Tailwind config, `theme.json`).
+- dạy `token-audit` đọc một định dạng token nó chưa đọc được (JSON của Style Dictionary / Tokens Studio, `colors.xml` của Android);
+- thêm một case từ stack của bạn vào [cases/](cases/README.md) — Laravel, Django, Go và Rails còn trống.
 
 Mỗi đóng góp được nhận đều được ghi công trong CHANGELOG và cạnh quy tắc mà nó tạo ra
 ([chi tiết](CONTRIBUTING.md#how-contributions-are-credited)). Team nào chạy agent cũng có thể để agent tự gửi bài học

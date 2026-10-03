@@ -96,3 +96,30 @@ test('purple-gradient also catches the hex form (#667eea → #764ba2) but not br
   assert.ok(bad.some((f) => f.rule === 'purple-gradient' && f.snippet.includes('#764ba2')));
   assert.deepEqual(tool('slop-check.mjs', fx('good'), '--json').json, []);
 });
+
+test('token-audit: WordPress theme.json palette (+ dark style variation) — bad fails, good stays silent', () => {
+  const bad = tool('token-audit.mjs', fx('tokens', 'wp-bad', 'theme.json'), '--json');
+  const got = bad.json.findings.map((f) => f.where);
+  assert.ok(got.includes('light: --wp--preset--color--contrast on --wp--preset--color--base'), 'contrast on base');
+  assert.ok(got.includes('light: --wp--preset--color--accent-fg on --wp--preset--color--accent'), 'accent-fg on accent');
+  assert.equal(bad.code, 1);
+  const good = tool('token-audit.mjs', fx('tokens', 'wp-good', 'theme.json'), fx('tokens', 'wp-good', 'styles', 'dark.json'), '--json');
+  assert.deepEqual(good.json.findings, []);
+  assert.equal(good.json.darkTokens, 2, 'dark variation read as the dark theme');
+  assert.equal(good.code, 0);
+});
+
+test('token-audit: Tailwind v3 config read without executing it — bad fails, good stays silent, skips are counted', () => {
+  const bad = tool('token-audit.mjs', fx('tokens', 'tw-bad', 'tailwind.config.js'), '--json');
+  const got = bad.json.findings.map((f) => f.where);
+  assert.ok(got.includes('light: --color-primary-foreground on --color-primary'), 'DEFAULT flattened to --color-primary');
+  assert.ok(got.includes('light: --color-foreground on --color-background'));
+  assert.ok(bad.json.sources[0].includes('4 colour(s) read, 1 skipped'), bad.json.sources[0]);
+  assert.equal(bad.code, 1);
+  const good = tool('token-audit.mjs', fx('tokens', 'tw-good', 'tailwind.config.js'), '--json');
+  assert.deepEqual(good.json.findings, []);
+  assert.equal(good.json.pairsChecked, 4, 'foreground/background, primary, muted (hsl), card skipped as non-colour');
+  assert.ok(good.json.sources[0].includes('11 colour(s) read (1 not a colour value'), good.json.sources[0]);
+  assert.ok(good.json.sources[0].endsWith('1 skipped (not a literal value)'), good.json.sources[0]);
+  assert.equal(good.code, 0);
+});

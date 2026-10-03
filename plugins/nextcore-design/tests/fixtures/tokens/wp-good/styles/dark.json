@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "title": "Dark",
+  "settings": {
+    "color": {
+      "palette": [
+        { "slug": "base", "color": "#161514", "name": "Base" },
+        { "slug": "contrast", "color": "#f1efe9", "name": "Contrast" }
+      ]
+    }
+  }
+}

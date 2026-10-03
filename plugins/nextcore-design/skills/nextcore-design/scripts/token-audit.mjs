@@ -3,6 +3,12 @@
 //
 //   node token-audit.mjs <tokens.css> [--src <dir>]... [--pair fg:bg]... [--json] [--warn-only]
 //
+// Token files: CSS custom properties (incl. Tailwind v4 @theme), SCSS `$vars`, LESS `@vars`,
+//   WordPress theme.json (settings.color.palette → --wp--preset--color--<slug>; pass a style variation such as
+//   styles/dark.json as a second file — a variation whose title says dark/night is read as the dark theme),
+//   Tailwind v3 tailwind.config.{js,cjs,mjs,ts} (theme.colors / theme.extend.colors → --color-<group>-<shade>;
+//   read as text, never executed — values that are not literal colours are skipped and counted).
+//
 // Checks
 //   contrast      WCAG 2.x contrast of text tokens on the backgrounds they are meant for, in EVERY theme
 //                 (light, [data-theme=dark], .dark, prefers-color-scheme: dark). Pairs come from naming
@@ -81,6 +87,19 @@ function parseColor(v) {
     const a = m[4] === undefined ? 1 : m[4].endsWith('%') ? parseFloat(m[4]) / 100 : parseFloat(m[4]);
     return { r: +m[1], g: +m[2], b: +m[3], a };
   }
+  m = v.match(/^hsla?\(\s*([\d.]+)(?:deg)?[\s,]+([\d.]+)%[\s,]+([\d.]+)%(?:\s*[,/]\s*([\d.]+%?))?\s*\)$/);
+  if (m) {
+    const [h, s, l] = [+m[1] / 360, +m[2] / 100, +m[3] / 100];
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    const ch = (t) => {
+      t = (t + 1) % 1;
+      const x = t < 1 / 6 ? p + (q - p) * 6 * t : t < 1 / 2 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p;
+      return Math.round(x * 255);
+    };
+    const a = m[4] === undefined ? 1 : m[4].endsWith('%') ? parseFloat(m[4]) / 100 : parseFloat(m[4]);
+    return { r: ch(h + 1 / 3), g: ch(h), b: ch(h - 1 / 3), a };
+  }
   if (v === 'white' || v === '#fff') return { r: 255, g: 255, b: 255, a: 1 };
   if (v === 'black') return { r: 0, g: 0, b: 0, a: 1 };
   return null;
@@ -95,14 +114,86 @@ const ratio = (a, b) => {
   return (x + 0.05) / (y + 0.05);
 };
 
+// ---------- non-CSS token sources ----------
+/** WordPress theme.json → { dark, colors: [[name, value]] }. */
+function themeJson(text) {
+  const j = JSON.parse(text);
+  const pal = j?.settings?.color?.palette;
+  const list = Array.isArray(pal) ? pal : [...(pal?.theme || []), ...(pal?.custom || [])];
+  return {
+    dark: /dark|night/i.test(j?.title || ''),
+    colors: list.filter((p) => p?.slug && p?.color).map((p) => [`wp--preset--color--${p.slug}`, String(p.color)]),
+  };
+}
+
+/** Tailwind v3 config → { colors: [[name, value]], skipped }. Tolerant object-literal reader; never executes the file. */
+function tailwindConfig(text) {
+  const src = text.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:'"`\\])\/\/[^\n]*/g, '$1');
+  const colors = [];
+  let skipped = 0;
+  let i = 0;
+  const ws = () => { while (i < src.length && /[\s,]/.test(src[i])) i++; };
+  const str = () => { const q = src[i++]; let s = ''; while (i < src.length && src[i] !== q) s += src[i] === '\\' ? src[++i] : src[i], i++; i++; return s; };
+  const skipValue = () => { // to the next , or } at depth 0
+    let d = 0;
+    while (i < src.length) {
+      const c = src[i];
+      if (c === '"' || c === "'" || c === '`') { str(); continue; }
+      if ('([{'.includes(c)) d++;
+      else if (')]}'.includes(c)) { if (!d) return; d--; }
+      else if (c === ',' && !d) return;
+      i++;
+    }
+  };
+  const obj = (prefix) => { // src[i] === '{'
+    i++;
+    for (;;) {
+      ws();
+      if (i >= src.length || src[i] === '}') { i++; return; }
+      if (src.startsWith('...', i)) { skipValue(); skipped++; continue; }
+      let key;
+      if (src[i] === '"' || src[i] === "'") key = str();
+      else { const m = src.slice(i).match(/^[\w$-]+/); if (!m) { skipValue(); skipped++; continue; } key = m[0]; i += key.length; }
+      ws();
+      if (src[i] !== ':') { skipValue(); skipped++; continue; } // shorthand `{ gray }`
+      i++; ws();
+      const name = key === 'DEFAULT' ? prefix : `${prefix}-${key}`;
+      if (src[i] === '{') obj(name);
+      else if (src[i] === '"' || src[i] === "'" || (src[i] === '`' && !src.slice(i, src.indexOf('`', i + 1)).includes('${'))) colors.push([name, str()]);
+      else { skipValue(); skipped++; }
+    }
+  };
+  for (const m of src.matchAll(/\bcolors\s*:\s*\{/g)) {
+    i = m.index + m[0].length - 1;
+    obj('color');
+  }
+  return { colors, skipped };
+}
+
 // ---------- build themes ----------
 const SIGIL = new Map(); // SCSS `$` / LESS `@` tokens keep their own sigil in reports
 const tok = (n) => `${SIGIL.get(n) || '--'}${n}`;
 const light = new Map();
 const dark = new Map();
+const sources = []; // non-CSS files: what was read, what was skipped
 let hasDark = false;
 for (const f of tokenFiles) {
-  const css = stripComments(readFileSync(f, 'utf8'));
+  const raw = readFileSync(f, 'utf8');
+  if (/\.json$/i.test(f)) {
+    const { dark: isDark, colors } = themeJson(raw);
+    for (const [k, v] of colors) (isDark ? dark : light).set(k, v);
+    if (isDark && colors.length) hasDark = true;
+    sources.push(`${f}: ${colors.length} palette colour(s)${isDark ? ' (dark)' : ''}`);
+    continue;
+  }
+  if (/tailwind\.config\.[cm]?[jt]s$/i.test(f)) {
+    const { colors, skipped } = tailwindConfig(raw);
+    for (const [k, v] of colors) light.set(k, v);
+    const notColour = colors.filter(([, v]) => !parseColor(v) && !/^(transparent|currentcolor|inherit)$/i.test(v)).length;
+    sources.push(`${f}: ${colors.length} colour(s) read${notColour ? ` (${notColour} not a colour value, e.g. hsl(var(--x)))` : ''}, ${skipped} skipped (not a literal value)`);
+    continue;
+  }
+  const css = stripComments(raw);
   // SCSS `$name: value;` / LESS `@name: value;` at the top level are tokens too (light theme)
   if (/\.(scss|sass|less)$/i.test(f)) {
     const top = css.replace(/\{[^{}]*\}/g, '');
@@ -145,10 +236,16 @@ for (const n of names) {
   m = n.match(/^(.*)-ink$/);
   if (m) add(n, `${m[1]}-soft`, 'X-ink on X-soft');
 }
+const TEXTS = ['ink', 'ink-soft', 'ink-muted', 'text', 'text-muted', 'foreground', 'fg', 'contrast'];
+const GROUNDS = ['bg', 'background', 'surface', 'cream', 'card', 'canvas', 'base'];
+// prefix = the first word (ds-…) or everything before a known text/ground suffix (wp--preset--color--…, color-…)
 const prefixes = new Set(names.map((n) => (n.match(/^([a-z]+-)/) || ['', ''])[1]));
+for (const n of names) {
+  for (const s of [...TEXTS, ...GROUNDS]) if (n === s || n.endsWith(`-${s}`)) prefixes.add(n.slice(0, n.length - s.length));
+}
 for (const p of prefixes) {
-  const texts = ['ink', 'ink-soft', 'ink-muted', 'text', 'text-muted', 'foreground', 'fg'].map((s) => p + s).filter(has);
-  const grounds = ['bg', 'background', 'surface', 'cream', 'card', 'canvas', 'base'].map((s) => p + s).filter(has);
+  const texts = TEXTS.map((s) => p + s).filter(has);
+  const grounds = GROUNDS.map((s) => p + s).filter(has);
   for (const t of texts) for (const g of grounds) add(t, g, 'text on surface');
 }
 for (const [fg, bg] of extraPairs) {
@@ -222,8 +319,9 @@ if (srcDirs.length) {
 
 // ---------- report ----------
 if (asJson) {
-  console.log(JSON.stringify({ tokens: light.size, darkTokens: dark.size, pairsChecked: pairs.size, findings }, null, 2));
+  console.log(JSON.stringify({ tokens: light.size, darkTokens: dark.size, pairsChecked: pairs.size, sources, findings }, null, 2));
 } else {
+  for (const s of sources) console.log(`read ${s}`);
   for (const f of findings) console.log(`${f.level === 'error' ? 'ERROR' : 'warn '}  [${f.rule}] ${f.where}\n        ${f.message}`);
   const errors = findings.filter((f) => f.level === 'error').length;
   console.log(`\ntoken-audit: ${light.size} tokens (${dark.size} with a dark value), ${pairs.size} text/background pairs × ${Object.keys(themes).length} theme(s) — ${findings.length} finding(s), ${errors} error(s)`);
