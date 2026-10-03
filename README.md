@@ -11,9 +11,9 @@ opposite happened and was measured.
 
 | Plugin | For | What it gives an agent |
 |---|---|---|
-| [**nextcore-design**](https://github.com/kennetvn/nextcore-design) | anyone shipping UI | spec + information hierarchy first, draw before code (5 states × 3 widths), a separate critic agent, and 4 zero-dependency checkers: `slop-check`, `token-audit`, `design-card`, `design-review` |
+| [**nextcore-design**](plugins/nextcore-design/README.md) | anyone shipping UI | spec + information hierarchy first, draw before code (5 states × 3 widths), a separate critic agent, and 4 zero-dependency checkers: `slop-check`, `token-audit`, `design-card`, `design-review` |
 | [**nextcore-dev**](plugins/nextcore-dev/skills/nextcore-dev/SKILL.md) | backend / full-stack | the contract that makes design and code meet: field map → API shape → UI state signal; auth on every route; money, migrations and production data changes; background jobs; 14 backend traps; notes for Next.js, Laravel, Django, Rails, Express/Nest |
-| [**nextcore-workflow**](plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md) | whoever runs the agents | diagnose before the third patch; evidence before "done"; parallel agents without collisions; several AI accounts; decisions live on issues; docs that expire (`doc-drift`); a lesson loop back to this repo |
+| [**nextcore-workflow**](plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md) | whoever runs the agents | diagnose before the third patch; evidence before "done"; parallel agents without collisions; several AI accounts; decisions live on issues; docs that expire (`doc-drift`); machine hygiene for long agent sessions; a lesson loop back to this repo |
 
 Design and development are two halves of one contract: `nextcore-design` writes the field map in `spec.md`,
 `nextcore-dev` turns it into an API contract and the backend rules that keep it true, `nextcore-workflow` keeps the
@@ -31,7 +31,15 @@ agents doing both honest.
 
 Other agents (Cursor, Codex, Windsurf, Gemini CLI, Copilot): copy the `SKILL.md` you need into your rules file
 (`.cursor/rules/*.mdc`, `AGENTS.md`, `GEMINI.md`, `.github/copilot-instructions.md`) and keep its `references/`
-folder next to it. The tools are plain Node ≥18 scripts with no dependencies.
+folder next to it. The tools are plain Node ≥18 scripts with no dependencies — run them without installing anything:
+
+```bash
+npx -y -p github:kennetvn/nextcore-skills slop-check src --warn-only          # UI "AI slop" + pixel patches, any HTML stack
+npx -y -p github:kennetvn/nextcore-skills token-audit src/styles/tokens.css   # contrast in every theme, missing dark values
+npx -y -p github:kennetvn/nextcore-skills design-card design --tokens src/styles/tokens.css --fonts "Inter"
+npx -y -p github:kennetvn/nextcore-skills design-review design --shot review.png
+npx -y -p github:kennetvn/nextcore-skills doc-drift docs --quiet               # numbers in docs that drifted
+```
 
 ## Which one first?
 
@@ -59,6 +67,12 @@ so any project can run it. You can also open a [lesson issue](https://github.com
 Contributors are credited in the CHANGELOG, next to the rule they taught, and on the contributors wall:
 
 [![Contributors](https://contrib.rocks/image?repo=kennetvn/nextcore-skills)](https://github.com/kennetvn/nextcore-skills/graphs/contributors)
+
+## One repository
+
+Everything lives here: `plugins/nextcore-design` (merged from the former `kennetvn/nextcore-design` repo with its full
+history), `plugins/nextcore-dev`, `plugins/nextcore-workflow` (which also absorbed the former `nextcore-solutions`
+machine-hygiene fixes). One CI runs every test on Linux, Windows and macOS with Node 18, 20 and 22.
 
 ## About the previous version
 

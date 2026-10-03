@@ -55,9 +55,9 @@ test('docs: nothing private leaked (product names, internal paths, IPs, emails, 
     /NEXTCORE-(?!SKILLS\b)[A-Z]|\.agent\//, // private repo paths (case-sensitive; the old public name NEXTCORE-SKILLS is fine)
     /\b(?!127\.|0\.0\.0\.0|10\.0\.0\.)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/, // non-loopback IPs
     /[\w.+-]+@[\w-]+\.(?:com|org|vn|net)\b/, // emails
-    /(?<![\w/&])#\d{3}\b/, // internal issue numbers
+    /(?<![\w/&'"`])#\d{3}\b(?![0-9a-fA-F])/, // internal issue numbers (not hex colours like '#000')
   ];
-  const hits = walk(root).filter((f) => ['.md', '.json', '.mjs', '.yml'].includes(extname(f)))
+  const hits = walk(root).filter((f) => ['.md', '.json', '.mjs', '.cjs', '.js', '.ps1', '.sh', '.yml'].includes(extname(f)))
     .flatMap((f) => readFileSync(f, 'utf8').split('\n').map((l, i) => [f, i + 1, l]))
     .filter(([f, , l]) => LEAKS.some((re) => re.test(l)) && !f.endsWith('hub.test.mjs'))
     .map(([f, n, l]) => `${f.slice(root.length)}:${n}: ${l.trim().slice(0, 100)}`);

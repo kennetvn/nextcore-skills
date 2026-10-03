@@ -11,7 +11,7 @@ where does the value come from, what shape does the API return, and what signal 
 which state to draw. When nobody writes those answers down, each side guesses.
 
 This skill is the written answer. It pairs with
-[nextcore-design](https://github.com/kennetvn/nextcore-design): that skill produces `spec.md`
+[nextcore-design](https://github.com/kennetvn/nextcore-skills/tree/main/plugins/nextcore-design): that skill produces `spec.md`
 with a **field map**; this skill turns the field map into an **API contract** and a set of
 backend rules that keep the contract true in production.
 

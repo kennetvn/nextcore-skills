@@ -135,6 +135,11 @@ Mechanism: `references/lesson-loop.md`.
 
 ---
 
+## 11. The agent recovers its own tools
+
+A dead browser MCP, piled-up Node processes, a CLI eating RAM: measurable states with known fixes. Run the fix,
+verify, continue; never "please check your browser". Drop-in scripts: `references/machine-hygiene.md`.
+
 ## Kill-list
 
 | Never | Instead |

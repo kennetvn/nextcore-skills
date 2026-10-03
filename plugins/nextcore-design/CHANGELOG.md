@@ -3,6 +3,12 @@
 All notable changes to this project are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 versioning: [SemVer](https://semver.org/).
 
+## [1.3.0] — 2026-10-03
+
+### Changed
+- Moved into [nextcore-skills](../../README.md) as `plugins/nextcore-design` (history preserved). Tools now run with
+  `npx -p github:kennetvn/nextcore-skills <tool>`; the standalone repo is retired.
+
 ## [1.2.0] — 2026-10-03
 
 ### Added

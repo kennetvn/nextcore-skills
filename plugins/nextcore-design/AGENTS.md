@@ -18,10 +18,10 @@ needs only Node ≥18; nothing is installed.
 ## 2. Measure (2 min) — always `--warn-only` on someone else's code
 
 ```bash
-npx -y -p github:kennetvn/nextcore-design slop-check <ui-source-dir> --warn-only
-npx -y -p github:kennetvn/nextcore-design token-audit <token-file> --src <ui-source-dir> --warn-only
+npx -y -p github:kennetvn/nextcore-skills slop-check <ui-source-dir> --warn-only
+npx -y -p github:kennetvn/nextcore-skills token-audit <token-file> --src <ui-source-dir> --warn-only
 # only if the project keeps drawings/prototypes:
-npx -y -p github:kennetvn/nextcore-design design-card <drawings-dir> --tokens <token-file> --fonts "<brand fonts>"
+npx -y -p github:kennetvn/nextcore-skills design-card <drawings-dir> --tokens <token-file> --fonts "<brand fonts>"
 ```
 
 Read the numbers, not just the totals: open 3–5 findings of the biggest rule and check they are real before

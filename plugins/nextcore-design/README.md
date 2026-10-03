@@ -4,10 +4,10 @@
 Cursor, Codex, Windsurf, Gemini CLI, Copilot), a critic/auditor agent pair, and four zero-dependency tools that turn "looks good to me"
 into numbers.
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](LICENSE)
-[![Node ≥18](https://img.shields.io/badge/node-%E2%89%A518-16181D.svg)](package.json)
-[![Zero dependencies](https://img.shields.io/badge/dependencies-0-0293DA.svg)](package.json)
-[![test](https://github.com/kennetvn/nextcore-design/actions/workflows/test.yml/badge.svg)](https://github.com/kennetvn/nextcore-design/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](../../LICENSE)
+[![Node ≥18](https://img.shields.io/badge/node-%E2%89%A518-16181D.svg)](../../package.json)
+[![Zero dependencies](https://img.shields.io/badge/dependencies-0-0293DA.svg)](../../package.json)
+[![test](https://github.com/kennetvn/nextcore-skills/actions/workflows/test.yml/badge.svg)](https://github.com/kennetvn/nextcore-skills/actions/workflows/test.yml)
 [Tiếng Việt](README.vi.md)
 
 ![Workflow: read the brief → draw 5 states at 3 widths → design card gate → build 1:1 → measure in a real browser](docs/flow.svg)
@@ -57,9 +57,9 @@ with the numbers. Install as a Claude Code plugin: `/plugin marketplace add kenn
 ## Quickstart
 
 ```bash
-git clone https://github.com/kennetvn/nextcore-design
-cp -r nextcore-design/skills/nextcore-design ~/.claude/skills/      # Claude Code, every project
-# or: cp -r nextcore-design/skills/nextcore-design <project>/.claude/skills/
+git clone https://github.com/kennetvn/nextcore-skills
+cp -r nextcore-skills/plugins/nextcore-design/skills/nextcore-design ~/.claude/skills/      # Claude Code, every project
+# or: cp -r nextcore-skills/plugins/nextcore-design/skills/nextcore-design <project>/.claude/skills/
 ```
 
 Then ask your agent for a new screen, a redesign, or say "this looks like a template". The skill activates on its own.
@@ -74,10 +74,10 @@ Then ask your agent for a new screen, a redesign, or say "this looks like a temp
 The checkers run anywhere with Node ≥18 — no install:
 
 ```bash
-npx -y -p github:kennetvn/nextcore-design slop-check src
-npx -y -p github:kennetvn/nextcore-design token-audit src/styles/tokens.css --src src
-npx -y -p github:kennetvn/nextcore-design design-card design --tokens src/styles/tokens.css --fonts "Inter,Fraunces" --app src/app
-npx -y -p github:kennetvn/nextcore-design design-review design --shot review.png
+npx -y -p github:kennetvn/nextcore-skills slop-check src
+npx -y -p github:kennetvn/nextcore-skills token-audit src/styles/tokens.css --src src
+npx -y -p github:kennetvn/nextcore-skills design-card design --tokens src/styles/tokens.css --fonts "Inter,Fraunces" --app src/app
+npx -y -p github:kennetvn/nextcore-skills design-review design --shot review.png
 ```
 
 ## What's inside
@@ -195,9 +195,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
-      - run: npx -y -p github:kennetvn/nextcore-design slop-check src
-      - run: npx -y -p github:kennetvn/nextcore-design token-audit src/styles/tokens.css --src src
-      - run: npx -y -p github:kennetvn/nextcore-design design-card design --tokens src/styles/tokens.css --fonts "Inter" --strict
+      - run: npx -y -p github:kennetvn/nextcore-skills slop-check src
+      - run: npx -y -p github:kennetvn/nextcore-skills token-audit src/styles/tokens.css --src src
+      - run: npx -y -p github:kennetvn/nextcore-skills design-card design --tokens src/styles/tokens.css --fonts "Inter" --strict
 ```
 
 Big legacy codebase? Start with `--warn-only` and ratchet down.
@@ -227,13 +227,13 @@ and `--pair a:b` adds any pair you need.
 ## Contributing
 
 Issues and PRs welcome — especially new slop rules with a real false-positive story. Every rule ships with a bad
-fixture that must fire and a good fixture that must stay silent. See [CONTRIBUTING.md](CONTRIBUTING.md); run `npm test`.
+fixture that must fire and a good fixture that must stay silent. See [CONTRIBUTING.md](../../CONTRIBUTING.md); run `npm test`.
 
 ### Contributors
 
-Every accepted rule, trap or fix is credited in the CHANGELOG and next to the rule itself (see [CONTRIBUTING.md](CONTRIBUTING.md#how-contributions-are-credited)).
+Every accepted rule, trap or fix is credited in the CHANGELOG and next to the rule itself (see [CONTRIBUTING.md](../../CONTRIBUTING.md#how-contributions-are-credited)).
 
-[![Contributors](https://contrib.rocks/image?repo=kennetvn/nextcore-design)](https://github.com/kennetvn/nextcore-design/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=kennetvn/nextcore-skills)](https://github.com/kennetvn/nextcore-skills/graphs/contributors)
 
 ## Credits
 
@@ -246,4 +246,4 @@ Written in our own words, with ideas learned from these MIT projects (stars as o
 
 ## License
 
-[MIT](LICENSE)
+[MIT](../../LICENSE)

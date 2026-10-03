@@ -2,11 +2,23 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: [SemVer](https://semver.org/).
 
+## [1.1.0] — 2026-10-03
+
+### Changed
+- **One repository.** `nextcore-design` merged into `plugins/nextcore-design` with its full git history (subtree);
+  the marketplace now serves all three plugins from this repo. All tools run with
+  `npx -p github:kennetvn/nextcore-skills <tool>`; one CI (3 OS × Node 18/20/22) runs every test and dogfoods every tool.
+- Privacy scan now also covers `.cjs`, `.js`, `.ps1`, `.sh` and ignores hex colours (`'#000'`).
+
+### Added
+- `nextcore-workflow`: machine hygiene for long agent sessions (orphan Node reaper, browser MCP self-healing,
+  long-running AI CLI memory) — absorbed from the former `nextcore-solutions` repo.
+
 ## [1.0.0] — 2026-10-03
 
 ### Added
 - Claude Code plugin marketplace `nextcore` (`/plugin marketplace add kennetvn/nextcore-skills`) listing three plugins:
-  - **nextcore-design** (hosted in [kennetvn/nextcore-design](https://github.com/kennetvn/nextcore-design)).
+  - **nextcore-design** (hosted in [kennetvn/nextcore-design](https://github.com/kennetvn/nextcore-skills/tree/main/plugins/nextcore-design)).
   - **nextcore-dev** — field map → API contract → UI state signals; auth on every route; money, migrations and
     production data changes; background jobs and ops; 14 backend traps; stack notes for Next.js, Laravel, Django,
     Rails, Express/Nest; design ↔ dev hand-off checklist.

@@ -4,10 +4,10 @@
 Cursor, Codex, Windsurf, Gemini CLI, Copilot), một cặp agent phản biện/agent kiểm toán, và bốn công cụ không cần dependency,
 biến câu "nhìn ổn đấy" thành con số.
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](LICENSE)
-[![Node ≥18](https://img.shields.io/badge/node-%E2%89%A518-16181D.svg)](package.json)
-[![Zero dependencies](https://img.shields.io/badge/dependencies-0-0293DA.svg)](package.json)
-[![test](https://github.com/kennetvn/nextcore-design/actions/workflows/test.yml/badge.svg)](https://github.com/kennetvn/nextcore-design/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-0293DA.svg)](../../LICENSE)
+[![Node ≥18](https://img.shields.io/badge/node-%E2%89%A518-16181D.svg)](../../package.json)
+[![Zero dependencies](https://img.shields.io/badge/dependencies-0-0293DA.svg)](../../package.json)
+[![test](https://github.com/kennetvn/nextcore-skills/actions/workflows/test.yml/badge.svg)](https://github.com/kennetvn/nextcore-skills/actions/workflows/test.yml)
 [English](README.md)
 
 ![Quy trình: đọc brief → vẽ 5 trạng thái ở 3 khổ rộng → cổng phiếu bản vẽ → dựng khớp 1:1 → đo trên trình duyệt thật](docs/flow.svg)
@@ -57,9 +57,9 @@ kèm con số. Cài như plugin Claude Code: `/plugin marketplace add kennetvn/n
 ## Bắt đầu nhanh
 
 ```bash
-git clone https://github.com/kennetvn/nextcore-design
-cp -r nextcore-design/skills/nextcore-design ~/.claude/skills/      # Claude Code, every project
-# or: cp -r nextcore-design/skills/nextcore-design <project>/.claude/skills/
+git clone https://github.com/kennetvn/nextcore-skills
+cp -r nextcore-skills/plugins/nextcore-design/skills/nextcore-design ~/.claude/skills/      # Claude Code, every project
+# or: cp -r nextcore-skills/plugins/nextcore-design/skills/nextcore-design <project>/.claude/skills/
 ```
 
 Sau đó nhờ agent làm một màn mới, thiết kế lại một màn, hoặc nói "cái này nhìn như template". Skill tự kích hoạt.
@@ -74,10 +74,10 @@ Sau đó nhờ agent làm một màn mới, thiết kế lại một màn, hoặ
 Các công cụ kiểm chạy ở bất kỳ đâu có Node ≥18, không cần cài:
 
 ```bash
-npx -y -p github:kennetvn/nextcore-design slop-check src
-npx -y -p github:kennetvn/nextcore-design token-audit src/styles/tokens.css --src src
-npx -y -p github:kennetvn/nextcore-design design-card design --tokens src/styles/tokens.css --fonts "Inter,Fraunces" --app src/app
-npx -y -p github:kennetvn/nextcore-design design-review design --shot review.png
+npx -y -p github:kennetvn/nextcore-skills slop-check src
+npx -y -p github:kennetvn/nextcore-skills token-audit src/styles/tokens.css --src src
+npx -y -p github:kennetvn/nextcore-skills design-card design --tokens src/styles/tokens.css --fonts "Inter,Fraunces" --app src/app
+npx -y -p github:kennetvn/nextcore-skills design-review design --shot review.png
 ```
 
 ## Bên trong có gì
@@ -195,9 +195,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
-      - run: npx -y -p github:kennetvn/nextcore-design slop-check src
-      - run: npx -y -p github:kennetvn/nextcore-design token-audit src/styles/tokens.css --src src
-      - run: npx -y -p github:kennetvn/nextcore-design design-card design --tokens src/styles/tokens.css --fonts "Inter" --strict
+      - run: npx -y -p github:kennetvn/nextcore-skills slop-check src
+      - run: npx -y -p github:kennetvn/nextcore-skills token-audit src/styles/tokens.css --src src
+      - run: npx -y -p github:kennetvn/nextcore-skills design-card design --tokens src/styles/tokens.css --fonts "Inter" --strict
 ```
 
 Codebase cũ và lớn? Bắt đầu với `--warn-only` rồi siết dần.
@@ -227,13 +227,13 @@ và `--pair a:b` thêm bất kỳ cặp nào bạn cần.
 ## Đóng góp
 
 Hoan nghênh issue và PR, nhất là luật slop mới kèm một câu chuyện báo nhầm có thật. Mỗi luật đi kèm một fixture xấu
-buộc phải kích hoạt và một fixture tốt buộc phải im lặng. Xem [CONTRIBUTING.md](CONTRIBUTING.md); chạy `npm test`.
+buộc phải kích hoạt và một fixture tốt buộc phải im lặng. Xem [CONTRIBUTING.md](../../CONTRIBUTING.md); chạy `npm test`.
 
 ### Người đóng góp
 
-Mỗi luật, bẫy đo hay bản sửa được nhận đều ghi công trong CHANGELOG và ngay cạnh luật đó (xem [CONTRIBUTING.md](CONTRIBUTING.md#how-contributions-are-credited)).
+Mỗi luật, bẫy đo hay bản sửa được nhận đều ghi công trong CHANGELOG và ngay cạnh luật đó (xem [CONTRIBUTING.md](../../CONTRIBUTING.md#how-contributions-are-credited)).
 
-[![Contributors](https://contrib.rocks/image?repo=kennetvn/nextcore-design)](https://github.com/kennetvn/nextcore-design/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=kennetvn/nextcore-skills)](https://github.com/kennetvn/nextcore-skills/graphs/contributors)
 
 ## Ghi công
 
@@ -246,4 +246,4 @@ Viết bằng lời của chúng tôi, với những ý học từ các dự án
 
 ## Giấy phép
 
-[MIT](LICENSE)
+[MIT](../../LICENSE)

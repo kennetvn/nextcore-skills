@@ -10,7 +10,7 @@ number" rather than "agents should probably…".
 - **A stack note** — how a rule in `nextcore-dev/references/stacks.md` maps to your framework (Laravel, Django,
   Rails, Spring, Go, .NET…), checked on a real project.
 - **A correction** — a rule that is wrong or too absolute for some stack. Say where it broke.
-- **Design rules and checkers** live in [nextcore-design](https://github.com/kennetvn/nextcore-design).
+- **Design rules and checkers** live in [nextcore-design](https://github.com/kennetvn/nextcore-skills/tree/main/plugins/nextcore-design).
 
 ## How contributions are credited
 

@@ -14,12 +14,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        node: [18, 22]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [18, 20, 22]
+    env:
+      S: plugins/nextcore-design/skills/nextcore-design/scripts
+      F: plugins/nextcore-design/tests/fixtures
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      # marketplace + manifests consistent, SKILL.md frontmatter, no dead links, no private data, doc-drift two-way
+      # repo hygiene (marketplace, frontmatter, dead links, privacy) + design tools + doc-drift, all two-way
       - run: npm test
+      # dogfood: the published bins must run and the good fixtures must stay clean
+      - run: node ${{ env.S }}/slop-check.mjs ${{ env.F }}/good
+      - run: node ${{ env.S }}/token-audit.mjs ${{ env.F }}/tokens/good.css --src ${{ env.F }}/tokens/good-src
+      - run: node ${{ env.S }}/design-card.mjs ${{ env.F }}/drawings/good --tokens ${{ env.F }}/tokens/good.css --fonts "Inter,Fraunces" --app ${{ env.F }}/app --strict
+      - run: node ${{ env.S }}/design-review.mjs ${{ env.F }}/drawings --out review.html
+      - name: design-review screenshot (Chrome is preinstalled on Linux runners)
+        if: runner.os == 'Linux' && matrix.node == 20
+        run: node ${{ env.S }}/design-review.mjs ${{ env.F }}/drawings --out review.html --shot review.png && test -s review.png

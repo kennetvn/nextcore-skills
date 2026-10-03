@@ -6,13 +6,13 @@ Asked "should we use this?" Do not answer from the README. Measure the user's pr
 
 | The project has… | Relevant |
 |---|---|
-| UI code (any stack that renders HTML) | nextcore-design — follow its own [AGENTS.md](https://github.com/kennetvn/nextcore-design/blob/main/AGENTS.md) |
+| UI code (any stack that renders HTML) | nextcore-design — follow its own [AGENTS.md](plugins/nextcore-design/AGENTS.md) |
 | API routes, a database, background work | nextcore-dev |
 | AI agents committing / deploying, or several agents and accounts | nextcore-workflow |
 
 ## 2. Measure (2–3 min, read-only)
 
-- **Design:** `npx -y -p github:kennetvn/nextcore-design slop-check <ui-dir> --warn-only` and
+- **Design:** `npx -y -p github:kennetvn/nextcore-skills slop-check <ui-dir> --warn-only` and
   `… token-audit <token-file> --src <ui-dir> --warn-only`.
 - **Dev:** count API routes vs routes with an auth guard (grep the project's guard function / middleware); check
   whether money is stored as decimal; look for `setInterval` / ad-hoc timers outside a job system; check whether

@@ -5,7 +5,7 @@
   "plugins": [
     {
       "name": "nextcore-design",
-      "source": { "source": "github", "repo": "kennetvn/nextcore-design" },
+      "source": "./plugins/nextcore-design",
       "description": "Design-first for AI agents: spec and hierarchy first, draw before code, a critic agent, then measure (slop-check, token-audit, design-card, design-review)."
     },
     {
