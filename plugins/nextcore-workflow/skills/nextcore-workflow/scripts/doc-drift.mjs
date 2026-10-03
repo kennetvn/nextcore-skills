@@ -21,6 +21,11 @@ import { join, relative, extname } from 'node:path';
 import { execSync } from 'node:child_process';
 
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  const head = readFileSync(new URL(import.meta.url), 'utf8').split(/\r?\n/).slice(1);
+  console.log(head.slice(0, head.findIndex((l) => !l.startsWith('//'))).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+  process.exit(0);
+}
 const VALUE_OPTS = new Set(['--config', '--max-age']);
 const opt = (n, d) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
 const roots = args.filter((a, i) => !a.startsWith('--') && !VALUE_OPTS.has(args[i - 1]));

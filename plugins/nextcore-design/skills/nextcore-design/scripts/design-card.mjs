@@ -23,6 +23,11 @@ import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative, basename } from 'node:path';
 
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  const head = readFileSync(new URL(import.meta.url), 'utf8').split(/\r?\n/).slice(1);
+  console.log(head.slice(0, head.findIndex((l) => !l.startsWith('//'))).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+  process.exit(0);
+}
 const opt = (name, dflt) => { const i = args.indexOf(name); return i >= 0 ? args[i + 1] : dflt; };
 const VALUE_OPTS = new Set(['--tokens', '--fonts', '--app', '--routes', '--min-token']);
 const root = args.find((a, i) => !a.startsWith('--') && !VALUE_OPTS.has(args[i - 1]));

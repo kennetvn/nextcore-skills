@@ -14,19 +14,29 @@
 // sections: Symptom (measured) · Hypothesis (and how to refute it) · Observation (on site, not after a release).
 //
 // Hook:  echo 'node path/to/third-patch.mjs' > .git/hooks/pre-commit   (or husky / lefthook / pre-commit framework)
-// Exit 1 = blocked, with the reason and the template path.
+// Exit 1 = blocked, with the reason and the template path. Exit 2 = not inside a git repository.
 
 import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  const head = readFileSync(new URL(import.meta.url), 'utf8').split(/\r?\n/).slice(1);
+  console.log(head.slice(0, head.findIndex((l) => !l.startsWith('//'))).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+  process.exit(0);
+}
 const opt = (n, d) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
 const hours = Number(opt('--hours', 72));
 const threshold = Number(opt('--threshold', 2));
 const diagDir = opt('--diagnosis-dir', 'docs/diagnosis');
 const fixRe = new RegExp(opt('--fix-pattern', '^(fix|hotfix|patch)\\b'), 'i');
 const git = (...a) => execFileSync('git', a, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+
+try { git('rev-parse', '--is-inside-work-tree'); } catch {
+  console.error('third-patch: not inside a git repository — run it from your project (it reads git history). See --help.');
+  process.exit(2);
+}
 
 let files;
 const fi = args.indexOf('--files');

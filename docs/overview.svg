@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" width="960" height="300" role="img" aria-labelledby="t d">
-  <title id="t">How the three plugins fit together</title>
+  <title id="t">How the three skills fit together</title>
   <desc id="d">nextcore-design turns a brief into a spec with a field map and a drawing; nextcore-dev turns the field map into an API contract and the UI state signals; the shipped screen is measured against the drawing. nextcore-workflow wraps both: gates, diagnosis before patching, evidence before done, parallel agents, and lessons flowing back.</desc>
   <style>
     .wrap { fill: none; stroke: #8A94A3; stroke-width: 1.5; stroke-dasharray: 6 5; }

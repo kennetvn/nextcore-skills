@@ -2,6 +2,15 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: [SemVer](https://semver.org/).
 
+## [1.2.1] — 2026-10-03
+
+### Fixed
+- `third-patch` outside a git repository printed a Node stack trace; it now says so in one line and exits 2.
+
+### Added
+- `--help` / `-h` on all six tools prints the usage from the script header (tested for every `bin`).
+- README: trimmed sample output is marked, `@nextcore` explained as the marketplace name, hooks sentence made concrete.
+
 ## [1.2.0] — 2026-10-03
 
 ### Added

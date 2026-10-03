@@ -118,3 +118,19 @@ test('third-patch: passes once a diagnosis note names the file with symptom, hyp
   writeFileSync(join(d, 'docs/diagnosis/cart.md'), '# cart.js\n## Symptom\nwrong total\n');
   assert.equal(patch(d, '--files', 'cart.js').status, 1, 'a note without all three sections does not count');
 });
+
+test('third-patch: outside a git repository it says so in one line, no stack trace', () => {
+  const r = patch(mkdtempSync(join(tmpdir(), 'nogit-')));
+  assert.equal(r.status, 2);
+  assert.match(r.stderr, /not inside a git repository/);
+  assert.doesNotMatch(r.stderr, /\n\s+at /);
+});
+
+test('tools: every bin answers --help with its usage and exit 0', () => {
+  const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
+  for (const [name, rel] of Object.entries(pkg.bin)) {
+    const r = spawnSync(process.execPath, [join(root, rel), '--help'], { cwd: tmpdir(), encoding: 'utf8' });
+    assert.equal(r.status, 0, `${name} --help exit ${r.status}: ${r.stderr}`);
+    assert.match(r.stdout, new RegExp(`^${name} `), `${name} --help should start with its name`);
+  }
+});

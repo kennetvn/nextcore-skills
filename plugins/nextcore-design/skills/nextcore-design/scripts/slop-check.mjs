@@ -11,6 +11,11 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname, basename, relative } from 'node:path';
 
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  const head = readFileSync(new URL(import.meta.url), 'utf8').split(/\r?\n/).slice(1);
+  console.log(head.slice(0, head.findIndex((l) => !l.startsWith('//'))).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+  process.exit(0);
+}
 const asJson = args.includes('--json');
 const warnOnly = args.includes('--warn-only');
 const ignores = args.flatMap((a, i) => (args[i - 1] === '--ignore' ? [a] : []));

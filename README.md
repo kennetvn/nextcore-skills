@@ -17,7 +17,7 @@ It has two parts:
   **workflow** (how to run agents on a real product without them guessing or overwriting each other).
 - **Six command-line tools** that check what the skills ask for. They read local files only and send nothing anywhere.
 
-![How the three plugins fit together: brief → nextcore-design (spec + drawing) → nextcore-dev (API contract) → ship, measured by zero-dependency tools, all inside nextcore-workflow](docs/overview.svg)
+![How the three skills fit together: brief → nextcore-design (spec + drawing) → nextcore-dev (API contract) → ship, measured by zero-dependency tools, all inside nextcore-workflow](docs/overview.svg)
 
 ## Try it in one minute
 
@@ -38,6 +38,7 @@ warn   resources/views/rooms.blade.php:2  [emoji-icon] use an icon set, not emoj
 ERROR  resources/views/rooms.blade.php:3  [placeholder-data] use realistic sample data
 ERROR  resources/views/rooms.blade.php:4  [break-all] cuts identifiers in half — widen the box or shrink text
 warn   resources/sass/_tokens.scss:6      [pixel-patch] off-scale spacing looks like a pixel patch
+…  (2 more warnings trimmed)
 slop-check: 9 finding(s), 4 error(s)
 
 ERROR  [contrast] light: $warning-fg on $warning
@@ -119,7 +120,7 @@ for background jobs, 14 backend traps, and notes for Next.js, Laravel, Django, R
 WordPress.
 
 **[nextcore-workflow](plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md)** — for whoever runs the agents.
-Checks a machine can enforce become hooks (and each hook is tested by making it fail once); a diagnosis before the
+Rules a machine can check become git hooks you install, each proved by making it fail once on purpose; a diagnosis before the
 third fix; evidence before "done"; several agents on one repo without overwriting each other's work; decisions written
 on issues; numbers in docs that get re-measured; cleaning up the machine after long agent sessions.
 
@@ -134,8 +135,7 @@ on issues; numbers in docs that get re-measured; cleaning up the machine after l
 | `doc-drift` | numbers written in docs that are no longer true | at session start, in CI |
 | `third-patch` | blocks a third fix to the same file in 72 h without a diagnosis note | pre-commit hook |
 
-Run any of them with `npx -y -p github:kennetvn/nextcore-skills <tool> …`; the options are listed in the first lines
-of each script. All are plain Node ≥18 with no dependencies, and each is tested both ways: it must catch a bad example
+Run any of them with `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` prints its options. All are plain Node ≥18 with no dependencies, and each is tested both ways: it must catch a bad example
 and stay silent on a good one.
 
 ## Works with your stack
@@ -158,6 +158,8 @@ and stay silent on a good one.
 /plugin marketplace add kennetvn/nextcore-skills
 /plugin install nextcore-design@nextcore      # and/or nextcore-dev@nextcore, nextcore-workflow@nextcore
 ```
+
+`@nextcore` is the marketplace name from the first command, not a version.
 
 Other agents: copy a skill's `SKILL.md` into your rules file — `.cursor/rules/*.mdc` (Cursor), `AGENTS.md` (Codex),
 `GEMINI.md` (Gemini CLI), `.github/copilot-instructions.md` (Copilot), `.windsurf/rules/` (Windsurf) — and keep its
