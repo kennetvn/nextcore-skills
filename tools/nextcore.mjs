@@ -138,8 +138,18 @@ if (commits) {
   }
   hot = Object.entries(fixes).filter(([, n]) => n >= 3).sort((a, b) => b[1] - a[1]).slice(0, 5);
 }
-const agentFiles = ['AGENTS.md', 'CLAUDE.md', 'GEMINI.md', '.cursor', '.claude', '.github/copilot-instructions.md', '.windsurf']
-  .filter((f) => existsSync(join(DIR, f)));
+// agent config the PERSON wrote — not what nextcore-install created (its marked block, .nextcore, nextcore-* rules/skills)
+const ownText = (f) => read(f).replace(/<!-- nextcore-skills:start -->[\s\S]*?<!-- nextcore-skills:end -->/g, '').trim();
+const ownDir = (d) => {
+  try {
+    return readdirSync(join(DIR, d), { recursive: true }).map(String)
+      .some((f) => /\.(md|mdc|json)$/.test(f) && !/(^|[\\/])(nextcore-|design-(critic|auditor)\.md$)/.test(f));
+  } catch { return false; }
+};
+const agentFiles = [
+  ...['AGENTS.md', 'CLAUDE.md', 'GEMINI.md', '.github/copilot-instructions.md'].filter((f) => existsSync(join(DIR, f)) && ownText(f)),
+  ...['.claude', '.cursor', '.windsurf'].filter((d) => existsSync(join(DIR, d)) && ownDir(d)),
+];
 
 // ---------- run the checks ----------
 const result = { dir: DIR, stack, uiDir, uiFiles: uiFiles.length, tokenFile, drawings, apiRoutes, db, commits, hotFiles: hot, agentFiles, checks: {} };

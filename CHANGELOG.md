@@ -4,6 +4,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.9.1] — 2026-10-03
+
+### Fixed
+- `nextcore measure` counted files that `nextcore-install` itself created (`.claude/skills/nextcore-*`, the marked block in
+  AGENTS.md) as the project's own agent setup and recommended workflow for it; only files the person wrote count now.
+  Found by running the published package on the test project a fresh agent had just set up.
+
 ## [1.9.0] — 2026-10-03
 
 ### Added

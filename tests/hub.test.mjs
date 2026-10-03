@@ -228,3 +228,15 @@ test('nextcore measure/all: detects a small Next.js project, recommends design +
   assert.ok(existsSync(join(d, '.nextcore/nextcore-design/SKILL.md')) && existsSync(join(d, '.nextcore/nextcore-dev/SKILL.md')));
   assert.ok(!existsSync(join(d, '.nextcore/nextcore-workflow')), 'workflow was not recommended, so not installed');
 });
+
+test('nextcore measure: files the installer created do not count as the project\'s own agent setup', () => {
+  const d = mkdtempSync(join(tmpdir(), 'nc-own-'));
+  mkdirSync(join(d, 'app'), { recursive: true });
+  writeFileSync(join(d, 'app/a.css'), '.a{color:var(--x)}\n');
+  const measure = () => JSON.parse(spawnSync(process.execPath, [join(root, 'tools/nextcore.mjs'), 'measure', '--json', '--dir', d], { encoding: 'utf8' }).stdout);
+  install(d, '--agent', 'claude', '--skills', 'design');
+  install(d, '--agent', 'codex', '--skills', 'design');
+  assert.deepEqual(measure().agentFiles, [], 'only nextcore-install output — not a signal');
+  writeFileSync(join(d, 'CLAUDE.md'), '# House rules\n');
+  assert.deepEqual(measure().agentFiles, ['CLAUDE.md'], 'a file the person wrote is');
+});
