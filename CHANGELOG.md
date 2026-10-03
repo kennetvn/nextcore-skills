@@ -2,6 +2,12 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: [SemVer](https://semver.org/).
 
+## [1.3.2] — 2026-10-03
+
+### Changed
+- README: the source product's size is a live card (`size.svg` / `quy-mo.vi.svg` + `quy-mo.json` on the
+  `quy-mo` branch), recounted by the product's CI on every push instead of a hand-typed table.
+
 ## [1.3.1] — 2026-10-03
 
 ### Added

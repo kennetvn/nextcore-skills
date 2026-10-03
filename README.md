@@ -218,35 +218,18 @@ carry the product's name next to the rule they created.
 
 ### homestaynextcore.org by size
 
-Counted on 3 Oct 2026 from git-tracked files only; non-blank lines; archived extension versions, generated bundles,
-planning notes and images left out.
+[![homestaynextcore.org size: files, lines, pages, API routes, models, commits and a COCOMO rebuild-cost estimate](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/size.svg)](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/quy-mo.json)
 
-| | Files | Lines |
-|---|--:|--:|
-| Web app (Next.js + Prisma) | 6,052 | 738,809 |
-| 10 browser extensions | 610 | 141,414 |
-| **Total** | **6,662** | **880,223** |
-| — TypeScript / JavaScript | | 586,697 |
-| — CSS | | 158,554 |
-| — SQL migrations, data fixes, Prisma schema | | 36,819 |
-| — tests (961 files) | | 92,749 |
-| — HTML, shell | | 5,404 |
+Recounted by CI on every push to the product (and daily), so it moves as the product grows; raw numbers in
+[quy-mo.json](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/quy-mo.json). Git-tracked files only, non-blank lines; archived extension versions, generated
+bundles, planning notes and images left out. Built by one owner directing AI coding agents, with these skills written
+along the way.
 
-230 pages · 872 API routes · 292 database models · 517 migration files · 11,946 commits across the two repositories
-(history starts January 2026). Built by one owner directing AI coding agents, with these skills written along the way.
-
-**Estimated cost to rebuild** — what the standard COCOMO model (basic, organic; the one `scc` prints) says, not a
-market price, revenue or a valuation:
-
-| Counted | Effort | Schedule | Cost at Vietnam rates¹ | Cost at US rates² |
-|---|--:|--:|--:|--:|
-| code without CSS and tests (623,516 lines) | 2,064 person-months | 45 months, ~45 people | ≈ $4.6 M | ≈ $23 M |
-| everything above (880,223 lines) | 2,965 person-months | 52 months, ~57 people | ≈ $6.7 M | ≈ $33 M |
-
-¹ $1,500/month salary × 1.5 overhead. ² `scc` defaults: $56,286/year × 2.4 overhead.
-Read it as an order of magnitude. COCOMO counts lines, and AI-written code tends to have more lines per feature than
-hand-written code, so it overstates. And the gap between "57 people for 52 months" and what actually happened is not
-a measurement of what the skills did — see [what these numbers show](#what-these-numbers-show-and-what-they-dont).
+The cost rows are what the standard COCOMO model (basic, organic; the one `scc` prints) says it would take to rebuild
+this from scratch — not a market price, revenue or a valuation. Read it as an order of magnitude: COCOMO counts lines,
+and AI-written code tends to have more lines per feature than hand-written code, so it overstates. The gap between that
+estimate and what actually happened is not a measurement of what the skills did — see
+[what these numbers show](#what-these-numbers-show-and-what-they-dont).
 
 ## FAQ
 

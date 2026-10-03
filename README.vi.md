@@ -220,35 +220,18 @@ tên sản phẩm ngay cạnh quy tắc mà nó tạo ra.
 
 ### Quy mô homestaynextcore.org
 
-Đếm ngày 03/10/2026, chỉ tệp git theo dõi; dòng không trống; bỏ các bản extension đã lưu trữ, bundle sinh tự động,
-ghi chú kế hoạch và hình ảnh.
+[![Quy mô homestaynextcore.org: tệp, dòng, trang, route API, model, commit và ước tính chi phí làm lại theo COCOMO](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/quy-mo.vi.svg)](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/quy-mo.json)
 
-| | Tệp | Dòng |
-|---|--:|--:|
-| Ứng dụng web (Next.js + Prisma) | 6.052 | 738.809 |
-| 10 extension trình duyệt | 610 | 141.414 |
-| **Tổng** | **6.662** | **880.223** |
-| — TypeScript / JavaScript | | 586.697 |
-| — CSS | | 158.554 |
-| — SQL migration, sửa dữ liệu, schema Prisma | | 36.819 |
-| — test (961 tệp) | | 92.749 |
-| — HTML, shell | | 5.404 |
+CI đếm lại sau mỗi lần push vào sản phẩm (và mỗi ngày), nên số đi theo sản phẩm; số thô ở
+[quy-mo.json](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/quy-mo.json). Chỉ tệp git theo dõi, dòng không trống; bỏ các bản extension đã lưu trữ, bundle sinh tự
+động, ghi chú kế hoạch và hình ảnh. Một người chủ điều khiển các agent AI viết code, các skill này được viết dần trong
+lúc làm.
 
-230 trang · 872 route API · 292 model cơ sở dữ liệu · 517 tệp migration · 11.946 commit trên hai repository (lịch sử
-bắt đầu từ tháng 1/2026). Một người chủ điều khiển các agent AI viết code, các skill này được viết dần trong lúc làm.
-
-**Ước tính chi phí làm lại** — theo mô hình COCOMO chuẩn (basic, organic; mô hình mà `scc` in ra), không phải giá thị
-trường, doanh thu hay định giá công ty:
-
-| Phạm vi đếm | Công sức | Thời gian | Chi phí theo lương Việt Nam¹ | Chi phí theo lương Mỹ² |
-|---|--:|--:|--:|--:|
-| code trừ CSS và test (623.516 dòng) | 2.064 người-tháng | 45 tháng, ~45 người | ≈ 4,6 triệu USD | ≈ 23 triệu USD |
-| toàn bộ ở trên (880.223 dòng) | 2.965 người-tháng | 52 tháng, ~57 người | ≈ 6,7 triệu USD | ≈ 33 triệu USD |
-
-¹ Lương 1.500 USD/tháng × 1,5 chi phí kèm theo. ² Mặc định của `scc`: 56.286 USD/năm × 2,4.
-Hãy đọc như một bậc độ lớn. COCOMO đếm dòng, mà code do AI viết thường nhiều dòng hơn cho cùng một tính năng so với
-code viết tay, nên con số bị đội lên. Và khoảng cách giữa "57 người trong 52 tháng" với những gì đã thực sự diễn ra
-không phải phép đo tác dụng của skill — xem [các con số này chứng minh gì](#các-con-số-này-chứng-minh-gì-và-không-chứng-minh-gì).
+Các dòng chi phí là con số mô hình COCOMO chuẩn (basic, organic; mô hình mà `scc` in ra) ước tính để làm lại từ đầu —
+không phải giá thị trường, doanh thu hay định giá công ty. Hãy đọc như một bậc độ lớn: COCOMO đếm dòng, mà code do AI
+viết thường nhiều dòng hơn cho cùng một tính năng so với code viết tay, nên con số bị đội lên. Khoảng cách giữa ước
+tính đó và những gì đã thực sự diễn ra không phải phép đo tác dụng của skill — xem
+[các con số này chứng minh gì](#các-con-số-này-chứng-minh-gì-và-không-chứng-minh-gì).
 
 ## Câu hỏi thường gặp
 
