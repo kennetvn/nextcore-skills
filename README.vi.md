@@ -232,10 +232,10 @@ tên sản phẩm ngay cạnh quy tắc mà nó tạo ra.
 
 ### Quy mô homestaynextcore.org
 
-[![Quy mô homestaynextcore.org: tệp, dòng, trang, route API, model, commit và ước tính chi phí làm lại theo COCOMO](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/quy-mo.vi.svg)](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/quy-mo.json)
+[![Quy mô homestaynextcore.org: tệp, dòng, trang, route API, model, commit và ước tính chi phí làm lại theo COCOMO](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.vi.svg)](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.json)
 
 CI đếm lại sau mỗi lần push vào sản phẩm (và mỗi ngày), nên số đi theo sản phẩm; số thô ở
-[quy-mo.json](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/quy-mo.json). Chỉ tệp git theo dõi, dòng không trống; bỏ các bản extension đã lưu trữ, bundle sinh tự
+[quy-mo.json](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.json). Chỉ tệp git theo dõi, dòng không trống; bỏ các bản extension đã lưu trữ, bundle sinh tự
 động, ghi chú kế hoạch và hình ảnh. Một người chủ điều khiển các agent AI viết code, các skill này được viết dần trong
 lúc làm.
 

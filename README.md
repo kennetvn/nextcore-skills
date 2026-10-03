@@ -230,10 +230,10 @@ carry the product's name next to the rule they created.
 
 ### homestaynextcore.org by size
 
-[![homestaynextcore.org size: files, lines, pages, API routes, models, commits and a COCOMO rebuild-cost estimate](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/size.svg)](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/quy-mo.json)
+[![homestaynextcore.org size: files, lines, pages, API routes, models, commits and a COCOMO rebuild-cost estimate](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/size.svg)](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.json)
 
 Recounted by CI on every push to the product (and daily), so it moves as the product grows; raw numbers in
-[quy-mo.json](https://raw.githubusercontent.com/kennetvn/nextcore-skills/quy-mo/quy-mo.json). Git-tracked files only, non-blank lines; archived extension versions, generated
+[quy-mo.json](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.json). Git-tracked files only, non-blank lines; archived extension versions, generated
 bundles, planning notes and images left out. Built by one owner directing AI coding agents, with these skills written
 along the way.
 
