@@ -1,0 +1,8 @@
+/* #ff0000 in a comment is fine */
+:root { --ds-ink: #16181d; }
+@media (prefers-color-scheme: dark) { :root { --ds-ink: #f4f4f5; } }
+[data-theme="dark"] { --ds-ink: #f4f4f5; }
+.card { color: var(--ds-ink); transition: color .2s, transform .2s; }
+.grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.email { overflow-wrap: anywhere; }
+.btn { color: var(--ds-primary-fg, #ffffff); box-shadow: 0 1px 2px var(--ds-shadow, rgba(0,0,0,.1)); }
