@@ -1,0 +1,16 @@
+{
+  "name": "nextcore-skills",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Claude Code plugin marketplace: nextcore-design, nextcore-dev and nextcore-workflow — skills distilled from a production product built and run by AI coding agents.",
+  "type": "module",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/kennetvn/nextcore-skills.git" },
+  "engines": { "node": ">=18" },
+  "bin": {
+    "doc-drift": "plugins/nextcore-workflow/skills/nextcore-workflow/scripts/doc-drift.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/hub.test.mjs"
+  }
+}

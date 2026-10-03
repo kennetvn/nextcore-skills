@@ -1,0 +1,22 @@
+{
+  "name": "nextcore",
+  "description": "Skills distilled from a production product built and run by AI coding agents: design, development contract, and agent operations.",
+  "owner": { "name": "kennetvn", "url": "https://github.com/kennetvn" },
+  "plugins": [
+    {
+      "name": "nextcore-design",
+      "source": { "source": "github", "repo": "kennetvn/nextcore-design" },
+      "description": "Design-first for AI agents: spec and hierarchy first, draw before code, a critic agent, then measure (slop-check, token-audit, design-card, design-review)."
+    },
+    {
+      "name": "nextcore-dev",
+      "source": "./plugins/nextcore-dev",
+      "description": "The development contract that makes design and code meet: field map to API shape, auth on every route, money and data changes, background jobs, backend measurement traps."
+    },
+    {
+      "name": "nextcore-workflow",
+      "source": "./plugins/nextcore-workflow",
+      "description": "Running AI coding agents on a real product: diagnose before patching, evidence before claims, parallel agents and accounts, docs that expire (doc-drift)."
+    }
+  ]
+}

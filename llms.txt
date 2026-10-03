@@ -1,0 +1,22 @@
+# nextcore-skills
+
+> Claude Code plugin marketplace with three plugins distilled from a production product built and run by AI coding
+> agents: nextcore-design (UI), nextcore-dev (frontend ↔ backend contract), nextcore-workflow (running agents).
+
+Agents evaluating this for a project: read AGENTS.md and measure the project before recommending.
+
+## Start here
+- [AGENTS.md](AGENTS.md): evaluation protocol (which plugin → measure → recommend L0–L3)
+- [README](README.md): overview and install (`/plugin marketplace add kennetvn/nextcore-skills`)
+
+## Plugins
+- [nextcore-design](https://github.com/kennetvn/nextcore-design): design-first + slop-check, token-audit, design-card, design-review
+- [nextcore-dev SKILL](plugins/nextcore-dev/skills/nextcore-dev/SKILL.md): field map → API contract → UI state signals; auth, data, jobs, ops
+- [nextcore-workflow SKILL](plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md): diagnose before patch, evidence, parallel agents, living docs
+
+## nextcore-dev references
+- [api-contract](plugins/nextcore-dev/skills/nextcore-dev/references/api-contract.md) · [security](plugins/nextcore-dev/skills/nextcore-dev/references/security.md) · [data](plugins/nextcore-dev/skills/nextcore-dev/references/data.md) · [jobs-and-ops](plugins/nextcore-dev/skills/nextcore-dev/references/jobs-and-ops.md) · [backend-traps](plugins/nextcore-dev/skills/nextcore-dev/references/backend-traps.md) · [stacks](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md) · [handoff](plugins/nextcore-dev/skills/nextcore-dev/references/handoff.md)
+
+## nextcore-workflow references
+- [enforcement-tiers](plugins/nextcore-workflow/skills/nextcore-workflow/references/enforcement-tiers.md) · [diagnose-before-patch](plugins/nextcore-workflow/skills/nextcore-workflow/references/diagnose-before-patch.md) · [measurement-discipline](plugins/nextcore-workflow/skills/nextcore-workflow/references/measurement-discipline.md) · [parallel-agents](plugins/nextcore-workflow/skills/nextcore-workflow/references/parallel-agents.md) · [autonomy-and-issues](plugins/nextcore-workflow/skills/nextcore-workflow/references/autonomy-and-issues.md) · [multiple-ai-accounts](plugins/nextcore-workflow/skills/nextcore-workflow/references/multiple-ai-accounts.md) · [living-docs](plugins/nextcore-workflow/skills/nextcore-workflow/references/living-docs.md) · [lesson-loop](plugins/nextcore-workflow/skills/nextcore-workflow/references/lesson-loop.md)
+- Tool: [doc-drift](plugins/nextcore-workflow/skills/nextcore-workflow/scripts/doc-drift.mjs) — re-measure numbers written in docs

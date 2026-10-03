@@ -1,0 +1,37 @@
+name: Bug / false positive
+description: A checker flags something correct, misses something wrong, or crashes.
+labels: [bug]
+body:
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Which tool
+      options: [nextcore-dev skill, nextcore-workflow skill, doc-drift, marketplace / install]
+    validations:
+      required: true
+  - type: textarea
+    id: input
+    attributes:
+      label: Smallest input that reproduces it
+      description: A few lines of CSS/TSX/HTML or a token file.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: got
+    attributes:
+      label: What it printed
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: want
+    attributes:
+      label: What you expected, and why
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Node version and OS
+      placeholder: "node 20.11 · macOS 14"

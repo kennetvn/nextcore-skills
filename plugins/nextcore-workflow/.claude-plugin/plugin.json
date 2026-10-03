@@ -1,0 +1,11 @@
+{
+  "name": "nextcore-workflow",
+  "displayName": "NextCore Workflow",
+  "version": "1.0.0",
+  "description": "Running AI coding agents on a real product: diagnose before patching, evidence before claims, parallel agents and accounts without collisions, decisions on issues, docs that expire (doc-drift).",
+  "author": { "name": "kennetvn", "url": "https://github.com/kennetvn" },
+  "homepage": "https://github.com/kennetvn/nextcore-skills#readme",
+  "repository": "https://github.com/kennetvn/nextcore-skills",
+  "license": "MIT",
+  "keywords": ["ai-agents", "multi-agent", "workflow", "verification", "git", "documentation"]
+}

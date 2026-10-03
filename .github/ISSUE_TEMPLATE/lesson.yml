@@ -1,0 +1,36 @@
+name: Lesson from a real project
+description: Something that bit you while building or running a product with AI agents — a trap, a rule, a false "done". Backed by what actually happened.
+labels: [lesson]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [design (→ nextcore-design), development contract (→ nextcore-dev), running agents (→ nextcore-workflow)]
+    validations:
+      required: true
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened — with numbers
+      description: "What passed, what was actually broken, how you found out. E.g. 'a new gate reported 0 violations for a week because it scanned the wrong folder'."
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it happened
+    validations:
+      required: true
+  - type: textarea
+    id: rule
+    attributes:
+      label: The rule you would teach an agent
+      description: One or two sentences an agent can follow. If it can be checked mechanically, say how.
+    validations:
+      required: true
+  - type: input
+    id: stack
+    attributes:
+      label: Stack
+      placeholder: "Laravel 11 · Postgres · Inertia / Next.js 16 · Prisma / Django 5 …"
