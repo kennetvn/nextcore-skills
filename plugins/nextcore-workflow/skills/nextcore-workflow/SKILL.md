@@ -8,7 +8,7 @@ description: Operating rules for AI coding agents that build and run a real prod
 How to run AI coding agents on a real product without them lying to you or stepping on each other.
 
 Distilled from a production booking platform built and run by AI coding agents: Next.js, ~230 pages,
-10 browser extensions, several agents in parallel on one working tree, two AI accounts taking turns.
+9 browser extensions, several agents in parallel on one working tree, two AI accounts taking turns.
 Every rule below exists because the opposite happened and was measured.
 
 Each lesson reads: **what happened (numbers) → why → rule.**

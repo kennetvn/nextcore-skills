@@ -210,7 +210,7 @@ automatically ([lesson loop](plugins/nextcore-workflow/skills/nextcore-workflow/
 
 | Product | What it is | Stack |
 |---|---|---|
-| [homestaynextcore.org](https://homestaynextcore.org) | homestay booking in Vietnam, plus 10 browser extensions for its operators; where every rule here was measured | Next.js, Prisma, MySQL, Chrome extensions |
+| [homestaynextcore.org](https://homestaynextcore.org) | homestay booking in Vietnam, plus browser extensions for its operators; where every rule here was measured | Next.js, Prisma, MySQL, Chrome extensions |
 
 Using the skills or tools on something real? [Add your product](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml)
 — one line on what it is, your stack, and (if you have one) a number that changed. Lessons from products listed here

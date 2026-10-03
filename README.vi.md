@@ -212,7 +212,7 @@ Mỗi đóng góp được nhận đều được ghi công trong CHANGELOG và 
 
 | Sản phẩm | Là gì | Stack |
 |---|---|---|
-| [homestaynextcore.org](https://homestaynextcore.org) | đặt phòng homestay ở Việt Nam, kèm 10 extension trình duyệt cho người vận hành; nơi mọi quy tắc ở đây được đo | Next.js, Prisma, MySQL, Chrome extension |
+| [homestaynextcore.org](https://homestaynextcore.org) | đặt phòng homestay ở Việt Nam, kèm các extension trình duyệt cho người vận hành; nơi mọi quy tắc ở đây được đo | Next.js, Prisma, MySQL, Chrome extension |
 
 Bạn đang dùng skill hoặc công cụ cho một sản phẩm thật? [Thêm sản phẩm của bạn](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml):
 một dòng nói nó là gì, stack, và (nếu có) một con số đã thay đổi. Bài học đến từ sản phẩm có trong bảng này được ghi
