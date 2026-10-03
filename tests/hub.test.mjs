@@ -134,3 +134,18 @@ test('tools: every bin answers --help with its usage and exit 0', () => {
     assert.match(r.stdout, new RegExp(`^${name} `), `${name} --help should start with its name`);
   }
 });
+
+test('cases: every case is valid and cases/README.md index is current', () => {
+  const r = spawnSync(process.execPath, [join(root, 'tools/cases-index.mjs'), '--check'], { encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stderr);
+});
+
+test('cases: the validator rejects a bad case and accepts the template shape', async () => {
+  const { parseCase } = await import('../tools/cases-index.mjs');
+  const good = read('cases/TEMPLATE.md');
+  assert.deepEqual(parseCase('t.md', good).errors, []);
+  const bad = good.replace('layer: [infra, performance]', 'layer: [infra, speed]').replace('## Rule', '## Lessons');
+  const errs = parseCase('b.md', bad).errors.join(' | ');
+  assert.match(errs, /layer: unknown "speed"/);
+  assert.match(errs, /sections must be exactly/);
+});

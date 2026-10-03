@@ -1,0 +1,39 @@
+{
+  "$comment": "Closed lists for the case library. Add a value in the same PR as the first case that needs it. `stack` is open: lowercase, one word per tool (nextjs, prisma, mysql, nginx, laravel, django…).",
+  "layer": {
+    "code": "application logic, framework and library behaviour",
+    "data": "schemas, migrations, exports, backfills, data correctness",
+    "infra": "web server, reverse proxy, cache, OS, network",
+    "devops": "CI/CD, deploys, process managers, runners",
+    "performance": "memory, CPU, latency, connections, bundle size",
+    "testing": "tests, gates and checks that pass or fail for the wrong reason",
+    "ai-agents": "LLM calls, tool use, agents writing or running the code",
+    "process": "how people and agents work together"
+  },
+  "area": {
+    "ui": "screens, design, CSS",
+    "frontend": "client state, routing, rendering",
+    "backend": "server code, request handling",
+    "api": "HTTP contract between UI and server",
+    "database": "queries, pools, ORM",
+    "security": "auth, access control, abuse",
+    "payments": "money in and out",
+    "integrations": "third-party APIs and webhooks",
+    "browser-extension": "Chrome/Firefox extensions",
+    "messaging": "chat, notifications, email",
+    "jobs": "background work, queues, schedules",
+    "seo": "crawlers, metadata, status codes"
+  },
+  "kind": {
+    "incident": "it broke in production; here is how it was found and fixed",
+    "measurement-trap": "the number looked right and was wrong",
+    "pattern": "a way of building that held up",
+    "tool": "a script or check worth copying"
+  },
+  "skill": {
+    "design": "nextcore-design",
+    "dev": "nextcore-dev",
+    "workflow": "nextcore-workflow"
+  },
+  "sections": ["Symptom", "Cause", "Fix", "How to catch it", "Rule"]
+}

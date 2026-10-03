@@ -139,6 +139,14 @@ Rules a machine can check become git hooks you install, each proved by making it
 third fix; evidence before "done"; several agents on one repo without overwriting each other's work; decisions written
 on issues; numbers in docs that get re-measured; cleaning up the machine after long agent sessions.
 
+## Cases
+
+**[cases/](cases/README.md)** — the incidents behind the rules, one file each: symptom with numbers, cause, fix with
+before/after, a command or test that catches it, and the rule for an agent. Filed by **layer** (code, data, infra,
+devops, performance, testing, ai-agents, process), **area** (api, database, security, jobs…) and **stack** (nextjs,
+prisma, mysql, nginx, pm2… — open list), so a Laravel or Django team can go straight to what applies to them. New
+cases arrive as the product keeps running; yours are welcome.
+
 ## The tools
 
 | Tool | Checks | Use it |

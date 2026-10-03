@@ -2,6 +2,14 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: [SemVer](https://semver.org/).
 
+## [1.4.0] — 2026-10-03
+
+### Added
+- `cases/`: a library of production incidents and measurement traps, one file per case (Symptom · Cause · Fix ·
+  How to catch it · Rule), filed by layer, area and stack (`cases/taxonomy.json`), with `TEMPLATE.md`.
+- `tools/cases-index.mjs` (`npm run cases`): validates every case and rebuilds the index in `cases/README.md`;
+  the test suite fails on an invalid case or a stale index.
+
 ## [1.3.2] — 2026-10-03
 
 ### Changed

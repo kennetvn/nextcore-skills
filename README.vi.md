@@ -140,6 +140,14 @@ máy kiểm được thì thành git hook bạn cài vào, mỗi hook được c
 thứ ba; bằng chứng trước khi báo "xong"; nhiều agent trên một repo mà không ghi đè việc của nhau; quyết định ghi trên
 issue; con số trong tài liệu được đo lại; dọn máy sau những phiên agent dài.
 
+## Các case
+
+**[cases/](cases/README.md)** — những sự cố đứng sau các quy tắc, mỗi case một tệp: triệu chứng có số đo, nguyên nhân,
+cách sửa kèm số trước/sau, một lệnh hoặc test bắt được nó, và quy tắc cho agent. Xếp theo **tầng** (code, data, infra,
+devops, performance, testing, ai-agents, process), **mảng** (api, database, security, jobs…) và **stack** (nextjs,
+prisma, mysql, nginx, pm2… — danh sách mở), để nhóm Laravel hay Django đi thẳng tới phần hợp với mình. Case mới được
+thêm dần khi sản phẩm tiếp tục chạy; case của bạn cũng được chào đón.
+
 ## Các công cụ
 
 | Công cụ | Kiểm gì | Dùng khi |
