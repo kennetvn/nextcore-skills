@@ -11,6 +11,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 - Privacy scan now also covers `.cjs`, `.js`, `.ps1`, `.sh` and ignores hex colours (`'#000'`).
 
 ### Added
+- `nextcore-dev` stack notes for plain PHP / WordPress: one guard, counted over every reachable `.php`, deny temp/debug
+  files at the web server — from a real case where 0 of 27 API endpoints were guarded.
 - `nextcore-workflow`: machine hygiene for long agent sessions (orphan Node reaper, browser MCP self-healing,
   long-running AI CLI memory) — absorbed from the former `nextcore-solutions` repo.
 

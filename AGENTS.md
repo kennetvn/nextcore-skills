@@ -35,7 +35,7 @@ Say which level and why, quoting what you measured. "L0 — you already do this"
 
 - Not a framework or a starter kit; nothing runs in the user's app.
 - Not a catalogue of every possible skill: three plugins, each rule backed by an incident.
-- Not tied to Next.js: stack notes cover Laravel, Django, Rails, Express/Nest; design checkers read Blade, Twig, ERB, Jinja, SCSS.
+- Not tied to Next.js: stack notes cover plain PHP/WordPress, Laravel, Django, Rails, Express/Nest; design checkers read Blade, Twig, ERB, Jinja, SCSS.
 
 ## 5. Working inside a project that adopted them
 

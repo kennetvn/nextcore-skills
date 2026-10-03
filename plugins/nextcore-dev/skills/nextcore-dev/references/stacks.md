@@ -5,6 +5,8 @@ Pick the column you use; build the missing piece once, centrally.
 
 ## 1. Principle → framework
 
+Plain PHP and WordPress have no column because there is no framework hook: see §2 for how to build the guard and count it.
+
 | Principle | Next.js (route handlers + Prisma) | Laravel | Django (DRF) | Rails | Express / Nest |
 |---|---|---|---|---|---|
 | One envelope | `handler()` wrapper returns `{success,data}` | API Resource + `JsonResource::wrap`, or a response macro | custom `Renderer` + exception handler | `render_success` / `render_error` concern in `ApplicationController` | Express: `res.ok()` helper; Nest: global interceptor |
@@ -53,6 +55,19 @@ graphs; prefer DB-level FKs. `strong_migrations` catches locking DDL.
 the route table. Nest: global guard + `@Public()` decorator with a required reason argument,
 global `ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })`, exception filter for
 the envelope. For jobs, BullMQ with Redis gives locks and failure state.
+
+**Plain PHP / WordPress (no framework).** Every `.php` file under the web root is a public endpoint
+unless something proves otherwise — there is no router to hang a guard on. Make one front file
+(`bootstrap.php` / `index.php` + rewrite) or one `require_once 'guard.php'` as the **first line** of every
+endpoint, and count it: a script that lists every `.php` reachable from the web root and checks that
+its require chain reaches the guard (stub files that `require` a module count only if the module is
+guarded). Deny `TEMP_*`, `_deploy*`, `debug*`, `*.bak` in the web server config. WordPress: REST routes
+need a `permission_callback` (never `__return_true` without a written reason); `admin-ajax` actions
+registered with `wp_ajax_nopriv_` are public by definition — list them.
+Real case: an admin area was 25/25 guarded, but its `api/` folder was 0/27; two "temporary, delete
+after use" upload endpoints wrote base64 POST bodies straight into a `.php` file — remote code execution
+for anyone — and survived a full service migration because no check counted unguarded endpoints. A
+first-time count found them in minutes.
 
 ## 3. Same traps, every stack
 

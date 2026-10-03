@@ -47,7 +47,7 @@ npx -y -p github:kennetvn/nextcore-skills doc-drift docs --quiet               #
 |---|---|
 | dev một mình, giao diện cứ vá đi vá lại | nextcore-design mức L1: chạy `slop-check` + `token-audit` với `--warn-only` |
 | dev backend được giao bản vẽ | nextcore-dev → `references/handoff.md` và `references/api-contract.md` |
-| đội PHP / Laravel / Django / Rails | nextcore-dev `references/stacks.md`; công cụ của nextcore-design đọc được Blade, Twig, ERB, Jinja và SCSS |
+| đội PHP (thuần, WordPress, Laravel) / Django / Rails | nextcore-dev `references/stacks.md` (PHP thuần: cách gác và đếm mọi endpoint); công cụ của nextcore-design đọc được Blade, Twig, ERB, Jinja và SCSS |
 | chạy nhiều agent hay nhiều CLI trên một repo | nextcore-workflow → `references/parallel-agents.md` |
 | agent được hỏi "repo này có hợp với dự án của tôi không?" | [AGENTS.md](AGENTS.md): đo dự án trước, rồi mới đề xuất mức áp dụng |
 

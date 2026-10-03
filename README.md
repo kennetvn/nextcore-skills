@@ -47,7 +47,7 @@ npx -y -p github:kennetvn/nextcore-skills doc-drift docs --quiet               #
 |---|---|
 | a solo dev whose UI keeps getting re-patched | nextcore-design, L1: run `slop-check` + `token-audit` with `--warn-only` |
 | a backend dev handed mockups | nextcore-dev → `references/handoff.md` and `references/api-contract.md` |
-| a PHP / Laravel / Django / Rails team | nextcore-dev `references/stacks.md`; nextcore-design checkers read Blade, Twig, ERB, Jinja and SCSS |
+| a PHP (plain, WordPress, Laravel) / Django / Rails team | nextcore-dev `references/stacks.md` (plain PHP: how to guard and count every endpoint); nextcore-design checkers read Blade, Twig, ERB, Jinja and SCSS |
 | running several agents or CLIs on one repo | nextcore-workflow → `references/parallel-agents.md` |
 | an agent asked "is this useful for my project?" | [AGENTS.md](AGENTS.md) — measure the project first, then recommend a level |
 
