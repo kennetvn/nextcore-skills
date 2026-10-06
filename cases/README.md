@@ -23,7 +23,7 @@ the index, nothing private). Cases from other teams are welcome — open a
 ## Index
 
 <!-- cases:start -->
-12 cases in 8 folders. Newest first in each folder.
+14 cases in 8 folders. Newest first in each folder.
 
 ### [zalo](zalo/) — Zalo — official OA API and unofficial personal-account libraries (zca-js)
 
@@ -39,6 +39,7 @@ the index, nothing private). Cases from other teams are welcome — open a
 
 | Case | Layer | Stack | Kind |
 |---|---|---|---|
+| [An off-the-shelf command blocker for coding agents was wrong 12 times out of 12 on our real history](ai-agents/backtest-command-guard-on-transcripts.md) | ai-agents, process | claude-code, git | measurement-trap |
 | [In a multi-step generateText call, r.text is only the last step, so the model's apology was dropped](ai-agents/ai-sdk-multistep-text-is-last-step.md) | ai-agents, code | vercel-ai-sdk, typescript | incident |
 
 ### [backend](backend/) — server code, ORM, request handling
@@ -77,12 +78,16 @@ the index, nothing private). Cases from other teams are welcome — open a
 
 | Case | Layer | Stack | Kind |
 |---|---|---|---|
+| [Our pre-commit secret check had never run, because it sat after an early exit](testing/secret-gate-after-early-exit-never-ran.md) | testing, devops | git, bash | incident |
 | [A test with a hard-coded month turned red for everyone at midnight on the 1st](testing/hard-coded-month-test-time-bomb.md) | testing | vitest, typescript | incident |
 
 ### By stack
 
 - **aapanel** — [A panel's default nginx config cached /api responses for every site on the server](infra/panel-nginx-default-cached-api.md)
+- **bash** — [Our pre-commit secret check had never run, because it sat after an early exit](testing/secret-gate-after-early-exit-never-ran.md)
+- **claude-code** — [An off-the-shelf command blocker for coding agents was wrong 12 times out of 12 on our real history](ai-agents/backtest-command-guard-on-transcripts.md)
 - **claude-design** — [56 screens shipped from approved drawings, none of which said what problem they solved](design/drawings-shipped-without-a-problem.md)
+- **git** — [An off-the-shelf command blocker for coding agents was wrong 12 times out of 12 on our real history](ai-agents/backtest-command-guard-on-transcripts.md) · [Our pre-commit secret check had never run, because it sat after an early exit](testing/secret-gate-after-early-exit-never-ran.md)
 - **github-actions** — [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](devops/ci-turbopack-cache-crashed-postcss.md)
 - **llm** — [Two test accounts on the same workspace made the AI assistant answer itself, about every 4 seconds](zalo/two-test-accounts-bots-answered-each-other.md)
 - **mysql** — [The documented Prisma singleton created three connection pools per process in Next.js production](backend/prisma-singleton-three-pools-nextjs.md) · [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](data/mysql-batch-escapes-base64-newlines.md)
