@@ -236,18 +236,20 @@ cập nhật. Agent làm gì sau khi cài: [AGENTS.md §4](AGENTS.md#4-use--afte
 | Sản phẩm | Là gì | Stack |
 |---|---|---|
 | [homestaynextcore.org](https://homestaynextcore.org) | đặt phòng homestay ở Việt Nam, kèm các extension trình duyệt cho người vận hành; nơi mọi quy tắc ở đây được đo | Next.js, Prisma, MySQL, Chrome extension |
+| [NextCore Browser](https://homestaynextcore.org/nextcore-browser) | app máy tính chạy nhiều hồ sơ trình duyệt song song, mỗi hồ sơ có đăng nhập, cookie và proxy riêng; agent AI điều khiển qua MCP. Mọi màn được vẽ trước khi code, bằng các skill này | Electron, React, TypeScript, Playwright, MCP; Windows, macOS, Linux |
 
 Bạn đang dùng skill hoặc công cụ cho một sản phẩm thật? [Thêm sản phẩm của bạn](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml):
 một dòng nói nó là gì, stack, và (nếu có) một con số đã thay đổi. Bài học đến từ sản phẩm có trong bảng này được ghi
 tên sản phẩm ngay cạnh quy tắc mà nó tạo ra.
 
-### Quy mô homestaynextcore.org
+### Quy mô homestaynextcore.org và NextCore Browser
 
-[![Quy mô homestaynextcore.org: tệp, dòng, trang, route API, model, commit và ước tính chi phí làm lại theo COCOMO](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.vi.svg)](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.json)
+[![Quy mô homestaynextcore.org, các extension và NextCore Browser: tệp, dòng, trang, route API, model, tool MCP, bản phát hành, commit và ước tính chi phí làm lại theo COCOMO](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.vi.svg)](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.json)
 
 CI đếm lại sau mỗi lần push vào sản phẩm (và mỗi ngày), nên số đi theo sản phẩm; số thô ở
 [quy-mo.json](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.json). Chỉ tệp git theo dõi, dòng không trống; bỏ các bản extension đã lưu trữ, bundle sinh tự
-động, ghi chú kế hoạch và hình ảnh. Một người chủ điều khiển các agent AI viết code, các skill này được viết dần trong
+động, ghi chú kế hoạch và hình ảnh. Ba khối mã trong một phép đếm: ứng dụng web, các extension trình duyệt và app máy
+tính NextCore Browser (tool MCP riêng đếm theo tên, bản phát hành đếm theo tag phiên bản). Một người chủ điều khiển các agent AI viết code, các skill này được viết dần trong
 lúc làm.
 
 Các dòng chi phí là con số mô hình COCOMO chuẩn (basic, organic; mô hình mà `scc` in ra) ước tính để làm lại từ đầu —

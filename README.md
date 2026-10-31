@@ -234,18 +234,20 @@ changed before it updates. What an agent should do after installing: [AGENTS.md 
 | Product | What it is | Stack |
 |---|---|---|
 | [homestaynextcore.org](https://homestaynextcore.org) | homestay booking in Vietnam, plus browser extensions for its operators; where every rule here was measured | Next.js, Prisma, MySQL, Chrome extensions |
+| [NextCore Browser](https://homestaynextcore.org/nextcore-browser) | desktop app for running many browser profiles side by side, each with its own sign-ins, cookies and proxy; AI agents drive it over MCP. Every screen drawn before it was coded, with these skills | Electron, React, TypeScript, Playwright, MCP; Windows, macOS, Linux |
 
 Using the skills or tools on something real? [Add your product](https://github.com/kennetvn/nextcore-skills/issues/new?template=showcase.yml)
 — one line on what it is, your stack, and (if you have one) a number that changed. Lessons from products listed here
 carry the product's name next to the rule they created.
 
-### homestaynextcore.org by size
+### homestaynextcore.org and NextCore Browser by size
 
-[![homestaynextcore.org size: files, lines, pages, API routes, models, commits and a COCOMO rebuild-cost estimate](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/size.svg)](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.json)
+[![Size of homestaynextcore.org, its browser extensions and NextCore Browser: files, lines, pages, API routes, models, MCP tools, releases, commits and a COCOMO rebuild-cost estimate](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/size.svg)](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.json)
 
 Recounted by CI on every push to the product (and daily), so it moves as the product grows; raw numbers in
 [quy-mo.json](https://raw.githubusercontent.com/kennetvn/nextcore-stats/main/quy-mo.json). Git-tracked files only, non-blank lines; archived extension versions, generated
-bundles, planning notes and images left out. Built by one owner directing AI coding agents, with these skills written
+bundles, planning notes and images left out. Three code bases in one count: the web app, its browser extensions and the
+NextCore Browser desktop app (its own MCP tools counted by name, releases by version tag). Built by one owner directing AI coding agents, with these skills written
 along the way.
 
 The cost rows are what the standard COCOMO model (basic, organic; the one `scc` prints) says it would take to rebuild
