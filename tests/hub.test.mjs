@@ -38,6 +38,24 @@ test('skills: frontmatter has name + description, body stays lean', () => {
   }
 });
 
+test('skills: progressive disclosure holds — every references/*.md named in a SKILL.md exists, none is orphaned, descriptions say when to use', () => {
+  const skills = walk(join(root, 'plugins')).filter((f) => f.endsWith('SKILL.md'));
+  const allRefs = walk(join(root, 'plugins')).filter((f) => /[\\/]references[\\/][^\\/]+\.md$/.test(f));
+  const refNames = new Set(allRefs.map((f) => f.split(/[\\/]/).pop()));
+  for (const f of skills) {
+    const t = readFileSync(f, 'utf8');
+    for (const [, n] of t.matchAll(/references\/([a-z0-9-]+\.md)/g)) assert.ok(refNames.has(n), `${f}: names references/${n}, which does not exist`);
+    const desc = (t.match(/^description:\s*(.+)$/m) || [])[1] || '';
+    assert.match(desc, /\buse when\b/i, `${f}: description must say "Use when …" so the agent knows when to load it`);
+  }
+  for (const r of allRefs) {
+    const dir = dirname(dirname(r));
+    const n = r.split(/[\\/]/).pop();
+    const linked = walk(dir).filter((f) => f !== r && f.endsWith('.md')).some((f) => readFileSync(f, 'utf8').includes(n));
+    assert.ok(linked, `${r}: orphan — nothing in its skill points to it, the agent will never open it`);
+  }
+});
+
 test('docs: every relative markdown link resolves', () => {
   const dead = [];
   for (const f of walk(root).filter((f) => extname(f) === '.md')) {

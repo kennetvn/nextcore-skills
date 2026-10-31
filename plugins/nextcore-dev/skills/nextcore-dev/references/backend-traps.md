@@ -123,3 +123,36 @@ style, and reported 0 violations.
 **Rule:** before measuring production, confirm the deployed commit contains yours
 (`git merge-base --is-ancestor <yours> <deployed>`). Measure only after the deploy reports
 completed.
+
+## 15. Reverse proxy cache drops `If-None-Match` ⇒ zero 304s
+An endpoint polled 27k times a day returned **0** `304` responses (≈600 KB each, ~800 MB/hour) although both the app
+and the client implemented ETags. Same ETag straight to the app port ⇒ 304; through the domain ⇒ 200: the proxy cache
+location did not forward the conditional header. **Catch:** count status 304 in the access log for any route with
+ETags; if 0, send the same ETag via the domain and via loopback. When moving/renaming a route, grep every proxy
+`location` tied to the old name.
+
+## 16. Tag/path revalidation clears one process only
+With two app instances, a settings save called `revalidateTag()` on the instance that received the POST; the other
+kept its in-memory cache. 8 page loads after saving an analytics ID: 2 had no script (`0 3 3 3 0 3 3 3`). A theme
+cached for 3600 s stayed half old for an hour. **Catch:** verify config changes with ≥6 loads, not one. Flags that
+must apply at once get a short `revalidate` (60 s) or a shared cache handler.
+
+## 17. Raw SQL passes every gate and fails on the real engine
+Type-check, unit tests and the production bundle were green; production returned 500: MariaDB's
+`GROUP_CONCAT(… SEPARATOR CHAR(31))` accepts only a string literal (error 1064). After that fix a `DATE` column came
+back through the ORM's raw query as a `Date` object, formatted to the wrong year. No gate runs SQL against the real
+engine. **Catch:** run every new raw query read-only against a copy of production (or prod with SELECT only) before
+committing; return dates as strings (`DATE_FORMAT(…, '%Y-%m-%d')`) instead of relying on driver types.
+
+## 18. List columns stored in two formats
+`FIND_IN_SET(id, ids)` reported "2 of 59 subscriptions never recorded a post". Those 2 stored the list as JSON
+(`["…"]`), the rest as CSV; FIND_IN_SET returned 0 for them. A small number looks like a real signal. **Catch:** before
+trusting a SQL count over a list column, run `SUM(col LIKE '[%')`, or count with the application's own parser, and
+look at the actual rows behind any "a few are in state X".
+
+## 19. Fire-and-forget escapes the concurrency cap
+A stale-while-revalidate helper returned cached data and fired a background download+parse. The caller batched in
+groups of 5, but the batch did not wait for the background work, so one search fired ~88 downloads per instance and
+memory spiked every 25 minutes. The period matched one CI job STEP (25/28 spikes vs 35% baseline), not deploys or
+cron. **Catch:** cap concurrency where the work is launched, not in the loop that calls it; match periodic spikes
+against each CI step with a random baseline.

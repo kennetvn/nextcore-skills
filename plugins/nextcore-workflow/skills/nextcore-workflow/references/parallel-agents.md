@@ -91,6 +91,12 @@ active work left", and slowed its loop to 60 minutes. There were 27 open issues;
 **Rule:** before "waiting for a signal", list open issues and read the zero-comment ones first.
 A long wait is justified only when the **whole** queue is blocked, and the report says so.
 
+## Git commands that hurt in a shared tree
+
+Stash, `reset --soft`, relative refs, temporary indexes, hand-built submodule shas, removing worktrees with
+linked `node_modules`: each one deleted or rewound another agent's work at least once. Table with the fix for
+each: `shared-tree-git.md`.
+
 ## Subagents
 
 - At most 2 subagents in parallel on one machine.

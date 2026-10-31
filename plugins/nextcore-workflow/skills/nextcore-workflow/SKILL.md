@@ -1,6 +1,6 @@
 ---
 name: nextcore-workflow
-description: Operating rules for AI coding agents that build and run a real product — use when setting up or running agents that commit, deploy, measure, or work in parallel (several CLIs, several AI accounts), or when an agent is about to claim "done", patch the same bug again, trust a zero, or ask a human a question.
+description: Operating rules for AI coding agents that build and run a real product — use when setting up or running agents that commit, deploy, measure, or work in parallel (several CLIs, several AI accounts, one shared working tree), before any git command that rewrites HEAD/index/stash or bumps a submodule in a shared checkout, when a gate or test is green but you doubt it, or when an agent is about to claim "done", patch the same bug again, trust a zero, or ask a human a question.
 ---
 
 # nextcore-workflow
@@ -70,7 +70,7 @@ Early warning in commit messages: "still", "again", "attempt 2", "revert". Detai
 - Find a **second, independent** measurement for any conclusion that triggers an action.
 - All gates green does not mean the product is good: content and ordering bugs pass every check.
 
-Twelve measurement traps with real numbers: `references/measurement-discipline.md`.
+Fourteen measurement traps with real numbers: `references/measurement-discipline.md`.
 
 ## 4. Autonomy: do plan A, stop only for the physical world
 
@@ -100,8 +100,12 @@ The real risk is not waiting on each other. It is the **shared git index**.
 - Long or risky work → a worktree **inside** the repo on the same branch. No new branches.
 - Other sessions' uncommitted files: leave them. No reset, checkout, stash, or committing for them.
 - Ask other agents by message. Do not guess what they are doing.
+- In a shared tree: no `stash` (not even `--autostash`), no relative refs (`HEAD~1`) — record the absolute sha;
+  update an old worktree with `rebase`, never `reset --soft`; read the full `git diff --name-status` before push.
 
-Details: `references/parallel-agents.md`.
+Details: `references/parallel-agents.md` · eleven git incidents that deleted or rewound other agents' work:
+`references/shared-tree-git.md` · shell commands that silently did the wrong thing or leaked a secret:
+`references/shell-traps.md`.
 
 ## 6. Several AI accounts
 

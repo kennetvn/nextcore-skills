@@ -1,4 +1,4 @@
-# Measurement discipline: twelve traps
+# Measurement discipline: fourteen traps
 
 Each trap is a time we reached a wrong conclusion because the **measurement** was wrong, not the
 code. Format: what happened → why → rule.
@@ -98,6 +98,20 @@ handled → **64 (40%) burned**. Most failures were transient (the page re-rende
 **Rule:** mark processed **after** a result, and only on success or when the retry budget is spent.
 Count people, not attempts, or every rate built on it is wrong.
 
+## 13. A test double written from the type, not from the wire
+
+**Happened:** an integration read `r.tail`; the real API returned `{ terminal: { tail } }`. The fake returned
+`{ tail }`, so 17/17 e2e and every unit test were green while the feature never saw a single line in production.
+**Rule:** build fakes from one recorded real response (print the keys, mask secrets) and re-record when the API
+changes. A fake you typed from memory tests your memory.
+
+## 14. Fixtures are cleaner than real data
+
+**Happened:** 92/92 e2e green on a masking feature. The first run against the real local data found 54 rows where
+users had pasted a session cookie into a notes column — masking by column position leaked them.
+**Rule:** after every fix, drive the real build on real (non-destructive) data yourself before calling it done.
+Destructive or privilege probes only against a build that already has the fix, with the undo command ready.
+
 ---
 
 ## Before you report a number
@@ -109,4 +123,5 @@ Count people, not attempts, or every rate built on it is wrong.
 - [ ] Delta, not cumulative?
 - [ ] Compared to a base rate / measured more than once?
 - [ ] A second, independent measurement agrees?
+- [ ] Fakes recorded from a real response? Ran once on real data?
 - [ ] Did you look at the screen?

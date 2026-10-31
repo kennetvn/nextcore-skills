@@ -3,6 +3,13 @@
 All notable changes to this project are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 versioning: [SemVer](https://semver.org/).
 
+## [1.6.0] — 2026-10-31
+
+### Added
+- `references/measurement-traps.md`: traps 20–31 — Images, Loading and rendering (React / Next.js App Router),
+  More meter traps — each with the measured number. SKILL.md: symptom → section router; description names the
+  "passed every check but looks wrong" trigger.
+
 ## [1.3.0] — 2026-10-03
 
 ### Changed

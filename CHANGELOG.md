@@ -4,6 +4,43 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.12.0] — 2026-10-31
+
+Four weeks of production incidents since 1.11.0, each kept only if it was measured.
+
+### Added
+- **nextcore-design 1.6.0** — `measurement-traps.md` grows from 19 to 31 traps in three new sections:
+  **Images** (`naturalWidth` of a `srcset` image is already divided by density; `sizes` for a portrait cell over a
+  landscape photo; an image with a `src` that every request answers 400; lazy images inside a hidden panel never load),
+  **Loading and rendering** (a parent `loading.tsx` wraps every dynamic child; a root fallback flashes on 12/12 hard
+  loads; `loading.tsx` on a static page still streams — TBT 869 → 173 ms after removing it; one IntersectionObserver
+  turns a compositor-only animation into ~800 style recalcs per 5 s; the first `Intl` call costs ~90 ms of hydration),
+  **More meter traps** (contrast parsed from `color(srgb …)` reads 1.00; CDP pins `prefers-color-scheme: light`;
+  198 screens all green with 717px of dead space at 2000px). SKILL.md gets a symptom → section router.
+- **nextcore-dev 1.2.0** — five backend traps (15–19): a proxy cache that drops `If-None-Match` (0 of 27k requests
+  got a 304, ~800 MB/hour); revalidation that clears one process of two (2 of 8 loads stale); raw SQL that passes
+  every gate and fails on MariaDB; list columns stored as CSV and JSON (FIND_IN_SET miscounts); fire-and-forget work
+  that escapes the batch cap (spikes matched to one CI step, 25/28). New `references/desktop-apps.md`: ten Electron
+  packaging/measurement traps (release that cannot start, binary missing from the package while e2e is 18/18,
+  `percentUsage` 0 when busy, spare renderer from `protocol.handle`, webview loader on `pushState`, CDP clicks lost on
+  occluded windows, fakes copied from the type) and the release order that held up.
+- **nextcore-workflow 1.2.0** — new `references/shared-tree-git.md`: eleven git habits that deleted or rewound
+  another agent's work in a shared checkout (`reset --soft` to update a worktree, `stash` and `--autostash`, `HEAD~1`
+  after a race, temporary index losing paths with `?`, hand-built submodule sha, rewinding a submodule pointer, pipes
+  hiding a rejected commit, removing a worktree through a `node_modules` junction, closing keywords copied into the
+  issue repo). New `references/shell-traps.md` (empty sed address hits every line, `$!` is not a Windows PID, BOM from
+  a PowerShell pipe leaking a password, automation tools echoing secrets, tests red only under gate contention).
+  `measurement-discipline.md` 12 → 14 traps: fakes written from the type (17/17 green, feature dead) and fixtures
+  cleaner than real data (92/92 green, 54 leaks on real rows).
+- Two cases: a secret-scanning gate that sat after an early `exit 0` and never ran; CDP input that hangs exactly 5 s
+  on an occluded window.
+
+### Changed
+- Skill descriptions name the new triggers (shared-tree git, raw SQL, cache/ETag/revalidation, Electron releases,
+  screens that pass every check but look wrong), so agents load the skill at the right moment.
+- `npm test` checks progressive disclosure: every `references/*.md` named in a SKILL.md exists, no reference file is
+  orphaned, every description says "Use when …". A planted orphan turns it red.
+
 ## [1.11.0] — 2026-10-03
 
 ### Added

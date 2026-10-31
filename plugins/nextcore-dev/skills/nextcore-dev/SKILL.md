@@ -1,6 +1,6 @@
 ---
 name: nextcore-dev
-description: The development contract that makes design and code meet. Use when building or changing an API route, a form/mutation, a schema or migration, a background job, a production data fix, or when implementing a screen from a design spec — and before saying "done" on any backend change.
+description: The development contract that makes design and code meet. Use when building or changing an API route, a form/mutation, a schema or migration, raw SQL, a cache/ETag/revalidation path, a background job, a production data fix, an Electron desktop release, or when implementing a screen from a design spec — and before saying "done" on any backend change.
 ---
 
 # nextcore-dev
@@ -167,7 +167,9 @@ Details: `references/jobs-and-ops.md`.
   item must be a real violation.
 - A number that is too round (7645/7645 changed) ⇒ suspect the tool first.
 
-Field-tested traps with numbers: `references/backend-traps.md`.
+Field-tested traps with numbers: `references/backend-traps.md` (proxy cache and ETag, multi-instance
+revalidation, raw SQL on the real engine, mixed-format list columns, fire-and-forget concurrency).
+Desktop (Electron) packaging and measurement: `references/desktop-apps.md`.
 Per-framework mapping (Next.js, Laravel, Django, Rails, Express/Nest): `references/stacks.md`.
 
 ---

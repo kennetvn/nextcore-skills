@@ -1,6 +1,6 @@
 ---
 name: nextcore-design
-description: "Senior product-design discipline for AI agents: size the task, run product discovery (problem, job to be done, success criteria, every flow branch), understand the information hierarchy, draw the screen as a canvas BEFORE writing UI code (locked tokens, every state, phone/tablet/desktop, real data), have a separate critic review it, build 1:1, then audit with scripts and squint tests in a real browser, and validate that a user can finish the job and how the business goal will be measured. Use when building a new page/component, redesigning a screen, when the user shares a reference image, or says the UI looks generic / like a template / flat / AI-made."
+description: "Senior product-design discipline for AI agents: size the task, run product discovery (problem, job to be done, success criteria, every flow branch), understand the information hierarchy, draw the screen as a canvas BEFORE writing UI code (locked tokens, every state, phone/tablet/desktop, real data), have a separate critic review it, build 1:1, then audit with scripts and squint tests in a real browser, and validate that a user can finish the job and how the business goal will be measured. Use when building a new page/component, auditing a screen that passed every check but still looks wrong (blurry images, wrong skeleton, contrast 1.00, dead space at wide viewports), redesigning a screen, when the user shares a reference image, or says the UI looks generic / like a template / flat / AI-made."
 ---
 
 # nextcore-design — draw first, code second
@@ -155,7 +155,9 @@ drawing is wrong, fix the drawing first (D1 → D2), then the code.
   measurement (event, baseline, date) — never a claimed uplift. `templates/validation-report.md`,
   `references/validation.md`. A screen that matches its drawing can still be one the user cannot finish.
 - Open the real page at 390 / 768 / 1440 and **look at the screenshot**; also read
-  `references/measurement-traps.md` — most "it passed" reports come from a wrong measurement.
+  `references/measurement-traps.md` — most "it passed" reports come from a wrong measurement. Symptom router:
+  blurry or missing images → §Images (20–23) · wrong skeleton, flash, slow TBT → §Loading (24–28) · contrast ~1.00,
+  dark mode "not working", all-green audit that still looks wrong → §More meter traps (29–31).
 
 ## §9 Kill-list
 
