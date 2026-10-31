@@ -1,6 +1,6 @@
 ---
 name: nextcore-design
-description: "Senior product-design discipline for AI agents: size the task, run product discovery (problem, job to be done, success criteria, every flow branch), understand the information hierarchy, draw the screen as a canvas BEFORE writing UI code (locked tokens, every state, phone/tablet/desktop, real data), have a separate critic review it, build 1:1, then audit with scripts and squint tests in a real browser, and validate that a user can finish the job and how the business goal will be measured. Use when building a new page/component, auditing a screen that passed every check but still looks wrong (blurry images, wrong skeleton, contrast 1.00, dead space at wide viewports), redesigning a screen, when the user shares a reference image, or says the UI looks generic / like a template / flat / AI-made."
+description: "Design-first discipline and UI measurement for AI agents. Use when building or redesigning a page or component, when the user shares a reference image or says the UI looks generic / like a template / flat / AI-made, and when auditing or measuring UI: images blurry or reported as upscaled, wrong skeleton or loading flash, slow TBT, contrast reading ~1.00, dark mode not applying, dead space at wide viewports. Sequence: size the task, product discovery, draw the screen before code (locked tokens, every state, phone/tablet/desktop, real data), separate critic, build 1:1, audit with scripts in a real browser, validate the user can finish the job."
 ---
 
 # nextcore-design — draw first, code second

@@ -4,6 +4,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.12.1] — 2026-10-31
+
+### Fixed
+- **nextcore-design did not load for measurement questions.** In a fresh Claude Code session with the 1.12.0 install,
+  "my audit says every next/image is upscaled 4×" was answered from general knowledge, the skill was not opened, and the
+  answer repeated the wrong reading of `naturalWidth`. The description buried the audit triggers after ~90 words of
+  process. It now leads with "Use when … building / redesigning … and when auditing or measuring UI" and names the
+  symptoms. Same question, same model: the skill loaded, cited `measurement-traps.md` item 20 and gave the correct
+  formula. The workflow skill loaded on the first try for a shared-checkout `reset --soft HEAD~1` question.
+
 ## [1.12.0] — 2026-10-31
 
 Four weeks of production incidents since 1.11.0, each kept only if it was measured.
