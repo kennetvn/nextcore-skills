@@ -1,6 +1,6 @@
 ---
 title: Our pre-commit secret check had never run, because it sat after an early exit
-date: 2026-10-06
+date: 2026-10-31
 layer: [testing, devops]
 area: [security]
 stack: [git, bash]
@@ -32,7 +32,7 @@ password rotation tracked separately.
 For every gate in a hook, run a positive control through the hook itself: stage a fake token and confirm a non-zero
 exit. Read the hook top to bottom and list every early `exit 0` with the condition that reaches it. When printing lines
 that may contain secrets during an investigation, mask by the secret's value, not by a format regex: the author of this
-fix printed a password because the note used ``pw `...` `` instead of the `user:pass@` shape the mask expected.
+fix printed a password because the note used ``pw `<password>` `` instead of the `user:pass@` shape the mask expected.
 
 ## Rule
 A gate is only real if a positive control through the actual hook turns it red. Scan secrets by value as well as by

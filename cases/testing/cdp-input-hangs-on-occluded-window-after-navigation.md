@@ -1,6 +1,6 @@
 ---
 title: CDP mouse input hangs exactly 5 s and the click is lost when the page navigated while its window was occluded
-date: 2026-10-14
+date: 2026-10-31
 layer: [testing, infra]
 area: [frontend]
 stack: [chromium-cdp]
