@@ -64,6 +64,8 @@ on issues; numbers in docs that get re-measured; cleaning up the machine after l
 | `spec-check` | the thinking before the drawing and after the build: task size, problem, job to be done, every flow branch, checkable assumptions, a validation report once it ships | before drawing; before calling it done |
 | `doc-drift` | numbers written in docs that are no longer true | at session start, in CI |
 | `third-patch` | blocks a third fix to the same file in 72 h without a diagnosis note | pre-commit hook |
+| `github-bootstrap` | turns a repo into the agents' workbench: status / priority labels, issue forms with "done when", a PR template, one pinned decision inbox; idempotent, `--dry-run` | once per repo |
+| `issue-claim` | a claim lock on an issue with an expiry (comment + label + assignee), takeover only with `--force-with-lease`; `release --close` refuses unchecked items that name no issue | before starting / after handing off an issue |
 
 Run any of them with `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` prints its options. All are plain Node ≥18 with no dependencies, and each is tested both ways: it must catch a bad example
 and stay silent on a good one.

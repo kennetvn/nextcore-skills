@@ -1,8 +1,8 @@
 {
   "name": "nextcore-skills",
-  "version": "1.12.1",
+  "version": "1.13.0",
   "private": true,
-  "description": "Skills from a real product: nextcore-design (UI), nextcore-dev (frontend <-> backend contract), nextcore-workflow (running AI agents). Zero-dependency tools: slop-check, token-audit, design-card, design-review, doc-drift.",
+  "description": "Skills from a real product: nextcore-design (UI), nextcore-dev (frontend <-> backend contract), nextcore-workflow (running AI agents). Zero-dependency tools: slop-check, token-audit, design-card, design-review, doc-drift, github-bootstrap, issue-claim.",
   "type": "module",
   "license": "MIT",
   "repository": {
@@ -19,12 +19,14 @@
     "design-review": "plugins/nextcore-design/skills/nextcore-design/scripts/design-review.mjs",
     "doc-drift": "plugins/nextcore-workflow/skills/nextcore-workflow/scripts/doc-drift.mjs",
     "third-patch": "plugins/nextcore-workflow/skills/nextcore-workflow/scripts/third-patch.mjs",
+    "issue-claim": "plugins/nextcore-workflow/skills/nextcore-workflow/scripts/issue-claim.mjs",
+    "github-bootstrap": "plugins/nextcore-workflow/skills/nextcore-workflow/scripts/github-bootstrap.mjs",
     "spec-check": "plugins/nextcore-design/skills/nextcore-design/scripts/spec-check.mjs",
     "nextcore-install": "tools/nextcore-install.mjs",
     "nextcore": "tools/nextcore.mjs"
   },
   "scripts": {
-    "test": "node --test tests/hub.test.mjs plugins/nextcore-design/tests/tools.test.mjs",
+    "test": "node --test tests/hub.test.mjs tests/workflow-github.test.mjs plugins/nextcore-design/tests/tools.test.mjs",
     "cases": "node tools/cases-index.mjs"
   },
   "keywords": [

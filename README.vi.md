@@ -64,6 +64,8 @@ issue; con số trong tài liệu được đo lại; dọn máy sau những phi
 | `spec-check` | phần suy nghĩ trước khi vẽ và sau khi làm: cỡ task, vấn đề, việc người dùng cần làm, mọi nhánh của luồng, giả định kiểm được, báo cáo kiểm chứng khi đã lên | trước khi vẽ; trước khi báo xong |
 | `doc-drift` | con số ghi trong tài liệu nay không còn đúng | đầu phiên, trong CI |
 | `third-patch` | chặn lần sửa thứ ba vào cùng một tệp trong 72 h nếu chưa có ghi chú chẩn đoán | pre-commit hook |
+| `github-bootstrap` | biến repo thành bàn làm việc của agent: nhãn trạng thái / ưu tiên, mẫu issue có "xong khi", mẫu PR, một hộp thư quyết định ghim đầu; chạy lại không đổi gì, có `--dry-run` | một lần mỗi repo |
+| `issue-claim` | khoá nhận việc trên issue có hạn (comment + nhãn + người nhận), giành chỉ bằng `--force-with-lease`; `release --close` từ chối khi còn ô chưa tick mà không ghi chuyển sang issue nào | trước khi làm / sau khi bàn giao issue |
 
 Chạy bất kỳ công cụ nào bằng `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` in ra các tuỳ chọn.
 Tất cả là Node ≥18 thuần, không phụ thuộc thư viện, và mỗi công cụ được thử theo hai chiều: phải bắt được

@@ -1,8 +1,8 @@
 {
   "name": "nextcore-workflow",
   "displayName": "NextCore Workflow",
-  "version": "1.2.0",
-  "description": "Running AI coding agents on a real product: diagnose before patching, evidence before claims, parallel agents and accounts without collisions, decisions on issues, docs that expire (doc-drift).",
+  "version": "1.3.0",
+  "description": "Running AI coding agents on a real product: diagnose before patching, evidence before claims, parallel agents and accounts without collisions, decisions on issues, docs that expire (doc-drift), GitHub as the workbench (github-bootstrap, issue-claim).",
   "author": {
     "name": "kennetvn",
     "url": "https://github.com/kennetvn"

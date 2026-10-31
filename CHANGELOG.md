@@ -4,6 +4,23 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.13.0] — 2026-10-31
+
+### Added
+- **nextcore-workflow 1.3.0 — GitHub as the agents' workbench.** A new user had no way to put work on GitHub the way
+  the product's own agents do. Two zero-dependency tools and one reference:
+  - `github-bootstrap` — status / priority / type labels, `needs-human`, bug · task · lesson issue forms (a task asks
+    for "done when", at most 8 items), a PR template with Evidence and "Moved elsewhere", and one pinned
+    "Decision inbox" issue. Idempotent; `--dry-run` reads and writes nothing; `--files-only` needs no `gh`.
+  - `issue-claim` — a claim lock with an expiry: one comment is the lock, label + assignee make it visible.
+    A live claim by someone else blocks; takeover only with `--force-with-lease <comment id>` of the claim you read;
+    two claims in the same second resolve to the earlier comment and the later one deletes itself;
+    `release --close` refuses while an unchecked item names no issue it moved to.
+  - `references/github-workbench.md` — the Received / Handoff comment templates, "a finding becomes an issue in the
+    same session", the 48-hour deadline and the open-issue cap.
+- `tests/workflow-github.test.mjs` — 10 tests against a stand-in `gh` (no network). Checked in reverse: letting
+  any later claim win turns the same-second race test red.
+
 ## [1.12.1] — 2026-10-31
 
 ### Fixed

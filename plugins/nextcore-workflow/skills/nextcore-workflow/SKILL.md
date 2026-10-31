@@ -1,6 +1,6 @@
 ---
 name: nextcore-workflow
-description: Operating rules for AI coding agents that build and run a real product — use when setting up or running agents that commit, deploy, measure, or work in parallel (several CLIs, several AI accounts, one shared working tree), before any git command that rewrites HEAD/index/stash or bumps a submodule in a shared checkout, when a gate or test is green but you doubt it, or when an agent is about to claim "done", patch the same bug again, trust a zero, or ask a human a question.
+description: Operating rules for AI coding agents that build and run a real product — use when setting up or running agents that commit, deploy, measure, or work in parallel (several CLIs, several AI accounts, one shared working tree), before any git command that rewrites HEAD/index/stash or bumps a submodule in a shared checkout, when a gate or test is green but you doubt it, when setting up a GitHub repo for agents or claiming / handing off an issue, or when an agent is about to claim "done", patch the same bug again, trust a zero, or ask a human a question.
 ---
 
 # nextcore-workflow
@@ -121,6 +121,13 @@ A local plan file is not a decision record. Do not close an issue with unchecked
 unless each one says which issue it moved to. We closed one at 0/5 criteria with 26 UI commits and
 zero designs, because the scope change lived only in a local plan.
 
+The cycle on every issue: **claim** (a comment lock with an expiry) → **Received** comment (understanding · plan ·
+done when · risks) before the first line of code → findings become issues in the same session → **Handoff** comment
+(done · evidence · moved to · risks) before releasing, also when stopping half-way. Set a repo up once with
+`scripts/github-bootstrap.mjs` (labels, issue forms, PR template, pinned decision inbox); claim and release with
+`scripts/issue-claim.mjs` — it refuses `--close` while an unchecked item names no issue it moved to.
+Templates, takeover rules, the 48-hour deadline and the open-issue cap: `references/github-workbench.md`.
+
 ## 8. Documentation has an expiry date
 
 Numbers in rules go stale. In one session we found 4 docs that had drifted from the code; 3 made
@@ -175,7 +182,9 @@ verify, continue; never "please check your browser". Drop-in scripts: `reference
 | Ask the human to choose between options | Execute plan A, record the assumption on the issue |
 | Questions in random comments | One inbox issue |
 | Decisions in a local plan file | Issue comment, same session |
-| Close an issue with open criteria | Move each to a named issue first |
+| Close an issue with open criteria | Move each to a named issue first (`issue-claim release --close` checks) |
+| Start coding on an unclaimed issue | `issue-claim claim` + a Received comment |
+| Report the result only in chat | Handoff comment on the issue, with evidence |
 | Numbers in docs without a date | Marker + re-measure script |
 | "Not found" × N → "it was deleted" | Check which account you are on |
 | Retry an action the harness says needs a human | Hand the human a list |
