@@ -74,6 +74,7 @@
     "payments": "money in and out",
     "integrations": "third-party APIs and webhooks",
     "browser-extension": "Chrome/Firefox extensions",
+    "desktop": "installed desktop apps: packaging, auto-update, machine-to-machine links",
     "messaging": "chat, notifications, email",
     "jobs": "background work, queues, schedules",
     "seo": "crawlers, metadata, status codes"
