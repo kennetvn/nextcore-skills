@@ -74,6 +74,11 @@ body:
     attributes:
       label: How to reproduce
   - type: textarea
+    id: cause
+    attributes:
+      label: Root cause
+      description: Proven (file:line), or "unknown — hypothesis …" and then the first step is the diagnosis.
+  - type: textarea
     id: done
     attributes:
       label: Done when
@@ -91,6 +96,11 @@ body:
       label: Why
       description: The problem and who has it.
     validations: { required: true }
+  - type: textarea
+    id: now
+    attributes:
+      label: Current state
+      description: A number measured now (command + result), not a remembered one.
   - type: dropdown
     id: size
     attributes:

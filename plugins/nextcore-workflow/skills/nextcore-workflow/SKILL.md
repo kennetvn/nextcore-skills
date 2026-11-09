@@ -1,6 +1,6 @@
 ---
 name: nextcore-workflow
-description: Operating rules for AI coding agents that build and run a real product — use when setting up or running agents that commit, deploy, measure, or work in parallel (several CLIs, several AI accounts, one shared working tree), before any git command that rewrites HEAD/index/stash or bumps a submodule in a shared checkout, when a gate or test is green but you doubt it, when setting up a GitHub repo for agents or claiming / handing off an issue, or when an agent is about to claim "done", patch the same bug again, trust a zero, or ask a human a question.
+description: Operating rules for AI coding agents that build and run a real product — use when setting up or running agents that commit, deploy, measure, or work in parallel (several CLIs, several AI accounts, one shared working tree), before any git command that rewrites HEAD/index/stash or bumps a submodule in a shared checkout, when a gate or test is green but you doubt it, when setting up a GitHub repo for agents, writing an issue or a commit message, claiming / handing off / closing an issue, or when an agent is about to claim "done", patch the same bug again, trust a zero, or ask a human a question.
 ---
 
 # nextcore-workflow
@@ -128,6 +128,18 @@ done when · risks) before the first line of code → findings become issues in 
 `scripts/issue-claim.mjs` — it refuses `--close` while an unchecked item names no issue it moved to.
 Templates, takeover rules, the 48-hour deadline and the open-issue cap: `references/github-workbench.md`.
 
+What each step must contain — measured on our own trail, where anything a hook fills reached ~100% and anything left
+to conscience stayed under 35% (Received 15%, complete Handoff 33%, documented commit template 5–9%):
+- **Issue card** at the top (area · type · source · related) + five sections: current state (measured now) · evidence ·
+  root cause (or "unknown — hypothesis") · done when (command ⇒ expected result) · out of scope.
+- **A Progress line after every push**: sessions die mid-task; the last line on the issue must be enough to continue.
+- **Commit shape** `type(area): #n summary` + Problem / Root cause (fix) / Measured (fix, feat, perf) / Risk·Rollback.
+  `scripts/commit-trail.mjs` is the `commit-msg` hook and reports coverage over a range before you turn it on.
+- **Definition of done, six points**: items ticked with evidence · root cause fixed + something that blocks recurrence
+  · measured on what users use · reached users · Handoff · closed through a check. A deadline never buys a skipped
+  gate; a gate is bypassed only when it is provably wrong, with a gate-fix issue and a log line.
+Details: `references/issue-and-commit-trail.md`.
+
 ## 8. Documentation has an expiry date
 
 Numbers in rules go stale. In one session we found 4 docs that had drifted from the code; 3 made
@@ -185,6 +197,9 @@ verify, continue; never "please check your browser". Drop-in scripts: `reference
 | Close an issue with open criteria | Move each to a named issue first (`issue-claim release --close` checks) |
 | Start coding on an unclaimed issue | `issue-claim claim` + a Received comment |
 | Report the result only in chat | Handoff comment on the issue, with evidence |
+| `Measured: tested` / "should work" | `Measured: \`<command>\` → <number>`, or `not run — <why>` (`commit-trail`) |
+| Bypass a gate to meet a deadline | Prove the gate wrong (red on clean trunk too), open a gate-fix issue, log it |
+| Push, then let the session die silently | One Progress line per push: sha + next step |
 | Numbers in docs without a date | Marker + re-measure script |
 | "Not found" × N → "it was deleted" | Check which account you are on |
 | Retry an action the harness says needs a human | Hand the human a list |

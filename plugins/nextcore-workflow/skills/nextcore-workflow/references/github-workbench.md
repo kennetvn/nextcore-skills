@@ -2,7 +2,9 @@
 
 Agents that report in chat leave nothing behind. The next session, another machine, or the human opening the repo
 tomorrow sees only what is on the issue. So every step of the work cycle writes to the issue: claim, plan, evidence,
-handoff, what moved where. This file is the cycle; two scripts make the mechanical parts one command.
+handoff, what moved where. This file is the cycle; two scripts make the mechanical parts one command. What each step must contain (issue card,
+milestone markers, commit shape, the six-point definition of done) and the `commit-trail` hook:
+`issue-and-commit-trail.md`.
 
 ## Set the repo up once — `github-bootstrap`
 
@@ -58,6 +60,8 @@ them; do not start a two-week issue under one claim.
   comment on the Decision inbox, `needs-human` on the blocked issue, then continue with everything that does not
   depend on the answer.
 - Every commit names the issue (`#12`) so history and issue point at each other.
+- After every push, one **Progress** line: the sha and the next step. A session can die at any moment; one afternoon
+  14 tasks lost their terminal in 40 minutes with 0 comments, and each was restarted from scratch.
 
 ### 4. "Handoff" comment — before releasing the claim, also when stopping half-way
 
