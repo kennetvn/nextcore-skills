@@ -3,6 +3,14 @@
 All notable changes to this project are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 versioning: [SemVer](https://semver.org/).
 
+## [1.7.0] — 2026-11-09
+
+### Added
+- `references/baseline-and-delta.md` + SKILL.md §3b: clone the live baseline, check drift, draw only the delta; the
+  gate for drawing from scratch; client repositories keep their own tokens.
+- `references/migrating-drawings.md`: moving drawings out of an old tool without the meter lying.
+- SKILL description names "changing a screen that already exists" and "migrating drawings" as triggers.
+
 ## [1.6.0] — 2026-10-31
 
 ### Added

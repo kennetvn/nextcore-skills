@@ -93,6 +93,8 @@ npx -y -p github:kennetvn/nextcore-skills design-review design --shot review.png
 | [`references/design-thinking.md`](skills/nextcore-design/references/design-thinking.md) | Senior-designer reasoning: FACT vs ASSUMPTION, information hierarchy first, a "why" for every element, extended states, localised content, squint tests |
 | [`references/agent-pipeline.md`](skills/nextcore-design/references/agent-pipeline.md) | Designer → Critic → Implementer → Audit → Visual review → Iterate, with a stop rule |
 | [`references/canvas-workflow.md`](skills/nextcore-design/references/canvas-workflow.md) | Claude Design vs Artifact canvas · one canvas across several Claude accounts and parallel agents |
+| [`references/baseline-and-delta.md`](skills/nextcore-design/references/baseline-and-delta.md) | Existing screen: clone the live baseline, check drift (≥ 3% ⇒ update first), draw only the delta; the gate for drawing from scratch |
+| [`references/migrating-drawings.md`](skills/nextcore-design/references/migrating-drawings.md) | Moving drawings out of an old tool: inventory, dry run, idempotent, scored through the app's own viewer — and the traps that made it lie |
 | [`references/slop-tells.md`](skills/nextcore-design/references/slop-tells.md) | ~35 signs a UI was generated on autopilot, merged from 5 leading skills |
 | [`references/measurement-traps.md`](skills/nextcore-design/references/measurement-traps.md) | 19 ways a check says "pass" while the page is broken — each happened in production |
 | [`templates/`](skills/nextcore-design/templates) | `spec.md` (goal, hierarchy, why-log, field map, states, responsive, a11y) · `card.json` · `report.md` |

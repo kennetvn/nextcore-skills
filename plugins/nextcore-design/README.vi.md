@@ -93,6 +93,8 @@ npx -y -p github:kennetvn/nextcore-skills design-review design --shot review.png
 | [`references/design-thinking.md`](skills/nextcore-design/references/design-thinking.md) | Cách lập luận của designer lâu năm: SỰ THẬT với GIẢ ĐỊNH, thứ bậc thông tin trước tiên, mỗi phần tử có một "vì sao", trạng thái mở rộng, nội dung bản địa hoá, phép thử nheo mắt |
 | [`references/agent-pipeline.md`](skills/nextcore-design/references/agent-pipeline.md) | Designer → Critic → Implementer → Audit → Visual review → Iterate, kèm luật dừng |
 | [`references/canvas-workflow.md`](skills/nextcore-design/references/canvas-workflow.md) | Claude Design so với Artifact canvas · một canvas dùng chung cho nhiều tài khoản Claude và nhiều agent song song |
+| [`references/baseline-and-delta.md`](skills/nextcore-design/references/baseline-and-delta.md) | Màn đã có: nhân bản bản vẽ gốc khớp app đang chạy, đo lệch (≥ 3 % ⇒ cập nhật gốc trước), chỉ vẽ delta; cổng cho việc vẽ mới từ đầu |
+| [`references/migrating-drawings.md`](skills/nextcore-design/references/migrating-drawings.md) | Chuyển bản vẽ khỏi công cụ cũ: kiểm kê, chạy khô, chạy lại không trùng, chấm qua đúng trình xem của app — và các bẫy làm số đo nói dối |
 | [`references/slop-tells.md`](skills/nextcore-design/references/slop-tells.md) | ~35 dấu hiệu cho thấy UI được sinh theo quán tính, gộp từ 5 skill hàng đầu |
 | [`references/measurement-traps.md`](skills/nextcore-design/references/measurement-traps.md) | 19 kiểu công cụ kiểm báo "đạt" trong khi trang đang hỏng, ca nào cũng đã xảy ra trên production |
 | [`templates/`](skills/nextcore-design/templates) | `spec.md` (mục tiêu, thứ bậc, nhật ký vì sao, bản đồ trường dữ liệu, trạng thái, responsive, a11y) · `card.json` · `report.md` |

@@ -1,6 +1,6 @@
 ---
 name: nextcore-design
-description: "Design-first discipline and UI measurement for AI agents. Use when building or redesigning a page or component, when the user shares a reference image or says the UI looks generic / like a template / flat / AI-made, and when auditing or measuring UI: images blurry or reported as upscaled, wrong skeleton or loading flash, slow TBT, contrast reading ~1.00, dark mode not applying, dead space at wide viewports. Sequence: size the task, product discovery, draw the screen before code (locked tokens, every state, phone/tablet/desktop, real data), separate critic, build 1:1, audit with scripts in a real browser, validate the user can finish the job."
+description: "Design-first discipline and UI measurement for AI agents. Use when building or redesigning a page or component, when changing a screen that already exists (clone the live baseline, draw only the delta), when migrating drawings from another design tool, when the user shares a reference image or says the UI looks generic / like a template / flat / AI-made, and when auditing or measuring UI: images blurry or reported as upscaled, wrong skeleton or loading flash, slow TBT, contrast reading ~1.00, dark mode not applying, dead space at wide viewports. Sequence: size the task, product discovery, draw the screen before code (locked tokens, every state, phone/tablet/desktop, real data), separate critic, build 1:1, audit with scripts in a real browser, validate the user can finish the job."
 ---
 
 # nextcore-design — draw first, code second
@@ -62,6 +62,26 @@ description: "Design-first discipline and UI measurement for AI agents. Use when
   (`scripts/design-card.mjs`). Orange card = fix it before asking for approval.
 - Draw in an **Artifact canvas**, not a claude.ai/design project — agents cannot read those back. Several Claude
   accounts or parallel agents on one canvas: `references/canvas-workflow.md`.
+
+## §3b Existing screen? Clone the live baseline, draw only the delta
+
+Measured on one app: 132 drawing folders, 3 matched the running app; one area had 14 loose drawings and none was
+"the app today"; one proposed a notification bell for an app without notifications. Drawing from blank re-draws —
+and silently changes — the parts nobody meant to change.
+
+- **One baseline per product**, tagged with the version it shows, built from screenshots of the running app with real
+  data. **UI work = clone the latest baseline screen, draw the delta**, mark the changed region.
+- **Drift check first:** live screenshot vs baseline, dynamic regions masked; ≥ 3% of pixels different ⇒ update the
+  baseline before cloning. Run the meter A↔A on one build first (unmasked it reported 4/57 false drifts; masked +
+  double capture 0/43).
+- **Update the baseline only from what shipped**, never from a drawing.
+- **Drawing from scratch is gated:** a truly new screen (searches return 0) · the owner asked for a redesign
+  (verbatim quote, from the owner) · the live screen is measurably bad (≥ 30% text fails AA, ≥ 30% targets < 24 px,
+  overflow at ≥ 2 widths). Opinions do not open the gate.
+- In a client's repo: their live app, their tokens — never yours.
+- Any tool works (a Figma branch is a clone of the baseline). Details + traps: `references/baseline-and-delta.md`.
+  Moving drawings out of an old tool (inventory, dry run, idempotent, score through the app's own viewer, dark render
+  checked): `references/migrating-drawings.md`.
 
 ## §4 Every screen = at least 5 artboards
 
@@ -162,6 +182,8 @@ drawing is wrong, fix the drawing first (D1 → D2), then the code.
 ## §9 Kill-list
 
 - ❌ Writing TSX/CSS before there is a drawing (except §1 right column)
+- ❌ Drawing an existing screen from a blank artboard; cloning a baseline nobody checked for drift
+- ❌ Scoring a migration through a renderer nicer than the one users open; skipping the dark render
 - ❌ Drawing only the data state and skipping the other 4
 - ❌ Hex colours or Tailwind colour utilities in the drawing
 - ❌ Placeholder data; one avatar reused for many people
