@@ -100,10 +100,12 @@ Say which level and why, quoting what you measured. "L0 — you already do this"
 | Task | Open | Before saying done |
 |---|---|---|
 | new screen or redesign (MEDIUM+) | `nextcore-design/SKILL.md` §2 → `references/product-discovery.md` → `templates/spec.md` | `spec-check`, `design-card`, and `templates/validation-report.md` |
+| change to a screen that already exists | `nextcore-design/SKILL.md` §3b → `references/baseline-and-delta.md` | drift checked against the live screen; only the delta drawn |
 | small UI change | `nextcore-design/SKILL.md` §1 (no drawing needed) | `slop-check` on the changed files |
 | API, data, auth, jobs | `nextcore-dev/SKILL.md` → the matching `references/` file | the contract table filled; auth counted |
 | a bug fixed twice already | `nextcore-workflow/references/diagnose-before-patch.md` | a diagnosis note before the third fix |
 | several agents on one repo | `nextcore-workflow/references/parallel-agents.md` | commits scoped to your own files |
+| working from a GitHub issue | `nextcore-workflow/references/issue-and-commit-trail.md` | Handoff comment with evidence; `commit-trail` passes; the six-point definition of done |
 | working with a third-party platform (Zalo, Facebook, Discord…) | its playbook `cases/<platform>/README.md` in this repo — status table, then *Audit it yourself* | re-check the rows you relied on; report a row that is no longer true (§6) |
 
 3. Write unknowns as UNKNOWN / ASSUMPTION and keep going. Ask the person once, and only when the answer changes the

@@ -37,7 +37,8 @@ Cài tay cho agent khác: [cài skill](#cài-skill). Kết quả mẫu và sáu 
 
 **[nextcore-design](plugins/nextcore-design/README.vi.md)**: cho ai giao UI. Xác định cỡ việc và tìm hiểu trước
 (vấn đề, việc người dùng cần làm, mọi nhánh của luồng), rồi đặc tả và bản vẽ 5 trạng thái × 3 khổ, một lượt soát bởi
-một *agent phản biện* tách riêng, thi công 1:1, và kiểm chứng người dùng thật sự làm xong được việc. Hai thuật ngữ bạn sẽ gặp: **phiếu thiết kế (design card)** là một checklist ngắn gắn vào
+một *agent phản biện* tách riêng, thi công 1:1, và kiểm chứng người dùng thật sự làm xong được việc. Sửa một màn đã có thì bắt đầu từ **bản vẽ gốc**
+nhân bản từ app đang chạy, chỉ vẽ phần thay đổi (delta). Hai thuật ngữ bạn sẽ gặp: **phiếu thiết kế (design card)** là một checklist ngắn gắn vào
 mỗi bản vẽ (tính năng nào, trang nào, vì sao, đã dựng chưa, cộng thiết bị, trạng thái, màu và font đã đo); **phép thử
 nheo mắt (squint test)** cho xem mỗi bản vẽ ở cỡ nhỏ, thang xám và bỏ bóng đổ để kiểm những thứ quan trọng vẫn nổi bật.
 Skill không bao giờ chọn màu hay font thay bạn: nó giữ design system bạn đang có.
@@ -51,7 +52,8 @@ thuần và WordPress.
 **[nextcore-workflow](plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md)**: cho người vận hành agent. Quy tắc nào
 máy kiểm được thì thành git hook bạn cài vào, mỗi hook được chứng minh bằng cách cố ý cho nó báo lỗi một lần; chẩn đoán trước lần vá
 thứ ba; bằng chứng trước khi báo "xong"; nhiều agent trên một repo mà không ghi đè việc của nhau; quyết định ghi trên
-issue; con số trong tài liệu được đo lại; dọn máy sau những phiên agent dài.
+issue: thẻ issue, comment Nhận / Tiến độ / Bàn giao, commit nêu nguyên nhân gốc và thứ đã đo, định nghĩa XONG 6 điểm;
+con số trong tài liệu được đo lại; dọn máy sau những phiên agent dài.
 
 ## Các công cụ
 
@@ -66,6 +68,7 @@ issue; con số trong tài liệu được đo lại; dọn máy sau những phi
 | `third-patch` | chặn lần sửa thứ ba vào cùng một tệp trong 72 h nếu chưa có ghi chú chẩn đoán | pre-commit hook |
 | `github-bootstrap` | biến repo thành bàn làm việc của agent: nhãn trạng thái / ưu tiên, mẫu issue có "xong khi", mẫu PR, một hộp thư quyết định ghim đầu; chạy lại không đổi gì, có `--dry-run` | một lần mỗi repo |
 | `issue-claim` | khoá nhận việc trên issue có hạn (comment + nhãn + người nhận), giành chỉ bằng `--force-with-lease`; `release --close` từ chối khi còn ô chưa tick mà không ghi chuyển sang issue nào | trước khi làm / sau khi bàn giao issue |
+| `commit-trail` | commit phải nêu issue, commit sửa lỗi phải nêu nguyên nhân gốc, commit sửa lỗi / tính năng / hiệu năng phải ghi lệnh đã chạy và con số; "tested" bị từ chối; `--range` đo độ phủ trên lịch sử của bạn | hook `commit-msg`; chạy báo cáo trước khi bật |
 
 Chạy bất kỳ công cụ nào bằng `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` in ra các tuỳ chọn.
 Tất cả là Node ≥18 thuần, không phụ thuộc thư viện, và mỗi công cụ được thử theo hai chiều: phải bắt được
@@ -229,6 +232,8 @@ cập nhật. Agent làm gì sau khi cài: [AGENTS.md §4](AGENTS.md#4-use--afte
 | developer backend được giao mockup | nextcore-dev: [checklist bàn giao](plugins/nextcore-dev/skills/nextcore-dev/references/handoff.md) và [hợp đồng API](plugins/nextcore-dev/skills/nextcore-dev/references/api-contract.md) |
 | team PHP / WordPress / Django / Rails | nextcore-dev [ghi chú theo stack](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md); PHP thuần: cách gác và đếm mọi endpoint |
 | người chạy nhiều agent AI trên một repo | nextcore-workflow: [agent song song](plugins/nextcore-workflow/skills/nextcore-workflow/references/parallel-agents.md) và `third-patch` |
+| người theo dõi việc của agent trên GitHub | nextcore-workflow: [vết issue và commit](plugins/nextcore-workflow/skills/nextcore-workflow/references/issue-and-commit-trail.md), `github-bootstrap`, `issue-claim`, `commit-trail` |
+| người sửa một màn đã có, hoặc rời công cụ thiết kế cũ | nextcore-design: [bản vẽ gốc và delta](plugins/nextcore-design/skills/nextcore-design/references/baseline-and-delta.md) · [chuyển bản vẽ](plugins/nextcore-design/skills/nextcore-design/references/migrating-drawings.md) |
 | một agent AI được hỏi "cái này có ích cho dự án của tôi không?" | [AGENTS.md](AGENTS.md): đo dự án trước, rồi mới khuyến nghị |
 
 ## Sản phẩm dùng các skill này

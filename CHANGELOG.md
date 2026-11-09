@@ -4,6 +4,43 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.14.0] — 2026-11-09
+
+Nine days of the product's own agents working through GitHub issues, a design-tool migration, and five incidents —
+each kept only with its number.
+
+### Added
+- **nextcore-workflow 1.4.0 — the trail an outsider can pick up.** New `references/issue-and-commit-trail.md`: an issue
+  card (area · type · source · related) with five sections (current state measured now · evidence · root cause or
+  hypothesis · done when as commands · out of scope); milestone comments with a machine-readable marker (Received,
+  Progress after every push, Blocked, Handoff in four sections, Cross-check, Closed, Follow-up after 7 days); the commit
+  shape `type(area): #n …` + Problem / Root cause / Fix / Measured / Risk·Rollback; a six-point definition of done; when
+  a gate may be bypassed (only when it is provably wrong, with a gate-fix issue and a log line); warn 7 days, then
+  block. Why: on our own trail anything a hook filled reached ~100% and anything left to conscience stayed under 35%
+  (Received 15%, complete Handoff 33%, the documented commit template 5–9%).
+- **`commit-trail`** — zero-dependency `commit-msg` hook: subject `type(scope): …` ≤ 72, an issue reference, `Root
+  cause:` on a fix, `Measured:` with a command or a number on fix / feat / perf ("tested" is refused, `not run — <why>`
+  is accepted). `--range a..b` reports coverage per field; `--strict` for CI. Tested both ways: removing the Root cause
+  rule or the Measured rule turns the tests red.
+- `github-bootstrap`: the bug form asks for the root cause (or a hypothesis), the task form for the current state
+  measured now.
+- **nextcore-design 1.7.0** — `references/baseline-and-delta.md` (SKILL §3b): one baseline per product built from the
+  running app and tagged with its version; UI work clones the latest baseline screen and draws only the delta; drift
+  ≥ 3% of pixels ⇒ update the baseline first; the baseline changes only from what shipped; drawing from scratch is
+  gated (truly new screen · the owner's verbatim request · measurably bad live screen). Measured: 132 drawing folders,
+  3 matched the running app. Traps: a drift meter without an A↔A control (4/57 false → 0/43 masked), data changes read as
+  drift (5.73%), window chrome missing from captures. Works with any tool; a Figma branch is a clone of the baseline.
+- `references/migrating-drawings.md`: inventory → dry run → read-only source → idempotent and resumable → every board
+  scored through the app's own viewer → final report. Traps: a similarity runner with embedded fonts while the real
+  viewer's CSP blocked them (59/59 boards substituted); "0 structural differences" blind to font smoothing, squircle
+  corners and centred strokes (18 → 41 of 46 boards at SSIM ≥ 0.98 after fixing); colours mapped to tokens by value
+  flipping dark mode; writes that report OK and change nothing.
+- **nextcore-dev 1.3.0** — `desktop-apps.md`: a pre-release counter (`-dev.1`) that sorts below timestamp builds, and
+  an internal update channel that only asked direct LAN peers.
+- **Five cases**: `devops/prerelease-counter-sorts-below-timestamp-builds`, `infra/update-channel-saw-only-direct-lan-peers`,
+  `process/paused-area-leaked-through-label-only-filter`, `devops/newer-npm-lockfile-rejected-by-ci-npm-ci`,
+  `testing/parallel-e2e-batches-one-machine-37-percent-red`. Taxonomy: area `desktop`.
+
 ## [1.13.0] — 2026-10-31
 
 ### Added

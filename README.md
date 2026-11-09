@@ -37,7 +37,8 @@ Install by hand for other agents: [install the skills](#install-the-skills). Sam
 
 **[nextcore-design](plugins/nextcore-design/README.md)** — for anyone shipping UI. Size the task and discover first
 (the problem, the job to be done, every branch of the flow), then a spec and a drawing in 5 states × 3 widths, a
-review by a separate *critic* agent, a 1:1 build, and validation that a user can actually finish the job. Two words you'll meet: a **design card** is a short checklist attached to each design
+review by a separate *critic* agent, a 1:1 build, and validation that a user can actually finish the job. Changing a
+screen that already exists starts from a **baseline** cloned from the live app, and only the delta is drawn. Two words you'll meet: a **design card** is a short checklist attached to each design
 (which feature, which page, why, built yet, plus measured devices, states, colours and fonts); a **squint test** shows
 each design small, in grayscale and without shadows to check the important things still stand out.
 It never picks colours or fonts for you — it keeps the design system you have.
@@ -51,7 +52,9 @@ WordPress.
 **[nextcore-workflow](plugins/nextcore-workflow/skills/nextcore-workflow/SKILL.md)** — for whoever runs the agents.
 Rules a machine can check become git hooks you install, each proved by making it fail once on purpose; a diagnosis before the
 third fix; evidence before "done"; several agents on one repo without overwriting each other's work; decisions written
-on issues; numbers in docs that get re-measured; cleaning up the machine after long agent sessions.
+on issues — an issue card, Received / Progress / Handoff comments, commits that state the root cause and what was
+measured, a six-point definition of done; numbers in docs that get re-measured; cleaning up the machine after long
+agent sessions.
 
 ## The tools
 
@@ -66,6 +69,7 @@ on issues; numbers in docs that get re-measured; cleaning up the machine after l
 | `third-patch` | blocks a third fix to the same file in 72 h without a diagnosis note | pre-commit hook |
 | `github-bootstrap` | turns a repo into the agents' workbench: status / priority labels, issue forms with "done when", a PR template, one pinned decision inbox; idempotent, `--dry-run` | once per repo |
 | `issue-claim` | a claim lock on an issue with an expiry (comment + label + assignee), takeover only with `--force-with-lease`; `release --close` refuses unchecked items that name no issue | before starting / after handing off an issue |
+| `commit-trail` | commit messages name the issue, a fix states its root cause, a fix / feature / perf change shows the command it ran and the number — "tested" is refused; `--range` reports coverage of your history | `commit-msg` hook; a report before turning it on |
 
 Run any of them with `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` prints its options. All are plain Node ≥18 with no dependencies, and each is tested both ways: it must catch a bad example
 and stay silent on a good one.
@@ -227,6 +231,8 @@ changed before it updates. What an agent should do after installing: [AGENTS.md 
 | a backend developer handed mockups | nextcore-dev: [hand-off checklist](plugins/nextcore-dev/skills/nextcore-dev/references/handoff.md) and [API contract](plugins/nextcore-dev/skills/nextcore-dev/references/api-contract.md) |
 | a PHP / WordPress / Django / Rails team | nextcore-dev [stack notes](plugins/nextcore-dev/skills/nextcore-dev/references/stacks.md) — plain PHP: how to guard and count every endpoint |
 | running several AI agents on one repo | nextcore-workflow: [parallel agents](plugins/nextcore-workflow/skills/nextcore-workflow/references/parallel-agents.md) and `third-patch` |
+| tracking agents' work on GitHub | nextcore-workflow: [issue and commit trail](plugins/nextcore-workflow/skills/nextcore-workflow/references/issue-and-commit-trail.md), `github-bootstrap`, `issue-claim`, `commit-trail` |
+| changing a screen that already exists, or leaving an old design tool | nextcore-design: [baseline and delta](plugins/nextcore-design/skills/nextcore-design/references/baseline-and-delta.md) · [migrating drawings](plugins/nextcore-design/skills/nextcore-design/references/migrating-drawings.md) |
 | an AI agent asked "is this useful for my project?" | [AGENTS.md](AGENTS.md): measure the project first, then recommend |
 
 ## Built with these skills
