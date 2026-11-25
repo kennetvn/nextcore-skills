@@ -1,7 +1,10 @@
 {
   "name": "nextcore",
   "description": "Skills distilled from a production product built and run by AI coding agents: design, development contract, and agent operations.",
-  "owner": { "name": "kennetvn", "url": "https://github.com/kennetvn" },
+  "owner": {
+    "name": "kennetvn",
+    "url": "https://github.com/kennetvn"
+  },
   "plugins": [
     {
       "name": "nextcore-design",
@@ -17,6 +20,11 @@
       "name": "nextcore-workflow",
       "source": "./plugins/nextcore-workflow",
       "description": "Running AI coding agents on a real product: diagnose before patching, evidence before claims, parallel agents and accounts, an issue and commit trail on GitHub (issue-claim, commit-trail), docs that expire (doc-drift)."
+    },
+    {
+      "name": "deploy-integration",
+      "source": "./plugins/deploy-integration",
+      "description": "Learn and follow any project's deploy path instead of inventing one: a deploy profile per repo, three roads (existing pipeline, a reachable server, a new server from address + root + password), and deploy-profile-check that keeps the profile true to the workflow."
     }
   ]
 }

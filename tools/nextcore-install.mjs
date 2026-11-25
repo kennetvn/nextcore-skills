@@ -11,7 +11,8 @@
 //           copilot   a marked block in .github/copilot-instructions.md + .nextcore/<skill>/
 //           windsurf  .windsurf/rules/<skill>.md             + .nextcore/<skill>/
 //           generic   .nextcore/<skill>/ only — point your agent's rules file at .nextcore/<skill>/SKILL.md
-// --skills  comma list of design · dev · workflow (default: all three; `nextcore-design` etc. also accepted)
+// --skills  comma list of design · dev · workflow · deploy (default: design,dev,workflow; `nextcore-design`,
+//           `deploy-integration` etc. also accepted)
 // --dir     project root (default: current directory)
 // --dry-run print what would be written, write nothing
 // --force   overwrite skill files that differ from this version (your own files outside these paths are never touched)
@@ -36,8 +37,9 @@ if (!AGENTS.includes(agent)) {
   console.error(`nextcore-install: --agent is required, one of: ${AGENTS.join(', ')}`);
   process.exit(2);
 }
-const skills = opt('--skills', 'design,dev,workflow').split(',').map((s) => s.trim().replace(/^nextcore-/, ''));
-const bad = skills.filter((s) => !['design', 'dev', 'workflow'].includes(s));
+const SKILL_DIRS = { design: 'nextcore-design', dev: 'nextcore-dev', workflow: 'nextcore-workflow', deploy: 'deploy-integration' };
+const skills = opt('--skills', 'design,dev,workflow').split(',').map((s) => s.trim().replace(/^nextcore-/, '').replace(/^deploy-integration$/, 'deploy'));
+const bad = skills.filter((s) => !SKILL_DIRS[s]);
 if (bad.length) { console.error(`nextcore-install: unknown skill(s): ${bad.join(', ')}`); process.exit(2); }
 const DIR = opt('--dir', process.cwd());
 const dry = args.includes('--dry-run');
@@ -54,11 +56,12 @@ const walk = (p) => (statSync(p).isDirectory() ? readdirSync(p).flatMap((n) => w
 const want = (path, content) => plan.push({ path: join(DIR, path), content });
 
 function skillInfo(s) {
-  const src = join(ROOT, 'plugins', `nextcore-${s}`, 'skills', `nextcore-${s}`);
+  const name = SKILL_DIRS[s];
+  const src = join(ROOT, 'plugins', name, 'skills', name);
   const md = readFileSync(join(src, 'SKILL.md'), 'utf8').replace(/\r\n/g, '\n');
-  const description = (md.match(/^description:\s*"?(.+?)"?\s*$/m) || [])[1] || `nextcore-${s}`;
+  const description = (md.match(/^description:\s*"?(.+?)"?\s*$/m) || [])[1] || name;
   const body = md.replace(/^---\n[\s\S]*?\n---\n/, '');
-  return { name: `nextcore-${s}`, src, description, body };
+  return { name, src, description, body };
 }
 
 const UPDATE_NOTE = `> Installed from nextcore-skills ${VERSION}. The skills keep changing (new checks, cases, fixes): about once a week,
@@ -126,7 +129,7 @@ for (const p of plan) {
     if (cur.equals(buf)) { same++; continue; }
     // our own skill files may be updated; a file we did not create is a conflict unless --force
     const rel = relative(DIR, p.path).replace(/\\/g, '/');
-    const ours = p.block || /^(\.nextcore\/|\.claude\/skills\/nextcore-|\.cursor\/rules\/nextcore-|\.windsurf\/rules\/nextcore-)/.test(rel);
+    const ours = p.block || /^(\.nextcore\/|\.claude\/skills\/(nextcore-|deploy-integration\/)|\.cursor\/rules\/(nextcore-|deploy-integration)|\.windsurf\/rules\/(nextcore-|deploy-integration))/.test(rel);
     if (!ours && !force) { conflicts.push(p.path); continue; }
   }
   if (!dry) { mkdirSync(dirname(p.path), { recursive: true }); writeFileSync(p.path, buf); }

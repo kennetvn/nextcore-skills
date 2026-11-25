@@ -55,6 +55,12 @@ thứ ba; bằng chứng trước khi báo "xong"; nhiều agent trên một rep
 issue: thẻ issue, comment Nhận / Tiến độ / Bàn giao, commit nêu nguyên nhân gốc và thứ đã đo, định nghĩa XONG 6 điểm;
 con số trong tài liệu được đo lại; dọn máy sau những phiên agent dài.
 
+**[deploy-integration](plugins/deploy-integration/skills/deploy-integration/SKILL.md)**: cho agent được bảo deploy.
+Hiểu đường deploy của chính dự án trước khi làm: một `deploy-profile.json` mỗi repo (kênh, kích hoạt, đích, bước, xác
+minh, lùi, điều cấm), ba đường — pipeline sẵn có chỉ đọc không viết lại, máy chủ agent đã vào được, máy chủ mới chỉ có
+địa chỉ + root + mật khẩu theo thứ tự không tự khoá mình ngoài — và `deploy-profile-check` báo đỏ khi hồ sơ lệch
+workflow hoặc lọt giá trị bí mật.
+
 ## Các công cụ
 
 | Công cụ | Kiểm gì | Dùng khi |
@@ -68,6 +74,7 @@ con số trong tài liệu được đo lại; dọn máy sau những phiên age
 | `third-patch` | chặn lần sửa thứ ba vào cùng một tệp trong 72 h nếu chưa có ghi chú chẩn đoán | pre-commit hook |
 | `github-bootstrap` | biến repo thành bàn làm việc của agent: nhãn trạng thái / ưu tiên, mẫu issue có "xong khi", mẫu PR, một hộp thư quyết định ghim đầu; chạy lại không đổi gì, có `--dry-run` | một lần mỗi repo |
 | `issue-claim` | khoá nhận việc trên issue có hạn (comment + nhãn + người nhận), giành chỉ bằng `--force-with-lease`; `release --close` từ chối khi còn ô chưa tick mà không ghi chuyển sang issue nào | trước khi làm / sau khi bàn giao issue |
+| `deploy-profile-check` | hồ sơ deploy còn khớp workflow (nhánh và paths kích hoạt, chạy tay, tên, mọi `secrets.*` / `vars.*` hai chiều, nhãn runner) và không chứa mật khẩu, khoá, token | trong CI cạnh workflow deploy |
 | `commit-trail` | commit phải nêu issue, commit sửa lỗi phải nêu nguyên nhân gốc, commit sửa lỗi / tính năng / hiệu năng phải ghi lệnh đã chạy và con số; "tested" bị từ chối; `--range` đo độ phủ trên lịch sử của bạn | hook `commit-msg`; chạy báo cáo trước khi bật |
 
 Chạy bất kỳ công cụ nào bằng `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` in ra các tuỳ chọn.

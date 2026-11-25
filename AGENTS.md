@@ -26,12 +26,12 @@ Run it from the project root. It copies the skills where your harness reads them
 | Windsurf | `… nextcore-install --agent windsurf` | `.windsurf/rules/nextcore-*.md` + `.nextcore/` |
 | anything else | `… nextcore-install --agent generic` | `.nextcore/` only — point your rules file at `.nextcore/<skill>/SKILL.md` |
 
-- Only some skills: `--skills design`, `--skills dev,workflow` — valid values `design`, `dev`, `workflow` (the
-  `nextcore-` prefix is optional; anything else exits 2 and names the bad value). Preview first: `--dry-run`.
+- Only some skills: `--skills design`, `--skills dev,workflow` — valid values `design`, `dev`, `workflow`, `deploy`
+  (the `nextcore-` prefix is optional, `deploy-integration` also works; anything else exits 2 and names the bad value). Preview first: `--dry-run`.
 - Claude Code: `--skills design` also installs the `design-critic` and `design-auditor` subagents into
   `.claude/agents/` (one copy; that is the one to edit).
 - Which skills fit — decide from the project, not by default: UI code → `design`; API routes, a database, background
-  work → `dev`; agents that commit, deploy or work in parallel → `workflow`.
+  work → `dev`; agents that commit, deploy or work in parallel → `workflow`; an agent that deploys or takes over a deploy → `deploy`.
 - Verify twice: the files run (`node <install dir>/nextcore-design/scripts/spec-check.mjs --help` prints its usage),
   **and** your harness sees them — Claude Code lists project skills in a new session (`/skills`), Cursor shows the
   rules under Settings → Rules. If it doesn't, say so; a restart of the session is usually needed.
@@ -106,6 +106,7 @@ Say which level and why, quoting what you measured. "L0 — you already do this"
 | a bug fixed twice already | `nextcore-workflow/references/diagnose-before-patch.md` | a diagnosis note before the third fix |
 | several agents on one repo | `nextcore-workflow/references/parallel-agents.md` | commits scoped to your own files |
 | working from a GitHub issue | `nextcore-workflow/references/issue-and-commit-trail.md` | Handoff comment with evidence; `commit-trail` passes; the six-point definition of done |
+| deploy, set up deploys, add a server | `deploy-integration/SKILL.md` → the road's `references/` file | `deploy-profile-check` passes; the run completed and verify measured the shipped commit |
 | working with a third-party platform (Zalo, Facebook, Discord…) | its playbook `cases/<platform>/README.md` in this repo — status table, then *Audit it yourself* | re-check the rows you relied on; report a row that is no longer true (§6) |
 
 3. Write unknowns as UNKNOWN / ASSUMPTION and keep going. Ask the person once, and only when the answer changes the

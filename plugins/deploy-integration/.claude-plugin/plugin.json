@@ -1,0 +1,21 @@
+{
+  "name": "deploy-integration",
+  "displayName": "Deploy Integration",
+  "version": "1.0.0",
+  "description": "Learn and follow any project's deploy path: one deploy profile per repo, three roads (existing pipeline read-only, a server already reachable, a new server from address + root + password), and deploy-profile-check that keeps the profile true to the workflow and free of secret values.",
+  "author": {
+    "name": "kennetvn",
+    "url": "https://github.com/kennetvn"
+  },
+  "homepage": "https://github.com/kennetvn/nextcore-skills#readme",
+  "repository": "https://github.com/kennetvn/nextcore-skills",
+  "license": "MIT",
+  "keywords": [
+    "deploy",
+    "ci-cd",
+    "github-actions",
+    "vps",
+    "ssh",
+    "rollback"
+  ]
+}

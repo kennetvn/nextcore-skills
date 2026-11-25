@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "forbid": ["the other site on this server is not ours"],
+  "targets": [
+    {
+      "id": "web",
+      "channel": "gha",
+      "trigger": { "push": { "branch": "main", "paths": ["src/**", "!src/**/*.test.ts", "package.json"] }, "dispatch": true },
+      "gha": { "workflow": ".github/workflows/deploy.yml", "name": "Deploy", "runsOn": ["self-hosted", "app-runner"], "secrets": ["DEPLOY_SSH_KEY"], "vars": ["AUTO_DEPLOY"] },
+      "host": { "role": "web" },
+      "verify": [{ "url": "https://app.example.com/health", "via": "public", "expect": 200 }],
+      "rollback": { "auto": true, "how": "previous build kept; swap back", "command": "./scripts/rollback.sh" }
+    }
+  ]
+}

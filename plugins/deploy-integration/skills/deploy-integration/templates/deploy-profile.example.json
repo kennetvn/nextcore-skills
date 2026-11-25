@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "project": "example-shop",
+  "forbid": [
+    "the blog on the same server belongs to another team — do not touch its process, vhost or certificate",
+    "deploys never run database migrations; migrations are applied separately after a backup"
+  ],
+  "targets": [
+    {
+      "id": "web",
+      "app": "Next.js, PM2 process example-web, 2 instances on port 3000",
+      "channel": "gha",
+      "repoPath": ".",
+      "trigger": {
+        "push": { "branch": "main", "paths": ["src/**", "public/**", "package.json", "package-lock.json"] },
+        "dispatch": true,
+        "who": "any push to main; by hand: gh workflow run deploy.yml"
+      },
+      "gha": {
+        "workflow": ".github/workflows/deploy.yml",
+        "name": "Deploy",
+        "runsOn": ["ubuntu-latest"],
+        "secrets": ["DEPLOY_SSH_KEY"],
+        "vars": ["AUTO_DEPLOY"],
+        "flags": { "AUTO_DEPLOY": "unset (gh variable get AUTO_DEPLOY: not found) => off, push only builds" }
+      },
+      "host": {
+        "role": "web",
+        "address": "web-1.example.com",
+        "user": "deploy",
+        "path": "/srv/example-web",
+        "hostKey": "ED25519 SHA256:<fingerprint>"
+      },
+      "steps": [
+        "npm ci + tests + next build on the runner",
+        "upload the build, swap it in atomically, keep the previous one",
+        "pm2 reload, health check, roll back on failure"
+      ],
+      "verify": [
+        { "url": "http://127.0.0.1:3000/api/health", "via": "host", "expect": 200 },
+        { "url": "https://shop.example.com/", "via": "public", "expect": 200 }
+      ],
+      "deployedSha": { "file": "/srv/example-web/.deploy-sha", "expect": "the commit that was shipped" },
+      "rollback": {
+        "auto": true,
+        "how": "a failed health check restores the previous build; afterwards a person can swap back with one command",
+        "command": "ssh web-1 /srv/example-web/rollback.sh"
+      },
+      "forbid": []
+    }
+  ]
+}

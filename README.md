@@ -15,7 +15,7 @@ own project in a minute: Next.js, Laravel, plain PHP, Django, Rails, Vue, anythi
 ```bash
 # Claude Code — add the skills
 /plugin marketplace add kennetvn/nextcore-skills
-/plugin install nextcore-design@nextcore      # also: nextcore-dev, nextcore-workflow
+/plugin install nextcore-design@nextcore      # also: nextcore-dev, nextcore-workflow, deploy-integration
 
 # Any project, any stack — measure, see what fits (nothing installed, nothing sent)
 npx -y -p github:kennetvn/nextcore-skills nextcore measure
@@ -56,6 +56,12 @@ on issues — an issue card, Received / Progress / Handoff comments, commits tha
 measured, a six-point definition of done; numbers in docs that get re-measured; cleaning up the machine after long
 agent sessions.
 
+**[deploy-integration](plugins/deploy-integration/skills/deploy-integration/SKILL.md)** — for any agent asked to
+deploy. It learns the project's own path before acting: one `deploy-profile.json` per repo (channel, trigger, target,
+steps, verify, rollback, what not to touch), three roads — an existing pipeline read without rewriting it, a server the
+agent can already reach, a new server from an address + root + password with the lock-out-safe order — and
+`deploy-profile-check`, which fails when the profile and the workflow drift apart or when a secret value sneaks in.
+
 ## The tools
 
 | Tool | Checks | Use it |
@@ -69,6 +75,7 @@ agent sessions.
 | `third-patch` | blocks a third fix to the same file in 72 h without a diagnosis note | pre-commit hook |
 | `github-bootstrap` | turns a repo into the agents' workbench: status / priority labels, issue forms with "done when", a PR template, one pinned decision inbox; idempotent, `--dry-run` | once per repo |
 | `issue-claim` | a claim lock on an issue with an expiry (comment + label + assignee), takeover only with `--force-with-lease`; `release --close` refuses unchecked items that name no issue | before starting / after handing off an issue |
+| `deploy-profile-check` | a deploy profile still matches its workflow (push branch and paths, dispatch, name, every `secrets.*` / `vars.*` both ways, runner labels) and holds no password, key or token | in CI next to the deploy workflow |
 | `commit-trail` | commit messages name the issue, a fix states its root cause, a fix / feature / perf change shows the command it ran and the number — "tested" is refused; `--range` reports coverage of your history | `commit-msg` hook; a report before turning it on |
 
 Run any of them with `npx -y -p github:kennetvn/nextcore-skills <tool> …`; `<tool> --help` prints its options. All are plain Node ≥18 with no dependencies, and each is tested both ways: it must catch a bad example

@@ -1,0 +1,27 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - '!src/**/*.test.ts'
+      - package.json
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: vars.AUTO_DEPLOY == 'true'
+    runs-on: [self-hosted, linux, app-runner]
+    steps:
+      - uses: actions/checkout@v4
+      # secrets.OLD_KEY was removed — comments must not count
+      - run: ./scripts/deploy.sh
+        env:
+          KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

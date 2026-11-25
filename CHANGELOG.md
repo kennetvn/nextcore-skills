@@ -4,6 +4,22 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.15.0] — 2026-11-25
+
+### Added
+- **deploy-integration 1.0.0** — a fourth plugin for agents asked to deploy a project they did not set up. One
+  `deploy-profile.json` per repo (channel `gha` · `vps-ssh` · `paas` · `manual`, trigger and who presses, target by
+  server role, steps, verify from host and from outside, the shipped commit written on the server, rollback, `forbid`
+  as data). Three roads: an existing pipeline read without rewriting it; a server already reachable (imported with
+  consent, `BatchMode` proof, read-only stack probe); a new server from address + root + password, where the key login
+  is proven in a second session **before** password login is turned off. Why: a cluster answered `200` from the old
+  instance right after a reload; a kept previous build rolled back in seconds where revert-and-rebuild had cost 15–20
+  minutes of a broken site; a smoke test that wrote its key into `~/.ssh` overwrote the owner's key.
+- **`deploy-profile-check`** — zero dependencies: schema v1, no secret values (passwords, private keys, token shapes),
+  and for GitHub Actions the profile ⇔ workflow comparison both ways (push branch and paths, dispatch, name, every
+  `secrets.*` and `vars.*`, runner labels). Tested both ways: each of nine drifts and four secret leaks turns it red.
+- `nextcore-install --skills deploy` (or `deploy-integration`).
+
 ## [1.14.0] — 2026-11-09
 
 Nine days of the product's own agents working through GitHub issues, a design-tool migration, and five incidents —
