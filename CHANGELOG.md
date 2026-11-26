@@ -4,6 +4,17 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · versioning: 
 
 ## [Unreleased]
 
+## [1.16.0] — 2026-11-26
+
+### Changed
+- **nextcore-design 1.8.0** — the drawing is a runnable HTML prototype: real tokens with fallbacks, real data, only the
+  states that exist; opened for the user at their real window size (URL with the file name + a screenshot); fixed over
+  two or more look-and-fix rounds; then imported into the design tool for versions, notes and share links. Build 1:1 and
+  compare shipped vs prototype (SSIM ≥ 0.95); score taste on the screenshot. New `references/prototype-first.md`.
+
+### Added
+- Case `design/canvas-drawings-lost-to-html-prototypes`.
+
 ## [1.15.0] — 2026-11-25
 
 ### Added

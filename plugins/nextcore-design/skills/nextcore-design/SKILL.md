@@ -1,6 +1,6 @@
 ---
 name: nextcore-design
-description: "Design-first discipline and UI measurement for AI agents. Use when building or redesigning a page or component, when changing a screen that already exists (clone the live baseline, draw only the delta), when migrating drawings from another design tool, when the user shares a reference image or says the UI looks generic / like a template / flat / AI-made, and when auditing or measuring UI: images blurry or reported as upscaled, wrong skeleton or loading flash, slow TBT, contrast reading ~1.00, dark mode not applying, dead space at wide viewports. Sequence: size the task, product discovery, draw the screen before code (locked tokens, every state, phone/tablet/desktop, real data), separate critic, build 1:1, audit with scripts in a real browser, validate the user can finish the job."
+description: "Design-first discipline and UI measurement for AI agents. Use when building or redesigning a page or component, when changing a screen that already exists (clone the live baseline, draw only the delta), when migrating drawings from another design tool, when the user shares a reference image or says the UI looks generic / like a template / flat / AI-made, and when auditing or measuring UI: images blurry or reported as upscaled, wrong skeleton or loading flash, slow TBT, contrast reading ~1.00, dark mode not applying, dead space at wide viewports. Sequence: size the task, product discovery, build a runnable HTML prototype before app code (locked tokens, real states, real data) and open it for the user to see, store it in the design tool, separate critic, build 1:1 from the prototype, audit with scripts in a real browser, validate the user can finish the job."
 ---
 
 # nextcore-design — draw first, code second
@@ -9,9 +9,37 @@ description: "Design-first discipline and UI measurement for AI agents. Use when
 > slowest way to reach a good UI. Draw it first, agree on the drawing, then copy the drawing into code.
 >
 > **Sequence:** size → discover (problem, job, success criteria, flow) → define (spec) → architect (information
-> hierarchy) → design (drawing) → critique (separate agent) → implement 1:1 → audit (scripts) → visual review →
-> **validate** (can the user finish the job? how will the business goal be measured?) → iterate only on measured gaps.
+> hierarchy) → design (**runnable HTML prototype**, §0) → **open it for the user** → critique (separate agent) →
+> implement 1:1 → audit (scripts) → visual review → **validate** (can the user finish the job? how will the business
+> goal be measured?) → iterate only on measured gaps.
 > Build the right screen before building the screen right. You are a designer who can code, not a coder who decorates.
+
+## §0 The drawing is a runnable HTML prototype — design tools store and review it
+
+Measured on one product (2026-11): screens drawn in a canvas tool through a restricted component/JSX subset looked worse
+than the same screens built by agents as plain HTML, and the owner noticed. Causes: the drawing subset dropped
+`::before`, dashed borders, SVG fills, gradients, `color-mix()` and web fonts; the drawing checker scored *compliance*
+(every state × 4 widths, raw values, uppercase) not quality, so agents optimised the checker; 20 cells per screen
+thinned the effort; drawings were rarely looked at after rendering; cloning a bad live screen carried its flaws over;
+sample data hid density and long-string problems. Details and the replacement flow: `references/prototype-first.md`.
+
+1. **Build one self-contained HTML file** per screen in the drawing folder: real tokens (`var(--token, fallback)`),
+   **real data** (read-only from the app/API/DB, anonymised), the longest real strings, only the states that really
+   happen (empty · loading · error · data · hover/focus), the screen's main width and its narrowest width.
+2. **Open it for the user right away** — in their browser / app profile, at their real window size (never shrink the
+   viewport for them), through a local static server when `file://` is blocked. Hand back the URL **with the file
+   name visible** and a screenshot. The user judges the running prototype, not a description of it.
+3. **Look, then fix — at least two rounds**: screenshot, read the image, fix. No clipped «…» text, no overflow, no line
+   break that cuts a meaning; check with a script (scrollWidth > clientWidth on every text node), not by eye.
+4. **Store it in the design tool** (import the static HTML with `<script>` removed) for versions, notes and share
+   links. States that do not apply get a note «not applicable — reason» instead of a filler drawing.
+5. **Build 1:1 from the prototype** and compare a screenshot of the shipped screen with the prototype at the same
+   width (SSIM ≥ 0.95, or list every difference with its reason).
+6. **Score taste, not only rules**, on the real screenshot: clear hierarchy (where does the eye land first) · even
+   spacing · every string readable in full · consistent status colours · no internal words shown to customers (tool
+   names, file paths, "tokens").
+
+Canvas drawing tools stay useful for small edits and annotations on a stored screen; do not build new screens there.
 
 ## §1 When drawing first is mandatory
 

@@ -23,7 +23,7 @@ the index, nothing private). Cases from other teams are welcome — open a
 ## Index
 
 <!-- cases:start -->
-21 cases in 9 folders. Newest first in each folder.
+22 cases in 9 folders. Newest first in each folder.
 
 ### [zalo](zalo/) — Zalo — official OA API and unofficial personal-account libraries (zca-js)
 
@@ -59,6 +59,7 @@ the index, nothing private). Cases from other teams are welcome — open a
 
 | Case | Layer | Stack | Kind |
 |---|---|---|---|
+| [Approved canvas drawings looked worse than the agents' plain HTML pages](design/canvas-drawings-lost-to-html-prototypes.md) | process, ai-agents | html, design-canvas | measurement-trap |
 | [56 screens shipped from approved drawings, none of which said what problem they solved](design/drawings-shipped-without-a-problem.md) | process, ai-agents | nextjs, claude-design | measurement-trap |
 
 ### [devops](devops/) — CI/CD, deploys, process managers, runners
@@ -100,12 +101,13 @@ the index, nothing private). Cases from other teams are welcome — open a
 - **chromium-cdp** — [CDP mouse input hangs exactly 5 s and the click is lost when the page navigated while its window was occluded](testing/cdp-input-hangs-on-occluded-window-after-navigation.md)
 - **claude-code** — [An off-the-shelf command blocker for coding agents was wrong 12 times out of 12 on our real history](ai-agents/backtest-command-guard-on-transcripts.md)
 - **claude-design** — [56 screens shipped from approved drawings, none of which said what problem they solved](design/drawings-shipped-without-a-problem.md)
+- **design-canvas** — [Approved canvas drawings looked worse than the agents' plain HTML pages](design/canvas-drawings-lost-to-html-prototypes.md)
 - **electron** — [Renaming internal builds from a timestamp to a counter would have stopped every machine from auto-updating](devops/prerelease-counter-sorts-below-timestamp-builds.md) · [Two machines on the same network never saw each other's internal build — the update channel only asked direct LAN peers](infra/update-channel-saw-only-direct-lan-peers.md) · [Two end-to-end batches on one machine turned 37% of suites red, and a third of the red was not the code](testing/parallel-e2e-batches-one-machine-37-percent-red.md)
 - **ffmpeg** — [A scene index that is clamped instead of rejected shows the right picture on the wrong sentence](ai-agents/video-cue-index-silently-clamped.md)
 - **git** — [An off-the-shelf command blocker for coding agents was wrong 12 times out of 12 on our real history](ai-agents/backtest-command-guard-on-transcripts.md) · [Our pre-commit secret check had never run, because it sat after an early exit](testing/secret-gate-after-early-exit-never-ran.md)
 - **github** — [A paused code area kept receiving agent work because the filter read only the issue label](process/paused-area-leaked-through-label-only-filter.md)
 - **github-actions** — [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](devops/ci-turbopack-cache-crashed-postcss.md) · [A lockfile written by npm 11 on a laptop failed `npm ci` on the CI runner's npm 10 — twice in eight days](devops/newer-npm-lockfile-rejected-by-ci-npm-ci.md)
-- **html** — [A scene index that is clamped instead of rejected shows the right picture on the wrong sentence](ai-agents/video-cue-index-silently-clamped.md)
+- **html** — [A scene index that is clamped instead of rejected shows the right picture on the wrong sentence](ai-agents/video-cue-index-silently-clamped.md) · [Approved canvas drawings looked worse than the agents' plain HTML pages](design/canvas-drawings-lost-to-html-prototypes.md)
 - **llm** — [Two test accounts on the same workspace made the AI assistant answer itself, about every 4 seconds](zalo/two-test-accounts-bots-answered-each-other.md)
 - **mysql** — [The documented Prisma singleton created three connection pools per process in Next.js production](backend/prisma-singleton-three-pools-nextjs.md) · [mysql batch output turned TO_BASE64 line breaks into a literal backslash-n and silently corrupted 60% of a backfill](data/mysql-batch-escapes-base64-newlines.md)
 - **nextjs** — [The documented Prisma singleton created three connection pools per process in Next.js production](backend/prisma-singleton-three-pools-nextjs.md) · [56 screens shipped from approved drawings, none of which said what problem they solved](design/drawings-shipped-without-a-problem.md) · [A self-hosted CI runner's Turbopack cache grew to 8.1 GB and crashed the CSS loader](devops/ci-turbopack-cache-crashed-postcss.md) · [A lockfile written by npm 11 on a laptop failed `npm ci` on the CI runner's npm 10 — twice in eight days](devops/newer-npm-lockfile-rejected-by-ci-npm-ci.md) · [PM2 reload sends SIGINT, so a SIGTERM-only shutdown handler never ran](devops/pm2-reload-sends-sigint.md) · [nginx `if ($var)` treats the string "0" as false, so a header block let "0" through](infra/nginx-if-zero-is-false.md) · [A panel's default nginx config cached /api responses for every site on the server](infra/panel-nginx-default-cached-api.md)

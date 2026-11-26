@@ -9,7 +9,7 @@
     {
       "name": "nextcore-design",
       "source": "./plugins/nextcore-design",
-      "description": "Design-first for AI agents: spec and hierarchy first, draw before code (existing screens: clone the live baseline, draw the delta), a critic agent, then measure (slop-check, token-audit, design-card, design-review)."
+      "description": "Design-first for AI agents: spec and hierarchy first, a runnable HTML prototype before app code, opened for the user (existing screens: start from the live baseline), a critic agent, then measure (slop-check, token-audit, design-card, design-review)."
     },
     {
       "name": "nextcore-dev",

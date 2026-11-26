@@ -3,6 +3,12 @@
 All notable changes to this project are documented here. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 versioning: [SemVer](https://semver.org/).
 
+## [1.8.0] — 2026-11-26
+
+### Changed
+- SKILL.md §0 + `references/prototype-first.md`: the drawing is a runnable HTML prototype (real tokens with fallbacks, real data, real states), opened for the user at their real window size with the URL and a screenshot, fixed over 2+ look-and-fix rounds, then imported into the design tool for versions and notes; build 1:1 and compare shipped vs prototype (SSIM ≥ 0.95); score taste on the screenshot. Canvas drawing only for small edits.
+- Case `cases/design/canvas-drawings-lost-to-html-prototypes.md`.
+
 ## [1.7.0] — 2026-11-09
 
 ### Added
